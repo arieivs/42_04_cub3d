@@ -1,1 +1,5 @@
-minilibx-linux
+minilibx-linux/
+minilibx_mms/
+libmlx.dylib
+objs/
+cub3D
