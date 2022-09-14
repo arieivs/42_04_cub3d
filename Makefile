@@ -17,7 +17,7 @@ OBJS			:= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 #LIBFT_DIR		= 42_00_libft
 
 # Get OS name
-UNAME = ${shell uname}
+UNAME = $(shell uname)
 
 # MAC
 ifeq ($(UNAME), Darwin)
@@ -38,7 +38,7 @@ GRAPH_LIB	= -lXext -lX11 -lm -lz
 endif
 
 INCLUDES		= -Iincludes -I$(MLX_DIR) #-Ilibft
-LIBRARIES		= -L${LIBFT_DIR} -lft -L$(MLX_DIR) $(MLX_LIB) $(GRAPH_LIB)
+LIBRARIES		= -L$(LIBFT_DIR) -lft -L$(MLX_DIR) $(MLX_LIB) $(GRAPH_LIB)
 
 CC				= gcc
 RM				= rm -f
@@ -58,56 +58,56 @@ WHITE			= \e[1;37m
 NORMAL			= \e[0;37m
 END				= \e[0m
 
-$(OBJS_DIR)/%.o:	${SRCS_DIR}/%.c
-					@mkdir -p ${OBJS_DIR}
+$(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c
+					@mkdir -p $(OBJS_DIR)
 #					@mkdir -p $(OBJS_SUB_DIR)
-					${CC} ${CFLAGS} ${INCLUDES} -c $< -o $@
+					$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-${NAME}:	${OBJS}
+$(NAME):	$(OBJS)
 			@printf "\n"
-#			@${MAKE} bonus -C ${LIBFT_DIR}
-			${MAKE} -C ${MLX_DIR}
+#			@$(MAKE) bonus -C $(LIBFT_DIR)
+			$(MAKE) -C $(MLX_DIR)
 ifeq ($(UNAME), Darwin)
-			cp ${MLX_DIR}/libmlx.dylib ./
+			cp $(MLX_DIR)/libmlx.dylib ./
 endif
-			$(CC) ${CFLAGS} ${INCLUDES} ${OBJS} $(LIBRARIES) -o $(NAME)
-			@printf "	${WHITE}[${GREEN} Success. Compiled $(NAME).${WHITE}]\
-			${END} \n\n"
+			$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBRARIES) -o $(NAME)
+			@printf "	$(WHITE)[$(GREEN) Success. Compiled $(NAME).$(WHITE)]\
+			$(END) \n\n"
 # no special rules for linux? weird
 
 all:	$(NAME)
 
 clean:
-			@printf "\n	${WHITE}[${BLUE}"
-			@printf "Cleaning $(NAME) objects${END}]\n"
-			${RM} ${OBJS}
+			@printf "\n	$(WHITE)[$(BLUE)"
+			@printf "Cleaning $(NAME) objects$(END)]\n"
+			$(RM) $(OBJS)
 			$(RM_DIR) $(OBJS_DIR)
 
 deep_clean:	clean
-#			@printf "\n	${WHITE}[${BLUE}"
-#			@printf "Cleaning libft objects${END}]\n"
-#			${MAKE} clean -C ${LIBFT_DIR}
-			@printf "\n	${WHITE}[${BLUE}"
-			@printf "Cleaning minilibx objects${END}]\n"
-			${MAKE} clean -C ${MLX_DIR}
+#			@printf "\n	$(WHITE)[$(BLUE)"
+#			@printf "Cleaning libft objects$(END)]\n"
+#			$(MAKE) clean -C $(LIBFT_DIR)
+			@printf "\n	$(WHITE)[$(BLUE)"
+			@printf "Cleaning minilibx objects$(END)]\n"
+			$(MAKE) clean -C $(MLX_DIR)
 
 fclean:		clean
-			@printf "\n	${WHITE}[${BLUE}"
-			@printf "Cleaning miniRT output files${END}]\n"
-			${RM} ${NAME}
+			@printf "\n	$(WHITE)[$(BLUE)"
+			@printf "Cleaning $(NAME) output files$(END)]\n"
+			$(RM) $(NAME)
 
 deep_fclean:	deep_clean
-#				@printf "\n	${WHITE}[${BLUE}"
-#				@printf "Cleaning libft library${END}]\n"
-#				${MAKE} fclean -C ${LIBFT_DIR}
-				@printf "\n	${WHITE}[${BLUE}"
-				@printf "Cleaning minilibx output files${END}]\n"
+#				@printf "\n	$(WHITE)[$(BLUE)"
+#				@printf "Cleaning libft library$(END)]\n"
+#				$(MAKE) fclean -C $(LIBFT_DIR)
+				@printf "\n	$(WHITE)[$(BLUE)"
+				@printf "Cleaning minilibx output files$(END)]\n"
 ifeq ($(UNAME), Darwin)
-				${RM} libmlx.dylib
+				$(RM) libmlx.dylib
 endif
-				@printf "\n	${WHITE}[${BLUE}"
-				@printf "Cleaning miniRT output files${END}]\n"
-				${RM} ${NAME}
+				@printf "\n	$(WHITE)[$(BLUE)"
+				@printf "Cleaning $(NAME) output files$(END)]\n"
+				$(RM) $(NAME)
 
 re:			fclean all
 
