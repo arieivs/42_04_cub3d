@@ -1,5 +1,5 @@
-# Rendering Cub3D
-#		by TBD
+# 🎨 Rendering Cub3D 🎮
+#		by De Trappistinhos 🍻
 
 NAME	=	cub3D
 
@@ -111,4 +111,4 @@ endif
 
 re:			fclean all
 
-.PHONY:		libft all clean fclean re
+.PHONY:		all clean deep_clean fclean deep_fclean re
