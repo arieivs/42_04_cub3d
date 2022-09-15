@@ -61,6 +61,7 @@ Vector magnitude (also called the norm) is represented by the formula `sqrt(vx^2
 * [gleal's readme](https://github.com/gleal42/cub3d)
 * [another raycasting tutorial](https://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/)
 * [the start of a series of videos](https://platform.thinkific.com/videoproxy/v1/play/bt4rgv7eplmd9ibbfds0?time=370&autoplay=true&crosstime=738)
+* [video tutorial](https://www.youtube.com/watch?v=gYRrGTC7GtA)
 
 <br/>
 
