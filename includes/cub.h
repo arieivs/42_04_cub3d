@@ -14,8 +14,7 @@
 # define HEIGHT 1080
 # define IN 0
 # define WALL 1
-//# define SPRITE 2 // only bonus?
-# define OUT 3
+# define OUT 2
 
 typedef struct s_pair {
 	double	x;
@@ -36,30 +35,37 @@ typedef struct s_cub {
 	int		so_fd;
 	int		we_fd;
 	int		ea_fd;
-	//int	s_fd;
 	int		floor_color;
 	int		ceil_color;
 	int		**map;
 	t_pair	*pos;
 	t_pair	*dir;
+	t_pair	*proj_plane;
 }				t_cub;
 
 typedef enum e_error_code {
 	ERRNO = 1,
 	WRONG_ARGC,
 	WRONG_FILE_EXT,
-	FILE_INEXISTENT
+	FILE_INEXISTENT,
+	MAP_INCORRECT
 }			t_error_code;
 
 /* PARSER */
 int		has_right_file_ext(char *str);
 int		check_args(int ac, char **av);
 t_cub	init_cub(void);
+int		check_map(int map_fd, t_cub	*cub);
+void	init_mlx(t_cub *cub); // should go elsewhere
 
 /* GAMEOVER - Error management */
 void	error_message(t_error_code error_code);
 int		error_and_return(t_error_code error_code, int return_value);
+void	error_and_exit(t_error_code error_code, t_cub *cub);
+void	*calloc_or_exit(size_t size, int count, t_cub *cub);
 
 /* SHUT DOWN - Freeing and exiting */
+void	free_cub(t_cub *cub);
+void	graceful_exit(t_cub *cub);
 
 #endif

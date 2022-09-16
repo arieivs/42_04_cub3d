@@ -31,11 +31,10 @@ t_cub	init_cub(void)
 {
 	t_cub	cub;
 
-	cub.mlx = mlx_init();
-	cub.window = mlx_new_window(cub.mlx, WIDTH, HEIGHT, "Let's play!");
-	cub.img = mlx_new_image(cub.mlx, WIDTH, HEIGHT);
-	cub.addr = mlx_get_data_addr(cub.img, &cub.bits_per_pixel,
-			&cub.line_length, &cub.endian);
+	cub.mlx = NULL;
+	cub.window = NULL;
+	cub.img = NULL;
+	cub.addr = NULL;
 	cub.no_fd = 0;
 	cub.so_fd = 0;
 	cub.we_fd = 0;
@@ -43,9 +42,43 @@ t_cub	init_cub(void)
 	cub.floor_color = 0;
 	cub.ceil_color = 0;
 	cub.map = NULL;
+	cub.pos = calloc_or_exit(sizeof(t_pair *), 1, &cub);
 	cub.pos->x = 0.0;
 	cub.pos->y = 0.0;
+	cub.dir = calloc_or_exit(sizeof(t_pair *), 1, &cub);
 	cub.dir->x = 0.0;
 	cub.dir->y = 0.0;
+	cub.proj_plane = calloc_or_exit(sizeof(t_pair *), 1, &cub);
+	cub.proj_plane->x = 0.0;
+	cub.proj_plane->y = 0.0;
 	return (cub);
+}
+
+int	check_map(int map_fd, t_cub	*cub)
+{
+	char	*buff;
+	int		ret;
+	int		line;
+
+	(void)cub;
+	printf("Checking map");
+	while ((ret = get_next_line(map_fd, &buff)) > 0)
+		printf("%d-%d: %s\n", ret, line++, buff);
+	printf("%d-%d: %s\n", ret, line++, buff);
+	if (ret == 0)
+		printf("Reached EOF\n");
+	if (ret == -1)
+		printf("An Error occurred\n");
+	close(map_fd);
+	free(buff);
+	return (0);
+}
+
+void	init_mlx(t_cub *cub)
+{
+	cub->mlx = mlx_init();
+	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
+	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
+	cub->addr = mlx_get_data_addr(cub->img, &cub->bits_per_pixel,
+			&cub->line_length, &cub->endian);
 }

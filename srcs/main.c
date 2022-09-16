@@ -31,11 +31,13 @@ int	main(int ac, char **av)
 	if ((map_fd = check_args(ac, av)) == -1)
 		return (1);
 	cub = init_cub();
-	(void)cub;
-	close(map_fd);
+	if (!check_map(map_fd, &cub))
+		return (1);
+	init_mlx(&cub);
 	//mlx_mouse_hook(cub.window, mouse_hook, &cub);
 	//mlx_key_hook(cub.window, key_hook, &cub);
 	// RENDER CUB
 	//mlx_loop(cub.mlx);
+	graceful_exit(&cub); // only on key_hook - here it doesn't work
 	return (0);
 }
