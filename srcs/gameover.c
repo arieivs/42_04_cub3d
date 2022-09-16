@@ -1,16 +1,16 @@
-#include "cub"
+#include "cub.h"
 
-void	*calloc_or_exit(size_t size, int count)
+/*void	*calloc_or_exit(size_t size, int count)
 {
 	void	*result;
 
 	result = ft_calloc(size, count);
 	if (!result)
-		error_and_exit(MEMORY_FAIL);
+		error_and_exit(ERRNO, NULL);
 	return (result);
-}
+}*/
 
-int	open_or_exit(char *file_path, mode_t mode)
+/*int	open_or_exit(char *file_path, mode_t mode)
 {
 	int	fd;
 
@@ -18,14 +18,38 @@ int	open_or_exit(char *file_path, mode_t mode)
 	if (fd == -1)
 		error_and_exit(OPEN_FAIL);
 	return (fd);
+}*/
+
+void	error_message(t_error_code error_code)
+{
+	ft_putstr_fd("Error\n", STDERR_FILENO);
+	if (error_code == WRONG_ARGC)
+		ft_putstr_fd("Wrong number of arguments. Please provide a .cub file\n",
+			STDERR_FILENO);
+	else if (error_code == WRONG_FILE_EXT)
+		ft_putstr_fd("Wrong file extension. Please provide a .cub file\n",
+			STDERR_FILENO);
+	else if (error_code == FILE_INEXISTENT)
+		ft_putstr_fd("Inexistent file. Please provide an existing .cub file\n",
+			STDERR_FILENO);
+	else
+	{
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+		write(STDERR_FILENO, "\n", 1);
+	}
 }
 
-void	error_and_exit(t_cub cub)
+int	error_and_return(t_error_code error_code, int return_value)
+{
+	error_message(error_code);
+	return (return_value);
+}
+
+/*void	error_and_exit(t_error_code error_code, t_cub cub)
 {
 
 	if (cub)
 		free_cub(cub);
-	ft_putstr_fd(strerror(errno), STDERR_FILENO);
-	write(STDERR_FILENO, "\n", 1);
-	exit(errno); // or EXIT_FAILURE?
-}
+	error_message(error_code);
+	exit(errno);
+}*/

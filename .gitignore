@@ -2,4 +2,6 @@ minilibx-linux/
 minilibx_mms/
 libmlx.dylib
 objs/
+*.o
+libft.a
 cub3D

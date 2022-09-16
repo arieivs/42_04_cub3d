@@ -1,5 +1,4 @@
-#include "mlx.h"
-#include <stdio.h>
+#include "cub.h"
 
 /*typedef struct	s_vars {
 	void	*mlx;
@@ -24,11 +23,19 @@ int	main(void)
 	mlx_loop(vars.mlx);
 }*/
 
-int	main(void)
+int	main(int ac, char **av)
 {
 	t_cub	cub;
-	// check args are correct: number, ends .cub, exists
+	int		map_fd;
 
+	if ((map_fd = check_args(ac, av)) == -1)
+		return (1);
 	cub = init_cub();
+	(void)cub;
+	close(map_fd);
+	//mlx_mouse_hook(cub.window, mouse_hook, &cub);
+	//mlx_key_hook(cub.window, key_hook, &cub);
+	// RENDER CUB
+	//mlx_loop(cub.mlx);
 	return (0);
 }
