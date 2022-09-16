@@ -32,7 +32,10 @@ int	main(int ac, char **av)
 		return (1);
 	cub = init_cub();
 	if (!check_map(map_fd, &cub))
+	{
+		free_cub(&cub); // to think
 		return (1);
+	}
 	init_mlx(&cub);
 	//mlx_mouse_hook(cub.window, mouse_hook, &cub);
 	//mlx_key_hook(cub.window, key_hook, &cub);

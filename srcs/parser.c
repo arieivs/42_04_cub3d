@@ -42,13 +42,13 @@ t_cub	init_cub(void)
 	cub.floor_color = 0;
 	cub.ceil_color = 0;
 	cub.map = NULL;
-	cub.pos = calloc_or_exit(sizeof(t_pair *), 1, &cub);
+	cub.pos = (t_pair *)calloc_or_exit(sizeof(t_pair), 1, &cub);
 	cub.pos->x = 0.0;
 	cub.pos->y = 0.0;
-	cub.dir = calloc_or_exit(sizeof(t_pair *), 1, &cub);
+	cub.dir = (t_pair *)calloc_or_exit(sizeof(t_pair), 1, &cub);
 	cub.dir->x = 0.0;
 	cub.dir->y = 0.0;
-	cub.proj_plane = calloc_or_exit(sizeof(t_pair *), 1, &cub);
+	cub.proj_plane = (t_pair *)calloc_or_exit(sizeof(t_pair), 1, &cub);
 	cub.proj_plane->x = 0.0;
 	cub.proj_plane->y = 0.0;
 	return (cub);
@@ -58,13 +58,16 @@ int	check_map(int map_fd, t_cub	*cub)
 {
 	char	*buff;
 	int		ret;
-	int		line;
+	int		line_nb;
 
 	(void)cub;
-	printf("Checking map");
+	line_nb = 1;
 	while ((ret = get_next_line(map_fd, &buff)) > 0)
-		printf("%d-%d: %s\n", ret, line++, buff);
-	printf("%d-%d: %s\n", ret, line++, buff);
+	{
+		printf("%d-%d: %s\n", ret, line_nb++, buff);
+		free(buff);
+	}
+	printf("%d-%d: %s\n", ret, line_nb++, buff);
 	if (ret == 0)
 		printf("Reached EOF\n");
 	if (ret == -1)

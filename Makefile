@@ -44,6 +44,7 @@ RM				= rm -f
 RM_DIR			= rm -rf
 MAKE			= make
 CFLAGS 			= -Wall -Wextra -Werror
+DFLAGS			= -fsanitize=address
 
 # COLORS
 GRAY			= \e[1;30m
@@ -106,5 +107,8 @@ endif
 				$(RM) $(NAME)
 
 re:			fclean all
+
+debug:		CFLAGS += $(DFLAGS)
+debug:		all
 
 .PHONY:		all clean deep_clean fclean deep_fclean re

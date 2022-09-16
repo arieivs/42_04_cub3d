@@ -13,6 +13,12 @@ void	free_cub(t_cub *cub)
 	if (cub->ea_fd != 0)
 		close(cub->ea_fd); // TODO protect close?
 	// free cub->map - it will be allocated
+	if (cub->pos)
+		free(cub->pos);
+	if (cub->dir)
+		free(cub->dir);
+	if (cub->proj_plane)
+		free(cub->proj_plane);
 }
 
 void	graceful_exit(t_cub *cub)
