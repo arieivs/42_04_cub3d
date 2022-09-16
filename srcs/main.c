@@ -61,30 +61,28 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-verLine(int x, int drawStart, int drawEnd, int color)
+verLine(int x, int drawStart, int drawEnd, int color, t_data img)
 {
 	// x			= coordinate of the vertical line
 	// drawStart	= where we need to start drawing the texture color
 	// drawEnd		= where we need to end drawing the texture color
 	// color		= 32-bit trgb color value
 
-	t_data img;
-	img.img = mlx_new_image(vars.mlx, 1, screenHeight);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 
-	printf("DrawStart is %d and DrawEnd is %d\n", drawStart, drawEnd);
+	//printf("DrawStart is %d and DrawEnd is %d\n", drawStart, drawEnd);
+	//printf("%d - %d\n", drawStart, drawEnd);
 	for (int i = 0; i < screenHeight; i++)
 	{
-		if (i > drawStart && i < drawEnd)
+		if (i >= drawStart && i <= drawEnd)
 		{
-			my_mlx_pixel_put(&img, i, x, color);
+			my_mlx_pixel_put(&img, x, i, color);
 		}
 		else
 		{
-			my_mlx_pixel_put(&img, i, x, 0xFF000FFF);
+			my_mlx_pixel_put(&img, x, i, 0x00000000);
 		}
 	}
-	mlx_put_image_to_window(vars.mlx, vars.win, img.img, x, 0);
+	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 }
 
 // MAIN
@@ -97,19 +95,25 @@ int	main(void)
 		exit (-2);
 	vars.win = mlx_new_window(vars.mlx, screenWidth, screenHeight, "Cub3d");
 
+	t_data img;
+	img.img = mlx_new_image(vars.mlx, screenWidth, screenHeight);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+
 	// Tutorial below...color
 
-	double	posX = 22;		// Starting Positions
+	double	posX = 19;		// Starting Positions
 	double	posY = 12;
 
-	double	dirX = -1;		// Direction Vector
-	double	dirY = 0;
+	double	dirX = 0;		// Direction Vector
+	double	dirY = -1;
 
-	double planeX = 0;		// Camera Plane
-	double planeY = 0.66; 
+	double planeX = -2;		// Camera Plane
+	double planeY = 0;
 
 	double time = 0;		// time of current and previous frame
 	double old_time = 0;
+
+	// MLX 1 frame
 
 	for (int x = 0; x < screenWidth; x++)
 	{
@@ -131,8 +135,8 @@ int	main(void)
 		double sideDistY;
 
 		// lengt After the DDA is done, we have to calculate the distance of the ray to the wall, so that we can calculate how high the wall has to be drawn after this. h of ray from one x or y side to next x or y side
-		double deltaDistX = (rayDirX == 0) ? 1e30 : abs(1 / rayDirX);
-		double deltaDistY = (rayDirY == 0) ? 1e30 : abs(1 / rayDirY);
+		double deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1.0 / rayDirX);
+		double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1.0 / rayDirY);
 		double perpWallDist; // used to avoid fisheye effect
 
 		// what direction to step in x or y direction (either +1 or -1)
@@ -190,6 +194,7 @@ int	main(void)
 		else
 			perpWallDist = (sideDistY - deltaDistY);
 		
+		printf("perpWallDist is: %lf\n", perpWallDist);
 		// Calculate height of line to draw on screen
 		int lineHeight = (int)(((double)screenHeight) / perpWallDist);
 
@@ -224,21 +229,13 @@ int	main(void)
 		// give x and y sides different brightness
 		// if (side == 1)
 		// 	color = color / 2;
-
-		verLine(x, drawStart, drawEnd, color);
-		//printf("x is now: %d\n", x);
+		//printf("color passed: %d\n", color);
+		printf("%d - %d\n", drawStart, drawEnd);
+		verLine(x, drawStart, drawEnd, color, img);
 	}
-	// t_data img;
-	// img.img = mlx_new_image(vars.mlx, 1, screenHeight);
-	// img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	// unsigned int color = 0xFFFFFFFF;
-	// my_mlx_pixel_put(&img, 0, 0, color);
-	// my_mlx_pixel_put(&img, 1, 0, color);
-	// my_mlx_pixel_put(&img, 2, 0, color);
-	// my_mlx_pixel_put(&img, 3, 0, color);
-	// mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
+
 	// MLX set-up
-	
+	// mlx_hook(vars.win, 02, (1L << 2), &key_press, data);
 	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_loop(vars.mlx);
 }
