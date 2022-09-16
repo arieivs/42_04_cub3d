@@ -44,7 +44,7 @@ CC				= gcc
 RM				= rm -f
 RM_DIR			= rm -rf
 MAKE			= make
-CFLAGS 			= -Wall -Wextra -Werror
+CFLAGS 			= #-Wall -Wextra -Werror
 
 # COLORS
 GRAY			= \e[1;30m
@@ -56,8 +56,7 @@ PURPLE			= \e[1;35m
 CYAN			= \e[1;36m
 WHITE			= \e[1;37m
 NORMAL			= \e[0;37m
-END				= \e[0m
-
+END				= \e[0ml
 $(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c
 					@mkdir -p $(OBJS_DIR)
 #					@mkdir -p $(OBJS_SUB_DIR)

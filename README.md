@@ -15,7 +15,7 @@ Vectors are abstract notions but always have 2 essential components:
 Vector in 2D euclidian space:
 
 `v = 
-[ vx
+[ vx 
   vy ]`
 
 In computer graphics we can easily represent the above as a 2-element array of floating point numbers or a struct containing 2 floats. In 2D, we can say the direction of the vector is equal to `m = vy / vx`. This expresses the change in vertical position per unit of horizontal position x.
