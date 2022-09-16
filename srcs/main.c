@@ -101,14 +101,14 @@ int	main(void)
 
 	// Tutorial below...color
 
-	double	posX = 19;		// Starting Positions
+	double	posX = 22;		// Starting Positions
 	double	posY = 12;
 
-	double	dirX = 0;		// Direction Vector
-	double	dirY = -1;
+	double	dirX = -1;		// Direction Vector
+	double	dirY = 0;
 
-	double planeX = -2;		// Camera Plane
-	double planeY = 0;
+	double planeX = 0;		// Camera Plane
+	double planeY = 0.66;
 
 	double time = 0;		// time of current and previous frame
 	double old_time = 0;
@@ -227,8 +227,8 @@ int	main(void)
 				color = 0xFFFFFF00;	// yellow
 		}
 		// give x and y sides different brightness
-		// if (side == 1)
-		// 	color = color / 2;
+		if (side == 1)
+			color = color / 1.25;
 		//printf("color passed: %d\n", color);
 		printf("%d - %d\n", drawStart, drawEnd);
 		verLine(x, drawStart, drawEnd, color, img);
