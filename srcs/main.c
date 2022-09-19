@@ -10,9 +10,11 @@ int	main(int ac, char **av)
 	cub = init_cub();
 	if (!check_map(map_fd, &cub))
 	{
+    print_cub(&cub);
 		free_cub(&cub); // to think
 		return (1);
 	}
+  print_cub(&cub);
 	init_mlx(&cub);
 	//mlx_mouse_hook(cub.window, mouse_hook, &cub);
 	//mlx_key_hook(cub.window, key_hook, &cub);
