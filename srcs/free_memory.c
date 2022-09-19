@@ -34,12 +34,20 @@ void	free_split(char **split)
 	free(split);
 }
 
-void	free_parse_info(t_parse_info	*parse_info)
+void	free_parse_info(t_parse_info *parse_info)
 {
-	if (buff)
-		free(buff);
-	if (line_content)
-		free_split(line_content);
+	if (parse_info->buff)
+		free(parse_info->buff);
+	parse_info->buff = NULL;
+	if (parse_info->line_content)
+		free_split(parse_info->line_content);
+	parse_info->line_content = NULL;
+	if (parse_info->prefix)
+		free(parse_info->prefix);
+	parse_info->prefix = NULL;
+	if (parse_info->colors)
+		free_split(parse_info->colors);
+	parse_info->colors = NULL;
 }
 
 void	graceful_exit(t_cub *cub)

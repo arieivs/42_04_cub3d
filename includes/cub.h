@@ -55,26 +55,44 @@ typedef struct s_parse_info {
 	char	*buff;
 	int		ret;
 	int		line_nb;
+	char	**line_content;
+	char	*prefix;
+	int		prefix_len;
+	char	**colors;
 	int		is_floor_color_set;
 	int		is_ceil_color_set;
-	char	**line_content;
 }				t_parse_info;
 
-/* PARSER */
+/* DEAL with user INPUT */
 int		has_right_file_ext(char *str);
 int		check_args(int ac, char **av);
-t_cub	init_cub(void);
+
+/* INITIALIZERS */
+t_cub			init_cub(void);
+t_parse_info	init_parse_info(void);
+void			init_mlx(t_cub *cub);
+
+/* PARSER */
 int		check_map(int map_fd, t_cub	*cub);
-void	init_mlx(t_cub *cub); // should go elsewhere
+
+/* COLOR */
+int		get_trgb(int t, int r, int g, int b);
+
+/* FREE MEMORY */
+void	free_cub(t_cub *cub);
+void	free_split(char **split);
+void	free_parse_info(t_parse_info *parse_info);
+void	graceful_exit(t_cub *cub);
 
 /* GAMEOVER - Error management */
 void	error_message(t_error_code error_code);
 int		error_and_return(t_error_code error_code, int return_value);
 void	error_and_exit(t_error_code error_code, t_cub *cub);
+void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
+			t_parse_info *parse_info);
 void	*calloc_or_exit(size_t size, int count, t_cub *cub);
 
-/* SHUT DOWN - Freeing and exiting */
-void	free_cub(t_cub *cub);
-void	graceful_exit(t_cub *cub);
+/* UTILS */
+int		ft_split_len(char **split);
 
 #endif
