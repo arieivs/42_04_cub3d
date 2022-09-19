@@ -32,6 +32,9 @@ int	key_hook(int keycode, t_cub *cub)
 {
 	(void)cub;
 	printf("Hello from key_hook! You pressed keycode %d\n", keycode);
+	if (keycode == ESC_KEY)
+		graceful_exit(cub);
+	// else if (keycode == LEFT)
 	return (0);
 }
 
@@ -63,11 +66,5 @@ int	main(int ac, char **av)
 	raycast_loop(&cub);
 	mlx_key_hook(cub.window, key_hook, &cub);
 	mlx_loop(cub.mlx);
-
-	//mlx_mouse_hook(cub.window, mouse_hook, &cub);
-	//mlx_key_hook(cub.window, key_hook, &cub);
-	// RENDER CUB
-	//mlx_loop(cub.mlx);
-	graceful_exit(&cub); // only on key_hook - here it doesn't work
 	return (0);
 }

@@ -20,14 +20,15 @@ UNAME = $(shell uname)
 
 # MAC
 ifeq ($(UNAME), Darwin)
-OS			= Apple
+OS			= APPLE
 MLX_DIR		= ./minilibx_mms
 MLX_LIB		= -lmlx
 GRAPH_LIB	= 
 
+
 #LINUX
 else
-OS			= Linux
+OS			= LINUX
 MLX_DIR		= ./minilibx-linux
 MLX_LIB		= -lmlx_Linux $(MLX_DIR)/libmlx.a
 GRAPH_LIB	= -lXext -lX11 -lm -lz
@@ -36,7 +37,7 @@ GRAPH_LIB	= -lXext -lX11 -lm -lz
 #LIBRARIES	+= -L/usr/lib
 endif
 
-INCLUDES		= -Iincludes -Ilibft -I$(MLX_DIR)
+INCLUDES		= -Iincludes -Ilibft -I$(MLX_DIR) -D$(OS)
 LIBRARIES		= -L$(LIBFT_DIR) -lft -L$(MLX_DIR) $(MLX_LIB) $(GRAPH_LIB)
 
 CC				= gcc
