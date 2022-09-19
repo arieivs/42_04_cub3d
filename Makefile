@@ -13,8 +13,7 @@ OBJS			:= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 #OBJS_SUB_DIR	:= $(shell find $(SRCS_DIR) -mindepth 1 -type d)
 #OBJS_SUB_DIR	:= $(OBJS_SUB_DIR:$(SRCS_DIR)/%=$(OBJS_DIR)/%)
 
-# Once our libft is here
-#LIBFT_DIR		= 42_00_libft
+LIBFT_DIR		= libft
 
 # Get OS name
 UNAME = $(shell uname)
@@ -37,7 +36,7 @@ GRAPH_LIB	= -lXext -lX11 -lm -lz
 #LIBRARIES	+= -L/usr/lib
 endif
 
-INCLUDES		= -Iincludes -I$(MLX_DIR) #-Ilibft
+INCLUDES		= -Iincludes -Ilibft -I$(MLX_DIR)
 LIBRARIES		= -L$(LIBFT_DIR) -lft -L$(MLX_DIR) $(MLX_LIB) $(GRAPH_LIB)
 
 CC				= gcc
@@ -45,6 +44,7 @@ RM				= rm -f
 RM_DIR			= rm -rf
 MAKE			= make
 CFLAGS 			= -Wall -Wextra -Werror
+DFLAGS			= -fsanitize=address
 
 # COLORS
 GRAY			= \e[1;30m
@@ -65,7 +65,7 @@ $(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c
 
 $(NAME):	$(OBJS)
 			@printf "\n"
-#			@$(MAKE) bonus -C $(LIBFT_DIR)
+			$(MAKE) bonus -C $(LIBFT_DIR)
 			$(MAKE) -C $(MLX_DIR)
 ifeq ($(UNAME), Darwin)
 			cp $(MLX_DIR)/libmlx.dylib ./
@@ -73,7 +73,6 @@ endif
 			$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBRARIES) -o $(NAME)
 			@printf "	$(WHITE)[$(GREEN) Success. Compiled $(NAME).$(WHITE)]\
 			$(END) \n\n"
-# no special rules for linux? weird
 
 all:	$(NAME)
 
@@ -84,9 +83,9 @@ clean:
 			$(RM_DIR) $(OBJS_DIR)
 
 deep_clean:	clean
-#			@printf "\n	$(WHITE)[$(BLUE)"
-#			@printf "Cleaning libft objects$(END)]\n"
-#			$(MAKE) clean -C $(LIBFT_DIR)
+			@printf "\n	$(WHITE)[$(BLUE)"
+			@printf "Cleaning libft objects$(END)]\n"
+			$(MAKE) clean -C $(LIBFT_DIR)
 			@printf "\n	$(WHITE)[$(BLUE)"
 			@printf "Cleaning minilibx objects$(END)]\n"
 			$(MAKE) clean -C $(MLX_DIR)
@@ -97,11 +96,9 @@ fclean:		clean
 			$(RM) $(NAME)
 
 deep_fclean:	deep_clean
-#				@printf "\n	$(WHITE)[$(BLUE)"
-#				@printf "Cleaning libft library$(END)]\n"
-#				$(MAKE) fclean -C $(LIBFT_DIR)
 				@printf "\n	$(WHITE)[$(BLUE)"
-				@printf "Cleaning minilibx output files$(END)]\n"
+				@printf "Cleaning libft library$(END)]\n"
+				$(MAKE) fclean -C $(LIBFT_DIR)
 ifeq ($(UNAME), Darwin)
 				$(RM) libmlx.dylib
 endif
@@ -110,5 +107,8 @@ endif
 				$(RM) $(NAME)
 
 re:			fclean all
+
+debug:		CFLAGS += $(DFLAGS)
+debug:		all
 
 .PHONY:		all clean deep_clean fclean deep_fclean re
