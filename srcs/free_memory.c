@@ -48,6 +48,12 @@ void	free_parse_info(t_parse_info *parse_info)
 	if (parse_info->colors)
 		free_split(parse_info->colors);
 	parse_info->colors = NULL;
+  if (parse_info->colors_rgb)
+    free(parse_info->colors_rgb);
+  parse_info->colors_rgb = NULL;
+  if (parse_info->file_name)
+    free(parse_info->file_name);
+  parse_info->file_name = NULL;
 }
 
 void	graceful_exit(t_cub *cub)

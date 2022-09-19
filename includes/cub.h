@@ -59,12 +59,13 @@ typedef struct s_parse_info {
 	char	*prefix;
 	int		prefix_len;
 	char	**colors;
+  int   *colors_rgb;
 	int		is_floor_color_set;
 	int		is_ceil_color_set;
+  char	*file_name;
 }				t_parse_info;
 
 /* DEAL with user INPUT */
-int		has_right_file_ext(char *str);
 int		check_args(int ac, char **av);
 
 /* INITIALIZERS */
@@ -73,7 +74,7 @@ t_parse_info	init_parse_info(void);
 void			init_mlx(t_cub *cub);
 
 /* PARSER */
-int		check_map(int map_fd, t_cub	*cub);
+void	check_map(int map_fd, t_cub	*cub);
 
 /* COLOR */
 int		get_trgb(int t, int r, int g, int b);
@@ -96,10 +97,11 @@ void	error_message(t_error_code error_code);
 int		error_and_return(t_error_code error_code, int return_value);
 void	error_and_exit(t_error_code error_code, t_cub *cub);
 void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
-			t_parse_info *parse_info);
+			t_parse_info *parse_info, int map_fd);
 void	*calloc_or_exit(size_t size, int count, t_cub *cub);
 
 /* UTILS */
+int   has_right_file_ext(char *file_name, char *extension);
 int		ft_split_len(char **split);
 
 #endif
