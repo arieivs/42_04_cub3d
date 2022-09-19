@@ -44,7 +44,7 @@ CC				= gcc
 RM				= rm -f
 RM_DIR			= rm -rf
 MAKE			= make
-CFLAGS 			= -Wall -Wextra -Werror
+CFLAGS 			= -Wall -Wextra -Werror -O3
 DFLAGS			= -fsanitize=address
 
 # COLORS

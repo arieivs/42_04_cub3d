@@ -3,10 +3,10 @@
 void	initialize_map_pos(t_cub *cub)
 {
 	// Set variables
-	cub->pos->x = 22.0;
+	cub->pos->x = 12.0;
 	cub->pos->y = 12.0;
 
-	cub->dir->x = -1.0;
+	cub->dir->x = -0.5;
 	cub->dir->y = 0.0;
 
 	cub->proj_plane->x = 0;
@@ -40,7 +40,6 @@ void	set_delta_dist(t_cub *cub)
 		cub->delta_dist->y = 1e30;
 	else
 		cub->delta_dist->y = fabs(1.0 / cub->ray_dir->y);
-
 }
 
 void	initialize_raycasting(t_cub *cub, int x)
@@ -152,7 +151,7 @@ void	raycast_loop(t_cub *cub)
 		perform_dda(cub);
 		calculate_dist(cub);
 		color = draw_pixels(cub);
-		verLine(cub, x, color);
+		ver_line(cub, x, color);
 		free_raycasting_vars(cub);
 		x++;
 	}

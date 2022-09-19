@@ -24,6 +24,8 @@
 /* OS CHECK */
 # ifdef APPLE
 #  define ESC_KEY 53
+#  define UP_KEY 126 
+#  define DOWN_KEY 125
 #  define LEFT_KEY 123
 #  define RIGHT_KEY 124
 #  define W_KEY 13
@@ -32,6 +34,8 @@
 #  define D_KEY 2
 # else
 #  define ESC_KEY 65307
+#  define UP_KEY 65362
+#  define DOWN_KEY 65364
 #  define LEFT_KEY 65361
 #  define RIGHT_KEY 65363
 #  define W_KEY 119
@@ -80,9 +84,11 @@ typedef struct s_cub {
     t_pair_i        *step;
     int             hit;
     int             side;
+	/* drawing pixels */
     int             line_height;
     int             draw_start;
     int             draw_end;
+	/*  */
 }				t_cub;
 
 typedef enum e_error_code {
@@ -114,7 +120,7 @@ void	raycast_loop(t_cub *cub);
 
 /* DRAWING LINES TO THE SCREEN */
 void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
-void	verLine(t_cub *cub, int x, unsigned int color);
+void	ver_line(t_cub *cub, int x, unsigned int color);
 int	set_pixel_color(t_cub *cub);
 unsigned int	draw_pixels(t_cub *cub);
 

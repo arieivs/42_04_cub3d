@@ -8,20 +8,15 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	verLine(t_cub *cub, int x, unsigned int color)
+void	ver_line(t_cub *cub, int x, unsigned int color)
 {
 	for (int i = 0; i < HEIGHT; i++)
 	{
 		if (i >= cub->draw_start && i <= cub->draw_end)
-		{
 			my_mlx_pixel_put(cub, x, i, color);
-		}
 		else
-		{
 			my_mlx_pixel_put(cub, x, i, 0x00000000);
-		}
 	}
-	mlx_put_image_to_window(cub->mlx, cub->window, cub->img, 0, 0);
 }
 
 int	set_pixel_color(t_cub *cub)
