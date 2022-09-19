@@ -54,26 +54,96 @@ t_cub	init_cub(void)
 	return (cub);
 }
 
+int	textures_colors_not_set(t_cub *cub, t_parse_info *parse_info)
+{
+	return (cub->no_fd == 0 || cub->so_fd == 0 || cub->we_fd == 0 ||
+		cub->ea_fd == 0 || parse_info->is_floor_color_set == 0 ||
+		parse_info->is_ceil_color_set == 0);
+}
+
+/* Checks if line is empty or only filled by whitespaces */
+int	line_is_empty(char *line)
+{
+	int	i;
+
+	if (!line)
+		return (0); // will this give issues?
+	if (ft_strlen(line) == 0)
+		return (1);
+	i = 0;
+	while (line[i])
+	{
+		if (!(str[i] >= 9 && str[i] <= 13) && str[i] != 32)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+/* Checks if line has the information for a texture and color
+ * and if that information is valid (file exists, color is correct...)
+ * if yes, it stores it in the cub struct, else it returns 0
+ */
+int	texture_or_color_valid(t_cub *cub, t_parse_info	parse_info)
+{
+	char	*clean_prefix;
+	int		prefix_len;
+	int		i;
+
+	clean_prefix = ft_strtrim(parse_info->line_content[0], "\t\n\v\f\r ");
+	prefix_len = ft_strlen(clean_prefix);
+	// CHECK should I tream suffix as well?
+	i = 1;
+	while (line_is_empty(parse_info->line_content[i]))
+		i++;
+	if (ft_strncmp(clean_prefix, "NO", 2) && prefix_len == 2)
+	{
+		cub->no_fd = open()
+	}
+	free (clean_prefix);
+}
+
+t_parse_info	init_parse_info(void)
+{
+	t_parse_info	parse_info;
+
+	parse_info.buff	= NULL;
+	parse_info.ret = 0;
+	parse_info.line_nb = 1;
+	parse_info.is_floor_color_set = 0;
+	parse_info.is_ceil_color_set = 0;
+	parse_info.line_content = NULL;
+	return (parse_info);
+}
+
 int	check_map(int map_fd, t_cub	*cub)
 {
-	char	*buff;
-	int		ret;
-	int		line_nb;
+	t_parse_info	parse_info;
 
-	(void)cub;
-	line_nb = 1;
-	while ((ret = get_next_line(map_fd, &buff)) > 0)
+	parse_info = init_parse_info();
+	while (textures_colors_not_set(cub, &parse_info))
 	{
-		printf("%d-%d: %s\n", ret, line_nb++, buff);
-		free(buff);
+		parse_info.ret = get_next_line(map_fd, &parse_info.buff);
+		if (parse_info.ret <= 0)
+			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info);
+		if (line_is_empty(parse_info.buff))
+			continue ;
+		parse_info.line_content = ft_split(parse_info.buff);
+		if (!texture_or_color_valid(cub, &parse_info))
+			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info);
+		printf("%d-%d: %s\n", parse_info.ret, parse_info.line_nb, parse_info.buff);
+		parse_info.line_nb++;
+		free(parse_info.buff);
+		free_split(parse_info.line_content);
 	}
-	printf("%d-%d: %s\n", ret, line_nb++, buff);
-	if (ret == 0)
+	// bullshit below
+	printf("%d-%d: %s\n", parse_info.ret, parse_info.line_nb++, parse_info.buff);
+	if (parse_info.ret == 0)
 		printf("Reached EOF\n");
-	if (ret == -1)
+	if (parse_info.ret == -1)
 		printf("An Error occurred\n");
 	close(map_fd);
-	free(buff);
+	free(parse_info.buff);
 	return (0);
 }
 

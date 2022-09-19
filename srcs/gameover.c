@@ -33,7 +33,15 @@ void	error_and_exit(t_error_code error_code, t_cub *cub)
 	if (cub)
 		free_cub(cub);
 	error_message(error_code);
-	exit(errno);
+	exit(EXIT_FAILURE);
+}
+
+void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
+			t_parse_info *parse_info)
+{
+	if (parse_info)
+		free_parse_info(parse_info);
+	error_and_exit(error_code, cub);
 }
 
 void	*calloc_or_exit(size_t size, int count, t_cub *cub)

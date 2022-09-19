@@ -21,6 +21,27 @@ void	free_cub(t_cub *cub)
 		free(cub->proj_plane);
 }
 
+void	free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
+void	free_parse_info(t_parse_info	*parse_info)
+{
+	if (buff)
+		free(buff);
+	if (line_content)
+		free_split(line_content);
+}
+
 void	graceful_exit(t_cub *cub)
 {
 	if (cub)

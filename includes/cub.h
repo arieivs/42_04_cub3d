@@ -51,6 +51,15 @@ typedef enum e_error_code {
 	MAP_INCORRECT
 }			t_error_code;
 
+typedef struct s_parse_info {
+	char	*buff;
+	int		ret;
+	int		line_nb;
+	int		is_floor_color_set;
+	int		is_ceil_color_set;
+	char	**line_content;
+}				t_parse_info;
+
 /* PARSER */
 int		has_right_file_ext(char *str);
 int		check_args(int ac, char **av);
