@@ -2,8 +2,11 @@
 
 int	textures_colors_not_set(t_cub *cub, t_parse_info *parse_info)
 {
-	return (cub->no_fd == 0 || cub->so_fd == 0 || cub->we_fd == 0 ||
+	/*return (cub->no_fd == 0 || cub->so_fd == 0 || cub->we_fd == 0 ||
 		cub->ea_fd == 0 || parse_info->is_floor_color_set == 0 ||
+		parse_info->is_ceil_color_set == 0);*/
+	(void)cub;
+	return (parse_info->is_floor_color_set == 0 ||
 		parse_info->is_ceil_color_set == 0);
 }
 
@@ -73,7 +76,7 @@ int	texture_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 	return (1);
 }
 
-/* 
+/*
  * Checks if the texture or color information is valid and stores it
  * - after prefix there might be white spaces -> accomodates for that
  * - if after the prefix there is no more information, it's not valid
@@ -85,7 +88,7 @@ int	texture_valid(t_cub *cub, t_parse_info *parse_info, char *content)
  */
 int	texture_or_color_valid(t_cub *cub, t_parse_info	*parse_info)
 {
-	int		i;
+	int	i;
 
 	i = 1;
 	while (line_is_empty(parse_info->line_content[i])) // check if needed - tabs!
@@ -95,7 +98,7 @@ int	texture_or_color_valid(t_cub *cub, t_parse_info	*parse_info)
 	parse_info->prefix = ft_strtrim(parse_info->line_content[0], "\t\n\v\f\r ");
 	parse_info->prefix_len = ft_strlen(parse_info->prefix);
 	// CHECK should I tream suffix as well?
-	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 ||
+  	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 ||
 			ft_strncmp(parse_info->prefix, "C", 1) == 0) && parse_info->prefix_len == 1)
 		return (color_valid(cub, parse_info, parse_info->line_content[i]));
 	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 ||
@@ -121,8 +124,8 @@ int	check_map(int map_fd, t_cub	*cub)
 		parse_info.line_content = ft_split(parse_info.buff, ' ');
 		if (!texture_or_color_valid(cub, &parse_info))
 			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info);
-		printf("%d-%d: %s\n", parse_info.ret, parse_info.line_nb++, parse_info.buff);
 		parse_info.line_nb++;
+		printf("%d-%d: %s\n", parse_info.ret, parse_info.line_nb, parse_info.buff);
 		free_parse_info(&parse_info);
 	}
 	// TODO 
