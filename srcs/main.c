@@ -300,9 +300,11 @@ unsigned int	draw_pixels(t_cub *cub)
 	cub->draw_start = -cub->line_height / 2 + screenHeight / 2;
 	if (cub->draw_start < 0)
 		cub->draw_start = 0;
+	printf("draw_start is %d\n", cub->draw_start);
 	cub->draw_end = cub->line_height / 2 + screenHeight / 2;
 	if (cub->draw_end >= screenHeight)
 		cub->draw_end = screenHeight - 1;
+	printf("draw_end is %d\n", cub->draw_end);
 	//printf("start %d - end %d\n", cub->draw_start, cub->draw_end);
 	color = set_pixel_color(cub);
 	if (cub->side == 1)
