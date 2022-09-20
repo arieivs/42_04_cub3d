@@ -59,10 +59,10 @@ typedef struct s_parse_info {
 	char	*prefix;
 	int		prefix_len;
 	char	**colors;
-  int   *colors_rgb;
+	int		*colors_rgb;
 	int		is_floor_color_set;
 	int		is_ceil_color_set;
-  char	*file_name;
+	char	*file_name;
 }				t_parse_info;
 
 /* DEAL with user INPUT */
@@ -78,10 +78,10 @@ void	check_map(int map_fd, t_cub	*cub);
 
 /* COLOR */
 int		get_trgb(int t, int r, int g, int b);
-int   get_t(int trgb);
-int   get_r(int trgb);
-int   get_g(int trgb);
-int   get_b(int trgb);
+int		get_t(int trgb);
+int		get_r(int trgb);
+int		get_g(int trgb);
+int		get_b(int trgb);
 
 /* DEBUG */
 void  print_cub(t_cub *cub);
@@ -101,7 +101,7 @@ void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
 void	*calloc_or_exit(size_t size, int count, t_cub *cub);
 
 /* UTILS */
-int   has_right_file_ext(char *file_name, char *extension);
+int		has_right_file_ext(char *file_name, char *extension);
 int		ft_split_len(char **split);
 
 #endif

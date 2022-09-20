@@ -40,7 +40,7 @@ void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
 {
 	if (parse_info)
 		free_parse_info(parse_info);
-  close(map_fd); // protect close?
+	close(map_fd); // protect close?
 	error_and_exit(error_code, cub);
 }
 
