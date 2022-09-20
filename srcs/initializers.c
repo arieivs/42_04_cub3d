@@ -42,6 +42,8 @@ t_parse_info	init_parse_info(void)
 	parse_info.is_floor_color_set = 0;
 	parse_info.is_ceil_color_set = 0;
 	parse_info.file_name = NULL;
+	parse_info.line_nb_map_start = 0;
+	parse_info.max_map_width = 0;
 	return (parse_info);
 }
 

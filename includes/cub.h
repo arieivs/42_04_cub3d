@@ -63,6 +63,8 @@ typedef struct s_parse_info {
 	int		is_floor_color_set;
 	int		is_ceil_color_set;
 	char	*file_name;
+	int		line_nb_map_start;
+	int		max_map_width;
 }				t_parse_info;
 
 /* DEAL with user INPUT */
@@ -74,7 +76,7 @@ t_parse_info	init_parse_info(void);
 void			init_mlx(t_cub *cub);
 
 /* PARSER */
-void	check_map(int map_fd, t_cub	*cub);
+void	check_map(int map_fd, char *map_name, t_cub	*cub);
 
 /* COLOR */
 int		get_trgb(int t, int r, int g, int b);

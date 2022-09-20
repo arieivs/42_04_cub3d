@@ -30,6 +30,8 @@ int	line_is_empty(char *line)
  * Color validation
  * - checks if there's 3 values from 0 to 255
  * - makes sure this color hadn't been defined already
+ * - not ok: ,255,,0,4,
+ * - ok: 255, +160, 1
  */
 int	color_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 {
@@ -63,7 +65,7 @@ int	color_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 	return (1);
 	// doesn't care about:
 	// +160
-	// ,255,5,5,, (commas around)
+	// ,255,5,,5, (commas around)
 	// 3, 6 , 6 (spaces)
 }
 
@@ -120,7 +122,7 @@ int	texture_or_color_valid(t_cub *cub, t_parse_info	*parse_info)
 		return (0);
 	parse_info->prefix = ft_strtrim(parse_info->line_content[0], "\t\n\v\f\r ");
 	parse_info->prefix_len = ft_strlen(parse_info->prefix);
-  	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 ||
+	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 ||
 			ft_strncmp(parse_info->prefix, "C", 1) == 0) && parse_info->prefix_len == 1)
 		return (color_valid(cub, parse_info, parse_info->line_content[i]));
 	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 ||
@@ -132,9 +134,10 @@ int	texture_or_color_valid(t_cub *cub, t_parse_info	*parse_info)
 	// if there's extra info I don't track that
 }
 
-void	check_map(int map_fd, t_cub	*cub)
+void	check_map(int map_fd, char *map_name, t_cub	*cub)
 {
 	t_parse_info	parse_info;
+	int				i;
 
 	parse_info = init_parse_info();
 	while (textures_colors_not_set(cub, &parse_info))
@@ -151,17 +154,33 @@ void	check_map(int map_fd, t_cub	*cub)
 		printf("%d-%d: %s\n", parse_info.ret, parse_info.line_nb, parse_info.buff);
 		free_parse_info(&parse_info);
 	}
-	// TODO 
-	// validate map
-	// store map
-	// bullshit below
-	/*printf("%d-%d: %s\n", parse_info.ret, parse_info.line_nb++, parse_info.buff);
-	if (parse_info.ret == 0)
-		printf("Reached EOF\n");
-	if (parse_info.ret == -1)
-		printf("An Error occurred\n");
+	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0 &&
+		line_is_empty(parse_info.buff))
+		parse_info.line_nb++;
+	if (parse_info.ret <= 0) // think if really needed
+		error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
+	parse_info.line_nb_map_start = parse_info.line_nb;
+	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0)
+	{
+		// TODO replace tabs with 4 spaces
+		if (ft_strlen(buff) > parse_info.max_map_width)
+			parse_info.max_map_width = ft_strlen(buff);
+		parse_info.line_nb++;
+	}
 	close(map_fd);
-	free(parse_info.buff);*/
+	map_fd = open(map_name, O_RDONLY);
+	cub->map = (int **)ft_calloc(sizeof(int *), parse_info.line_nb - parse_info.line_nb_map_start);
+	i = 0;
+	while (i < parse_info.line_nb - parse_info.line_nb_map_start)
+	{
+		cub->map[i] = (int *)ft_calloc(sizeof(int), parse_info.max_map_width);
+		i++;
+	}
+	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0)
+	{
+		// store line map
+	}
+	// TODO validate map
 	close(map_fd);
 	free_parse_info(&parse_info);
 }
