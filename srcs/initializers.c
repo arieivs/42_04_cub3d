@@ -15,6 +15,8 @@ t_cub	init_cub(void)
 	cub.floor_color = 0;
 	cub.ceil_color = 0;
 	cub.map = NULL;
+	cub.map_height = 0;
+	cub.map_width = 0;
 	cub.pos = (t_pair *)calloc_or_exit(sizeof(t_pair), 1, &cub);
 	cub.pos->x = 0.0;
 	cub.pos->y = 0.0;
@@ -44,6 +46,7 @@ t_parse_info	init_parse_info(void)
 	parse_info.file_name = NULL;
 	parse_info.line_nb_map_start = 0;
 	parse_info.max_map_width = 0;
+	parse_info.is_player_set = 0;
 	return (parse_info);
 }
 

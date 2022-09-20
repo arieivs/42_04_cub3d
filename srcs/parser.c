@@ -134,6 +134,36 @@ int	texture_or_color_valid(t_cub *cub, t_parse_info	*parse_info)
 	// if there's extra info I don't track that
 }
 
+/*
+ * Map line validation
+ * - checks for invalid characters
+ * - checks for multiplayers
+ * - stores information for that map line and position/direction of player
+ */
+void	map_line_valid(int	*map_line, char *line)
+{
+	int	i;
+	int	line_len;
+
+	i = 0;
+	line_len = ft_strlen(line);
+	while (i < line_len)
+	{
+		if (line[i] == ' ')
+			map_line[i] = OUT;
+		// If line[i] == tab I need to replace it with 4 spaces...
+		else if (line[i] == '0' || line[i] == '1')
+			map_line = (int)(line[i] - '0');
+		// if player - should I set pos and dir already?
+		i++;
+	}
+	while (i < map_width)
+	{
+		map_line[i] = OUT;
+		i++;
+	}
+}
+
 void	check_map(int map_fd, char *map_name, t_cub	*cub)
 {
 	t_parse_info	parse_info;
@@ -169,18 +199,23 @@ void	check_map(int map_fd, char *map_name, t_cub	*cub)
 	}
 	close(map_fd);
 	map_fd = open(map_name, O_RDONLY);
-	cub->map = (int **)ft_calloc(sizeof(int *), parse_info.line_nb - parse_info.line_nb_map_start);
 	i = 0;
-	while (i < parse_info.line_nb - parse_info.line_nb_map_start)
-	{
-		cub->map[i] = (int *)ft_calloc(sizeof(int), parse_info.max_map_width);
+	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0 &&
+		i < parse_info.line_nb_map_start)
 		i++;
-	}
+	cub->map_height = parse_info.line_nb - parse_info.line_nb_map_start;
+	cub->map_width = parse_info.max_map_width;
+	cub->map = (int **)ft_calloc(sizeof(int *), cub->map_height);
+	i = 0;
 	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0)
 	{
-		// store line map
+		// store line map - needs to be &cub->map[i] ?
+		cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
+		if (!map_line_valid(cub->map[i], cub, &parse_info))
+			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
+		i++;
 	}
-	// TODO validate map
+	// TODO validate map - check if closed and if player is set
 	close(map_fd);
 	free_parse_info(&parse_info);
 }

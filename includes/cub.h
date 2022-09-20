@@ -12,9 +12,6 @@
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define IN 0
-# define WALL 1
-# define OUT 2
 
 typedef struct s_pair {
 	double	x;
@@ -38,18 +35,12 @@ typedef struct s_cub {
 	int		floor_color;
 	int		ceil_color;
 	int		**map;
+	int		map_height;
+	int		map_width;
 	t_pair	*pos;
 	t_pair	*dir;
 	t_pair	*proj_plane;
 }				t_cub;
-
-typedef enum e_error_code {
-	ERRNO = 1,
-	WRONG_ARGC,
-	WRONG_FILE_EXT,
-	FILE_INEXISTENT,
-	MAP_INCORRECT
-}			t_error_code;
 
 typedef struct s_parse_info {
 	char	*buff;
@@ -65,7 +56,26 @@ typedef struct s_parse_info {
 	char	*file_name;
 	int		line_nb_map_start;
 	int		max_map_width;
+	int		is_player_set;
 }				t_parse_info;
+
+typedef enum e_map_code {
+	IN = 0,
+	WALL,
+	OUT,
+	PLAYER_N,
+	PLAYER_S,
+	PLAYER_W,
+	PLAYER_E
+}			t_map_code;
+
+typedef enum e_error_code {
+	ERRNO = 1,
+	WRONG_ARGC,
+	WRONG_FILE_EXT,
+	FILE_INEXISTENT,
+	MAP_INCORRECT
+}			t_error_code;
 
 /* DEAL with user INPUT */
 int		check_args(int ac, char **av);
