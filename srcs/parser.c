@@ -1,4 +1,5 @@
 #include "cub.h"
+#include <string.h>
 
 int	textures_colors_not_set(t_cub *cub, t_parse_info *parse_info)
 {
@@ -140,28 +141,41 @@ int	texture_or_color_valid(t_cub *cub, t_parse_info	*parse_info)
  * - checks for multiplayers
  * - stores information for that map line and position/direction of player
  */
-void	map_line_valid(int	*map_line, char *line)
+int	map_line_valid(int	*map_line, t_cub *cub, t_parse_info *parse_info)
 {
 	int	i;
 	int	line_len;
 
 	i = 0;
-	line_len = ft_strlen(line);
+	// TODO replace line tabs with spaces
+	line_len = ft_strlen(parse_info->buff);
+	if (line_is_empty(parse_info->buff))
+		return (0);
 	while (i < line_len)
 	{
-		if (line[i] == ' ')
+		if (parse_info->buff[i] == ' ')
 			map_line[i] = OUT;
-		// If line[i] == tab I need to replace it with 4 spaces...
-		else if (line[i] == '0' || line[i] == '1')
-			map_line = (int)(line[i] - '0');
-		// if player - should I set pos and dir already?
+		else if (parse_info->buff[i] == '0' || parse_info->buff[i] == '1')
+			map_line[i] = (int)(parse_info->buff[i] - '0');
+		else if (parse_info->buff[i] == 'N' || parse_info->buff[i] == 'S' ||
+			parse_info->buff[i] == 'W' || parse_info->buff[i] == 'E')
+		{
+			if (parse_info->is_player_set)
+				return(0);
+			map_line[i] = PLAYER;
+			parse_info->is_player_set = 1;
+			// TODO define pos and dir
+		}
+		else
+			return (0);
 		i++;
 	}
-	while (i < map_width)
+	while (i < cub->map_width)
 	{
 		map_line[i] = OUT;
 		i++;
 	}
+	return (1);
 }
 
 void	check_map(int map_fd, char *map_name, t_cub	*cub)
@@ -176,35 +190,61 @@ void	check_map(int map_fd, char *map_name, t_cub	*cub)
 		if (parse_info.ret <= 0)
 			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
 		if (line_is_empty(parse_info.buff))
+		{
+			parse_info.line_nb++;
 			continue ;
+		}
 		parse_info.line_content = ft_split(parse_info.buff, ' ');
 		if (!texture_or_color_valid(cub, &parse_info))
 			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
-		parse_info.line_nb++;
 		printf("%d-%d: %s\n", parse_info.ret, parse_info.line_nb, parse_info.buff);
+		parse_info.line_nb++;
 		free_parse_info(&parse_info);
 	}
 	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0 &&
 		line_is_empty(parse_info.buff))
+	{
+		printf("Empty line %d\n", parse_info.line_nb);
 		parse_info.line_nb++;
+		free(parse_info.buff);
+	}
 	if (parse_info.ret <= 0) // think if really needed
 		error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
 	parse_info.line_nb_map_start = parse_info.line_nb;
-	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0)
+	while (parse_info.ret > 0)
 	{
+		printf("map line %d: %s\n", parse_info.line_nb, parse_info.buff);
 		// TODO replace tabs with 4 spaces
-		if (ft_strlen(buff) > parse_info.max_map_width)
-			parse_info.max_map_width = ft_strlen(buff);
+		if (ft_strlen(parse_info.buff) > parse_info.max_map_width)
+			parse_info.max_map_width = ft_strlen(parse_info.buff);
+		printf("max map width %lu\n", parse_info.max_map_width);
+		free(parse_info.buff);
+		parse_info.ret = get_next_line(map_fd, &parse_info.buff);
+		parse_info.line_nb++;
+	}
+	if (parse_info.ret == 0) // should just give error if -1 instead?
+	{
+		printf("map line %d: %s\n", parse_info.line_nb, parse_info.buff);
+		// TODO replace tabs with 4 spaces
+		if (ft_strlen(parse_info.buff) > parse_info.max_map_width)
+			parse_info.max_map_width = ft_strlen(parse_info.buff);
+		printf("max map width %lu\n", parse_info.max_map_width);
+		free(parse_info.buff);
 		parse_info.line_nb++;
 	}
 	close(map_fd);
 	map_fd = open(map_name, O_RDONLY);
-	i = 0;
-	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0 &&
-		i < parse_info.line_nb_map_start)
+	i = 1;
+	while (i < parse_info.line_nb_map_start &&
+		(parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0)
+	{
+		printf("we're at %d-%s-\n", i, parse_info.buff);
 		i++;
+		free(parse_info.buff);
+	}
 	cub->map_height = parse_info.line_nb - parse_info.line_nb_map_start;
 	cub->map_width = parse_info.max_map_width;
+	printf("map starts at %d ends at %d height %d width %d\n", parse_info.line_nb_map_start, parse_info.line_nb, cub->map_height, cub->map_width);
 	cub->map = (int **)ft_calloc(sizeof(int *), cub->map_height);
 	i = 0;
 	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0)
@@ -213,7 +253,18 @@ void	check_map(int map_fd, char *map_name, t_cub	*cub)
 		cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
 		if (!map_line_valid(cub->map[i], cub, &parse_info))
 			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
+		printf("just checked %d-%s\n", i, parse_info.buff);
 		i++;
+		free(parse_info.buff);
+	}
+	if (parse_info.ret == 0)// should just give error if -1 instead?
+	{
+		cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
+		if (!map_line_valid(cub->map[i], cub, &parse_info))
+			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
+		printf("just checked %d-%s\n", i, parse_info.buff);
+		free(parse_info.buff); // or remove these two lines
+		parse_info.buff = NULL; // and leave it for free_parse_info
 	}
 	// TODO validate map - check if closed and if player is set
 	close(map_fd);

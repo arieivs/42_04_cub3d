@@ -55,7 +55,7 @@ typedef struct s_parse_info {
 	int		is_ceil_color_set;
 	char	*file_name;
 	int		line_nb_map_start;
-	int		max_map_width;
+	size_t	max_map_width;
 	int		is_player_set;
 }				t_parse_info;
 
@@ -63,10 +63,7 @@ typedef enum e_map_code {
 	IN = 0,
 	WALL,
 	OUT,
-	PLAYER_N,
-	PLAYER_S,
-	PLAYER_W,
-	PLAYER_E
+	PLAYER
 }			t_map_code;
 
 typedef enum e_error_code {
