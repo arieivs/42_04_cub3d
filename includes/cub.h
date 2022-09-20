@@ -8,6 +8,7 @@
 # include <errno.h>
 # include <string.h>
 # include <math.h>
+# include <sys/time.h>
 # include "mlx.h"
 # include "libft.h"
 
@@ -84,6 +85,9 @@ typedef struct s_cub {
     t_pair_i        *step;
     int             hit;
     int             side;
+	/* fps */
+	unsigned long long			time;
+	unsigned long long			old_time;
 	/* drawing pixels */
     int             line_height;
     int             draw_start;
@@ -123,6 +127,10 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
 void	ver_line(t_cub *cub, int x, unsigned int color);
 int	set_pixel_color(t_cub *cub);
 unsigned int	draw_pixels(t_cub *cub);
+
+/* FPS */
+unsigned long long	get_time_micros(void);
+void				display_fps(t_cub *cub);
 
 /* GAMEOVER - Error management */
 void	error_message(t_error_code error_code);

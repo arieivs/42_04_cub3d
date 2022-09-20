@@ -114,14 +114,25 @@ int	key_hook(int keycode, t_cub *cub)
 		move_right(cub, edge, move_speed);
 	raycast_loop(cub);
 	mlx_put_image_to_window(cub->mlx, cub->window, cub->img, 0, 0);
-
+	// display_fps(cub);
 	return (0);
 }
 
-// int	close(int keycode, t_cub *cub)
-// {
-// 	mlx_destroy_window(cub->mlx, )
-// }
+void	display_fps(t_cub *cub)
+{
+	char				*time_str;
+	unsigned long long	frame_time;
+	double				fps;
+
+	cub->old_time = cub->time;
+	cub->time = get_time_micros();
+	frame_time = (cub->time - cub->old_time) / 1000; // microsec -> seconds
+	printf("frame_time is %llu\n", frame_time);
+	fps = 1.0 / frame_time;
+	printf("fps is %lf\n", fps);
+	//time_str = ft_itoa(fps);
+	mlx_string_put(cub->mlx, cub->window, 25, 25, 0x00FFFFFF, time_str);
+}
 
 int	main(int ac, char **av)
 {
@@ -145,7 +156,9 @@ int	main(int ac, char **av)
 	initialize_map_pos(&cub);
 	raycast_loop(&cub);
 	mlx_put_image_to_window(cub.mlx, cub.window, cub.img, 0, 0);
+	display_fps(&cub);
 	mlx_hook(cub.window, 2, 1L<<0, key_hook, &cub);
+	//mlx_loop_hook();
 	mlx_loop(cub.mlx);
 	return (0);
 }

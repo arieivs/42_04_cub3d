@@ -12,9 +12,9 @@ void	initialize_map_pos(t_cub *cub)
 	cub->proj_plane->x = 0;
 	cub->proj_plane->y = 0.66;
 
-	// Option: add curr time and prev time frames here
-	// double time = 0;
-	// double old_time = 0;
+	// timers for FPS calculation
+	cub->time = 0;
+	cub->old_time = 0;
 }
 
 void	set_ray_dir(t_cub *cub)
