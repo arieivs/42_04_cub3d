@@ -111,6 +111,8 @@ void	*calloc_or_exit(size_t size, int count, t_cub *cub);
 
 /* UTILS */
 int		has_right_file_ext(char *file_name, char *extension);
+int		count_appearances(char *str, char c);
 int		ft_split_len(char **split);
+int		is_number(char *str);
 
 #endif

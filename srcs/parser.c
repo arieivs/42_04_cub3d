@@ -14,7 +14,7 @@ int	line_is_empty(char *line)
 	int	i;
 
 	if (!line)
-		return (0); // will this give issues?
+		return (0);
 	if (ft_strlen(line) == 0)
 		return (1);
 	i = 0;
@@ -32,12 +32,15 @@ int	line_is_empty(char *line)
  * - checks if there's 3 values from 0 to 255
  * - makes sure this color hadn't been defined already
  * - not ok: ,255,,0,4,
- * - ok: 255, +160, 1
+ * - not ok: spaces in the middle (since we're splitting over spaces first)
+ * - ok: 255,+160,1
  */
 int	color_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 {
 	int		i;
 
+	if (count_appearances(content, ',') != 2)
+		return (0);
 	parse_info->colors = ft_split(content, ',');
 	if (ft_split_len(parse_info->colors) != 3)
 		return (0);
@@ -45,6 +48,8 @@ int	color_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 	parse_info->colors_rgb = (int *)calloc_or_exit(sizeof(int), 3, cub);
 	while (i < 3)
 	{
+		if (!is_number(parse_info->colors[i]))
+			return (0);
 		parse_info->colors_rgb[i] = ft_atoi(parse_info->colors[i]);
 		if (parse_info->colors_rgb[i] < 0 || parse_info->colors_rgb[i] > 255)
 			return (0);
@@ -64,10 +69,6 @@ int	color_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 		parse_info->colors_rgb[1], parse_info->colors_rgb[2]);
 	parse_info->is_ceil_color_set = 1;
 	return (1);
-	// doesn't care about:
-	// +160
-	// ,255,5,,5, (commas around)
-	// 3, 6 , 6 (spaces)
 }
 
 /*
