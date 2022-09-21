@@ -48,6 +48,9 @@ void	free_parse_info(t_parse_info *parse_info)
 	if (parse_info->buff)
 		free(parse_info->buff);
 	parse_info->buff = NULL;
+	if (parse_info->line_trimmed)
+		free(parse_info->line_trimmed);
+	parse_info->line_trimmed = NULL;
 	if (parse_info->line_content)
 		free_split(parse_info->line_content);
 	parse_info->line_content = NULL;

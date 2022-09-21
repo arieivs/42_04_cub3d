@@ -27,6 +27,23 @@ int	line_is_empty(char *line)
 	return (1);
 }
 
+int	color_values_valid(t_parse_info *parse_info)
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		if (!is_number(parse_info->colors[i]))
+			return (0);
+		parse_info->colors_rgb[i] = ft_atoi(parse_info->colors[i]);
+		if (parse_info->colors_rgb[i] < 0 || parse_info->colors_rgb[i] > 255)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 /*
  * Color validation
  * - checks if there's 3 values from 0 to 255
@@ -37,24 +54,14 @@ int	line_is_empty(char *line)
  */
 int	color_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 {
-	int		i;
-
 	if (count_appearances(content, ',') != 2)
 		return (0);
 	parse_info->colors = ft_split(content, ',');
 	if (ft_split_len(parse_info->colors) != 3)
 		return (0);
-	i = 0;
 	parse_info->colors_rgb = (int *)calloc_or_exit(sizeof(int), 3, cub);
-	while (i < 3)
-	{
-		if (!is_number(parse_info->colors[i]))
-			return (0);
-		parse_info->colors_rgb[i] = ft_atoi(parse_info->colors[i]);
-		if (parse_info->colors_rgb[i] < 0 || parse_info->colors_rgb[i] > 255)
-			return (0);
-		i++;
-	}
+	if (!color_values_valid(parse_info))
+		return (0);
 	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 && parse_info->is_floor_color_set) ||
 		(ft_strncmp(parse_info->prefix, "C", 1) == 0 && parse_info->is_ceil_color_set))
 		return (0);
@@ -115,24 +122,71 @@ int	texture_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 int	texture_or_color_valid(t_cub *cub, t_parse_info	*parse_info)
 {
 	int	i;
+	int	is_valid;
 
 	i = 1;
+	is_valid = 0;
 	while (line_is_empty(parse_info->line_content[i]))
 		i++;
 	if (!parse_info->line_content[i])
 		return (0);
-	parse_info->prefix = ft_strtrim(parse_info->line_content[0], "\t\n\v\f\r ");
+	parse_info->prefix = ft_strtrim(parse_info->line_content[0], "\t\v\f\r ");
 	parse_info->prefix_len = ft_strlen(parse_info->prefix);
 	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 ||
 			ft_strncmp(parse_info->prefix, "C", 1) == 0) && parse_info->prefix_len == 1)
-		return (color_valid(cub, parse_info, parse_info->line_content[i]));
+		is_valid = color_valid(cub, parse_info, parse_info->line_content[i]);
 	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 ||
 			ft_strncmp(parse_info->prefix, "SO", 2) == 0 ||
 			ft_strncmp(parse_info->prefix, "WE", 2) == 0 ||
 			ft_strncmp(parse_info->prefix, "EA", 2) == 0) && parse_info->prefix_len == 2)
-		return (texture_valid(cub, parse_info, parse_info->line_content[i]));
-	return (0);
-	// if there's extra info I don't track that
+		is_valid = texture_valid(cub, parse_info, parse_info->line_content[i]);
+	if (i + 1 != ft_split_len(parse_info->line_content))
+		return (0);
+	return (is_valid);
+}
+
+char	*replace_tab_with_spaces(char *line, t_cub *cub)
+{
+	int		tab_nb;
+	char	*repl;
+	int		i;
+	int		j;
+
+	tab_nb = count_appearances(line, '\t');
+	if (!tab_nb)
+		return (line);
+	repl = calloc_or_exit(sizeof(char), ft_strlen(line) + tab_nb * 3 + 1, cub);
+	i = 0;
+	j = 0;
+	while (line[i])
+	{
+		if (line[i] == '\t' && line[i++])
+		{
+			repl[j++] = ' ';
+			repl[j++] = ' ';
+			repl[j++] = ' ';
+			repl[j++] = ' ';
+		}
+		else
+			repl[j++] = line[i++];
+	}
+	free(line);
+	return (repl);
+}
+
+void	set_player(t_cub *cub, char player, int x, int y)
+{
+	cub->map[y][x] = PLAYER;
+	cub->pos->x = (double)x;
+	cub->pos->y = (double)y;
+	if (player == 'N')
+		cub->dir->y = -1.0;
+	else if (player == 'S')
+		cub->dir->y = 1.0;
+	else if (player == 'W')
+		cub->dir->x = -1.0;
+	else if (player == 'E')
+		cub->dir->x = 1.0;
 }
 
 /*
@@ -141,40 +195,34 @@ int	texture_or_color_valid(t_cub *cub, t_parse_info	*parse_info)
  * - checks for multiplayers
  * - stores information for that map line and position/direction of player
  */
-int	map_line_valid(int	*map_line, t_cub *cub, t_parse_info *parse_info)
+int	map_line_valid(t_cub *cub, t_parse_info *parse_info, int y)
 {
 	int	i;
-	int	line_len;
 
 	i = 0;
-	// TODO replace line tabs with spaces
-	line_len = ft_strlen(parse_info->buff);
+	parse_info->buff = replace_tab_with_spaces(parse_info->buff, cub);
 	if (line_is_empty(parse_info->buff))
 		return (0);
-	while (i < line_len)
+	while ((size_t)i < ft_strlen(parse_info->buff))
 	{
 		if (parse_info->buff[i] == ' ')
-			map_line[i] = OUT;
+			cub->map[y][i] = OUT;
 		else if (parse_info->buff[i] == '0' || parse_info->buff[i] == '1')
-			map_line[i] = (int)(parse_info->buff[i] - '0');
+			cub->map[y][i] = (int)(parse_info->buff[i] - '0');
 		else if (parse_info->buff[i] == 'N' || parse_info->buff[i] == 'S' ||
 			parse_info->buff[i] == 'W' || parse_info->buff[i] == 'E')
 		{
 			if (parse_info->is_player_set)
 				return(0);
-			map_line[i] = PLAYER;
 			parse_info->is_player_set = 1;
-			// TODO define pos and dir
+			set_player(cub, parse_info->buff[i], i, y);
 		}
 		else
 			return (0);
 		i++;
 	}
 	while (i < cub->map_width)
-	{
-		map_line[i] = OUT;
-		i++;
-	}
+		cub->map[y][i++] = OUT;
 	return (1);
 }
 
@@ -195,7 +243,8 @@ void	check_map(int map_fd, char *map_name, t_cub	*cub)
 			free(parse_info.buff);
 			continue ;
 		}
-		parse_info.line_content = ft_split(parse_info.buff, ' ');
+		parse_info.line_trimmed = ft_strtrim(parse_info.buff, "\t\v\f\r ");
+		parse_info.line_content = ft_split(parse_info.line_trimmed, ' ');
 		if (!texture_or_color_valid(cub, &parse_info))
 			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
 		printf("%d-%d: %s\n", parse_info.ret, parse_info.line_nb, parse_info.buff);
@@ -215,7 +264,7 @@ void	check_map(int map_fd, char *map_name, t_cub	*cub)
 	while (parse_info.ret > 0)
 	{
 		printf("map line %d: %s\n", parse_info.line_nb, parse_info.buff);
-		// TODO replace tabs with 4 spaces
+		parse_info.buff = replace_tab_with_spaces(parse_info.buff, cub);
 		if (ft_strlen(parse_info.buff) > parse_info.max_map_width)
 			parse_info.max_map_width = ft_strlen(parse_info.buff);
 		printf("max map width %lu\n", parse_info.max_map_width);
@@ -223,16 +272,15 @@ void	check_map(int map_fd, char *map_name, t_cub	*cub)
 		parse_info.ret = get_next_line(map_fd, &parse_info.buff);
 		parse_info.line_nb++;
 	}
-	if (parse_info.ret == 0) // should just give error if -1 instead?
-	{
-		printf("map line %d: %s\n", parse_info.line_nb, parse_info.buff);
-		// TODO replace tabs with 4 spaces
-		if (ft_strlen(parse_info.buff) > parse_info.max_map_width)
-			parse_info.max_map_width = ft_strlen(parse_info.buff);
-		printf("max map width %lu\n", parse_info.max_map_width);
-		free(parse_info.buff);
-		parse_info.line_nb++;
-	}
+	if (parse_info.ret == -1)
+		error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
+	printf("map line %d: %s\n", parse_info.line_nb, parse_info.buff);
+	parse_info.buff = replace_tab_with_spaces(parse_info.buff, cub);
+	if (ft_strlen(parse_info.buff) > parse_info.max_map_width)
+		parse_info.max_map_width = ft_strlen(parse_info.buff);
+	printf("max map width %lu\n", parse_info.max_map_width);
+	free(parse_info.buff);
+	parse_info.line_nb++;
 	close(map_fd);
 	map_fd = open(map_name, O_RDONLY);
 	i = 1;
@@ -250,24 +298,24 @@ void	check_map(int map_fd, char *map_name, t_cub	*cub)
 	i = 0;
 	while ((parse_info.ret = get_next_line(map_fd, &parse_info.buff)) > 0)
 	{
-		// store line map - needs to be &cub->map[i] ?
 		cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
-		if (!map_line_valid(cub->map[i], cub, &parse_info))
+		if (!map_line_valid(cub, &parse_info, i))
 			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
 		printf("just checked %d-%s\n", i, parse_info.buff);
 		i++;
 		free(parse_info.buff);
 	}
-	if (parse_info.ret == 0)// should just give error if -1 instead?
-	{
-		cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
-		if (!map_line_valid(cub->map[i], cub, &parse_info))
-			error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
-		printf("just checked %d-%s\n", i, parse_info.buff);
-		free(parse_info.buff); // or remove these two lines
-		parse_info.buff = NULL; // and leave it for free_parse_info
-	}
+	if (parse_info.ret == -1)
+		error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
+	cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
+	if (!map_line_valid(cub, &parse_info, i))
+		error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
+	printf("just checked %d-%s\n", i, parse_info.buff);
+	free(parse_info.buff); // or remove these two lines
+	parse_info.buff = NULL; // and leave it for free_parse_info
+	
 	// TODO validate map - check if closed and if player is set
-	close(map_fd);
+	
 	free_parse_info(&parse_info);
+	close(map_fd);
 }

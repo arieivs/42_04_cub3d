@@ -46,6 +46,7 @@ typedef struct s_parse_info {
 	char	*buff;
 	int		ret;
 	int		line_nb;
+	char	*line_trimmed;
 	char	**line_content;
 	char	*prefix;
 	int		prefix_len;

@@ -14,7 +14,7 @@ void	print_cub(t_cub *cub)
 	printf("Ceiling color: #%X%X%X%X or rgb(%d, %d, %d)\n", get_t(cub->ceil_color),
 		get_r(cub->ceil_color), get_g(cub->ceil_color), get_b(cub->ceil_color),
 		get_r(cub->ceil_color), get_g(cub->ceil_color), get_b(cub->ceil_color));
-	printf("\n");
+	printf("\n🗺️ Map height %d x width %d\n", cub->map_height, cub->map_width);
 	i = 0;
 	while (i < cub->map_height)
 	{
@@ -24,5 +24,8 @@ void	print_cub(t_cub *cub)
 		printf("\n");
 		i++;
 	}
+	printf("\n😎 Player\n");
+	printf("Position (x, y) = (%.2f, %.2f)\n", cub->pos->x, cub->pos->y);
+	printf("Direction (x, y) = (%.2f, %.2f)\n", cub->dir->x, cub->dir->y);
 	printf("\n");
 }
