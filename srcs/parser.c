@@ -226,6 +226,40 @@ int	map_line_valid(t_cub *cub, t_parse_info *parse_info, int y)
 	return (1);
 }
 
+/*
+ * Map validation
+ * - makes sure there is a player
+ * - checks if map is closed: interior/player cannot be at the border,
+ *   nor in contact with the outside
+ */
+int	map_valid(t_cub *cub, t_parse_info *parse_info)
+{
+	int	x;
+	int	y;
+
+	if (!parse_info->is_player_set)
+		return (0);
+	y = 0;
+	while (y < cub->map_height)
+	{
+		x = 0;
+		while (x < cub->map_width)
+		{
+			if ((cub->map[y][x] == IN || cub->map[y][x] == PLAYER) &&
+				(y == 0 || y == cub->map_height - 1 ||
+				x == 0 || x == cub->map_width - 1 ||
+				cub->map[y - 1][x - 1] == OUT || cub->map[y - 1][x] == OUT ||
+				cub->map[y - 1][x + 1] == OUT || cub->map[y][x - 1] == OUT ||
+				cub->map[y][x + 1] == OUT || cub->map[y + 1][x - 1] == OUT ||
+				cub->map[y + 1][x] == OUT || cub->map[y + 1][x + 1] == OUT))
+				return (0);
+			x++;
+		}
+		y++;
+	}
+	return (1);
+}
+
 void	check_map(int map_fd, char *map_name, t_cub	*cub)
 {
 	t_parse_info	parse_info;
@@ -313,9 +347,8 @@ void	check_map(int map_fd, char *map_name, t_cub	*cub)
 	printf("just checked %d-%s\n", i, parse_info.buff);
 	free(parse_info.buff); // or remove these two lines
 	parse_info.buff = NULL; // and leave it for free_parse_info
-	
-	// TODO validate map - check if closed and if player is set
-	
+	if (!map_valid(cub, &parse_info))
+		error_and_exit_from_parsing(MAP_INCORRECT, cub, &parse_info, map_fd);
 	free_parse_info(&parse_info);
 	close(map_fd);
 }
