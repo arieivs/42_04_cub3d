@@ -2,6 +2,8 @@
 
 void	free_cub(t_cub *cub)
 {
+	int	i;
+
 	if (cub->mlx)
 		mlx_destroy_window(cub->mlx, cub->window);
 	if (cub->no_fd != 0)
@@ -12,7 +14,14 @@ void	free_cub(t_cub *cub)
 		close(cub->we_fd);
 	if (cub->ea_fd != 0)
 		close(cub->ea_fd); // TODO protect close?
-	// free cub->map - it will be allocated
+	if (cub->map)
+	{
+		i = 0;
+		while (i < cub->map_height)
+			free(cub->map[i++]);
+		free(cub->map);
+		cub->map = NULL;
+	}
 	if (cub->pos)
 		free(cub->pos);
 	if (cub->dir)

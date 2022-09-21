@@ -78,13 +78,12 @@ int	color_valid(t_cub *cub, t_parse_info *parse_info, char *content)
  */
 int	texture_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 {
-	char	*file_name;
 	int		fd;
 
-	file_name = ft_strtrim(content, "\t\n\v\f\r ");
-	if (!has_right_file_ext(file_name, "xpm"))
+	parse_info->file_name = ft_strtrim(content, "\t\n\v\f\r ");
+	if (!has_right_file_ext(parse_info->file_name, "xpm"))
 		return (0);
-	if ((fd = open(file_name, O_RDONLY)) == -1)
+	if ((fd = open(parse_info->file_name, O_RDONLY)) == -1)
 		return (error_and_return(FILE_INEXISTENT, 0));
 	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 && cub->no_fd != 0) ||
 		(ft_strncmp(parse_info->prefix, "SO", 2) == 0 && cub->so_fd != 0) ||
@@ -192,6 +191,7 @@ void	check_map(int map_fd, char *map_name, t_cub	*cub)
 		if (line_is_empty(parse_info.buff))
 		{
 			parse_info.line_nb++;
+			free(parse_info.buff);
 			continue ;
 		}
 		parse_info.line_content = ft_split(parse_info.buff, ' ');

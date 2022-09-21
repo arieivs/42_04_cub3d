@@ -6,10 +6,11 @@ int has_right_file_ext(char *file_name, char *extension)
 	size_t	ext_len;
 	size_t	i;
 
+	if (!file_name || !extension)
+		return (0);
 	file_len = ft_strlen(file_name);
 	ext_len = ft_strlen(extension);
-	if (ext_len < 0 || file_len < ext_len + 2 ||
-		file_name[file_len - ext_len - 1] != '.')
+	if (file_len < ext_len + 2 || file_name[file_len - ext_len - 1] != '.')
 		return (0);
 	i = 0;
 	while (i < ext_len)

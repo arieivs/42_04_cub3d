@@ -44,7 +44,7 @@ RM				= rm -f
 RM_DIR			= rm -rf
 MAKE			= make
 CFLAGS 			= -Wall -Wextra -Werror
-DFLAGS			= -fsanitize=address
+DFLAGS			= -fsanitize=address #-ggdb3 #for valgrind
 
 # COLORS
 GRAY			= \e[1;30m
