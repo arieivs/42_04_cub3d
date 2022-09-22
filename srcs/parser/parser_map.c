@@ -1,5 +1,8 @@
 #include "cub.h"
 
+/* Goes through the map for the first time and checks
+ * its height and width, so later the appropriate memory
+ * can be allocated */
 void	evaluate_map_size(int map_fd, t_cub *cub, t_parse_info* parse_info)
 {
 	parse_info->line_nb_map_start = parse_info->line_nb;
@@ -21,6 +24,7 @@ void	evaluate_map_size(int map_fd, t_cub *cub, t_parse_info* parse_info)
 	parse_info->line_nb++;
 }
 
+/* Sets player's initial position and direction */
 void	set_player(t_cub *cub, char player, int x, int y)
 {
 	cub->map[y][x] = PLAYER;
@@ -108,6 +112,8 @@ int	map_is_valid(t_cub *cub, t_parse_info *parse_info)
 	return (1);
 }
 
+/* Goes through the map a second time, stores the information
+ * and validates it */
 void	validate_map_grid(int map_fd, t_cub *cub, t_parse_info* parse_info)
 {
 	int	i;

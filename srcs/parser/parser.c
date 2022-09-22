@@ -1,5 +1,15 @@
 #include "cub.h"
 
+/*
+ * VALIDATE MAP 🍻
+ * - validates map's info - textures and colours 🎨
+ * - if the file ends there, error
+ * - goes through the actual map a first time, to check its dimensions
+ * - reopens the file and goes back to the beginning of the map
+ * - validates map, first each individual line, then as a whole 🗺
+ * - if at any point there is an error, everything is freed and we exit
+ */
+
 void	validate_map_info(int map_fd, t_cub *cub, t_parse_info* parse_info)
 {
 	while (textures_colors_not_set(cub, parse_info))
