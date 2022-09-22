@@ -84,7 +84,17 @@ t_parse_info	init_parse_info(void);
 void			init_mlx(t_cub *cub);
 
 /* PARSER */
-void	check_map(int map_fd, char *map_name, t_cub	*cub);
+void	validate_map(int map_fd, char *map_name, t_cub	*cub);
+void	validate_map_info(int map_fd, t_cub *cub, t_parse_info* parse_info);
+/* PARSER COLOR and TEXTURE */
+int	textures_colors_not_set(t_cub *cub, t_parse_info *parse_info);
+int	texture_or_color_is_valid(t_cub *cub, t_parse_info	*parse_info);
+/* PARSER MAP */
+void	evaluate_map_size(int map_fd, t_cub *cub, t_parse_info* parse_info);
+void	validate_map_grid(int map_fd, t_cub *cub, t_parse_info* parse_info);
+/* PARSER UTILS */
+int		line_is_empty(char *line);
+char	*replace_tab_with_spaces(char *line, t_cub *cub);
 
 /* COLOR */
 int		get_trgb(int t, int r, int g, int b);

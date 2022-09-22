@@ -8,7 +8,7 @@ int	main(int ac, char **av)
 	if ((map_fd = check_args(ac, av)) == -1)
 		return (1);
 	cub = init_cub();
-	check_map(map_fd, av[1], &cub);
+	validate_map(map_fd, av[1], &cub);
 	print_cub(&cub);
 	free_cub(&cub); // just for now
 	//init_mlx(&cub);

@@ -10,8 +10,8 @@ OBJS_DIR		= objs
 OBJS			:= $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 # Once we have subdirectories
-#OBJS_SUB_DIR	:= $(shell find $(SRCS_DIR) -mindepth 1 -type d)
-#OBJS_SUB_DIR	:= $(OBJS_SUB_DIR:$(SRCS_DIR)/%=$(OBJS_DIR)/%)
+OBJS_SUB_DIR	:= $(shell find $(SRCS_DIR) -mindepth 1 -type d)
+OBJS_SUB_DIR	:= $(OBJS_SUB_DIR:$(SRCS_DIR)/%=$(OBJS_DIR)/%)
 
 LIBFT_DIR		= libft
 
@@ -60,7 +60,7 @@ END				= \e[0m
 
 $(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c
 					@mkdir -p $(OBJS_DIR)
-#					@mkdir -p $(OBJS_SUB_DIR)
+					@mkdir -p $(OBJS_SUB_DIR)
 					$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME):	$(OBJS)
