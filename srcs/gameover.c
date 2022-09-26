@@ -10,8 +10,7 @@ void	error_message(t_error_code error_code)
 		ft_putstr_fd("Wrong file extension. Please provide a .cub file\n",
 			STDERR_FILENO);
 	else if (error_code == FILE_INEXISTENT)
-		ft_putstr_fd("Inexistent file. Please provide an existing .cub file\n",
-			STDERR_FILENO);
+		ft_putstr_fd("Inexistent file.\n", STDERR_FILENO);
 	else if (error_code == MAP_INCORRECT)
 		ft_putstr_fd("Incorrect Map. Please provide a valid .cub file\n",
 			STDERR_FILENO);
@@ -33,7 +32,16 @@ void	error_and_exit(t_error_code error_code, t_cub *cub)
 	if (cub)
 		free_cub(cub);
 	error_message(error_code);
-	exit(errno);
+	exit(EXIT_FAILURE);
+}
+
+void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
+			t_parse_info *parse_info, int map_fd)
+{
+	if (parse_info)
+		free_parse_info(parse_info);
+	close(map_fd); // protect close?
+	error_and_exit(error_code, cub);
 }
 
 void	*calloc_or_exit(size_t size, int count, t_cub *cub)
