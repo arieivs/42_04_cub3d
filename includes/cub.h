@@ -14,9 +14,9 @@
 
 # define WIDTH 1600
 # define HEIGHT 900
-# define IN 0
-# define WALL 1
-# define OUT 2
+// # define IN 0
+// # define WALL 1
+// # define OUT 2
 
 // Macros for testing
 # define mapWidth 24
@@ -72,6 +72,8 @@ typedef struct s_cub {
 	int				floor_color;
 	int				ceil_color;
 	int				**map;
+	int				map_height;
+	int				map_width;
 	t_pair_d		*pos;
 	t_pair_d		*dir;
 	t_pair_d		*proj_plane;
@@ -205,6 +207,6 @@ int		ft_split_len(char **split);
 int		is_number(char *str);
 
 /* WORLD MAP FOR TESTING */
-extern int g_worldMap[mapWidth][mapHeight];
+// extern int g_worldMap[mapWidth][mapHeight];
 
 #endif

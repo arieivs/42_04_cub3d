@@ -17,15 +17,15 @@ t_cub	init_cub(void)
 	cub.map = NULL;
 	cub.map_height = 0;
 	cub.map_width = 0;
-	cub.pos = (t_pair *)calloc_or_exit(sizeof(t_pair), 1, &cub);
+	cub.pos = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
 	cub.pos->x = 0.0;
 	cub.pos->y = 0.0;
-	cub.dir = (t_pair *)calloc_or_exit(sizeof(t_pair), 1, &cub);
+	cub.dir = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
 	cub.dir->x = 0.0;
 	cub.dir->y = 0.0;
-	cub.proj_plane = (t_pair *)calloc_or_exit(sizeof(t_pair), 1, &cub);
+	cub.proj_plane = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
 	cub.proj_plane->x = 0.0;
-	cub.proj_plane->y = 0.0;
+	cub.proj_plane->y = 0.66;
 	return (cub);
 }
 

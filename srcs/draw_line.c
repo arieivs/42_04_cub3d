@@ -27,13 +27,13 @@ int	set_pixel_color(t_cub *cub)
 {
 	unsigned int	color;
 
-	if (g_worldMap[cub->map_pos->x][cub->map_pos->y] == 1)
+	if (cub->map[cub->map_pos->y][cub->map_pos->x] == 1)
 		color = 0x00FF0000;
-	else if (g_worldMap[cub->map_pos->x][cub->map_pos->y] == 2)
+	else if (cub->map[cub->map_pos->y][cub->map_pos->x] == 2)
 		color = 0x0000FF00;
-	else if (g_worldMap[cub->map_pos->x][cub->map_pos->y] == 3)
+	else if (cub->map[cub->map_pos->y][cub->map_pos->x] == 3)
 		color = 0x000000FF;
-	else if (g_worldMap[cub->map_pos->x][cub->map_pos->y] == 4)
+	else if (cub->map[cub->map_pos->y][cub->map_pos->x] == 4)
 		color = 0x00FFFF00;
 	else
 		color = 0x00FFFFFF;

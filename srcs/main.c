@@ -1,46 +1,55 @@
 #include "cub.h"
 
-int g_worldMap[mapWidth][mapHeight] = 
-{
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
+// int map[mapWidth][mapHeight] = 
+// {
+// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+// };
 
 void	move_forward(t_cub *cub, double edge, double move_speed)
 {
-	if (g_worldMap[(int)(cub->pos->x + cub->dir->x * move_speed * edge)][(int)(cub->pos->y)] == 0)
+	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x + cub->dir->x * move_speed * edge)] == 0)
 		cub->pos->x += cub->dir->x * move_speed;
-	if (g_worldMap[(int)(cub->pos->x)][(int)(cub->pos->y + cub->dir->y * move_speed * edge)] == 0)
+	if (cub->map[(int)(cub->pos->y + cub->dir->y * move_speed * edge)] [(int)(cub->pos->x)]== 0)
 		cub->pos->y += cub->dir->y * move_speed;
 }
 
+
+// void	move_forward(t_cub *cub, double edge, double move_speed)
+// {
+// 	if (cub->map[(int)(cub->pos->x + cub->dir->x * move_speed * edge)][(int)(cub->pos->y)] == 0)
+// 		cub->pos->x += cub->dir->x * move_speed;
+// 	if (cub->map[(int)(cub->pos->x)][(int)(cub->pos->y + cub->dir->y * move_speed * edge)] == 0)
+// 		cub->pos->y += cub->dir->y * move_speed;
+// }
+
 void	move_backward(t_cub *cub, double edge, double move_speed)
 {
-	if (g_worldMap[(int)(cub->pos->x - cub->dir->x * move_speed * edge)][(int)(cub->pos->y)] == 0)
+	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x - cub->dir->x * move_speed * edge)] == 0)
 		cub->pos->x -= cub->dir->x * move_speed;
-	if (g_worldMap[(int)(cub->pos->x)][(int)(cub->pos->y - cub->dir->y * move_speed * edge)] == 0)
+	if (cub->map[(int)(cub->pos->y - cub->dir->y * move_speed * edge)][(int)(cub->pos->x)] == 0)
 		cub->pos->y -= cub->dir->y * move_speed;
 }
 
@@ -57,6 +66,19 @@ void	rotate_left(t_cub *cub, double rot_speed)
 	cub->proj_plane->y = old_plane_x * sin(rot_speed) + cub->proj_plane->y * cos(rot_speed); 
 }
 
+// void	rotate_left(t_cub *cub, double rot_speed)
+// {
+// 	double	old_dir_x;
+// 	double	old_plane_x;
+
+// 	old_dir_x = cub->dir->x;
+// 	cub->dir->x = cub->dir->x * cos(rot_speed) - cub->dir->y * sin(rot_speed);
+// 	cub->dir->y = old_dir_x * sin(rot_speed) + cub->dir->y * cos(rot_speed);
+// 	old_plane_x = cub->proj_plane->x;
+// 	cub->proj_plane->x = cub->proj_plane->x * cos(rot_speed) - cub->proj_plane->y * sin(rot_speed);
+// 	cub->proj_plane->y = old_plane_x * sin(rot_speed) + cub->proj_plane->y * cos(rot_speed); 
+// }
+
 void	rotate_right(t_cub *cub, double rot_speed)
 {
 	double	old_dir_x;
@@ -72,17 +94,17 @@ void	rotate_right(t_cub *cub, double rot_speed)
 
 void	move_right(t_cub *cub, double edge, double move_speed)
 {
-	if (g_worldMap[(int)(cub->pos->x + cub->proj_plane->x * move_speed * edge)][(int)(cub->pos->y)] == 0)
+	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x + cub->proj_plane->x * move_speed * edge)] == 0)
 		cub->pos->x += cub->proj_plane->x * move_speed;
-	if (g_worldMap[(int)(cub->pos->x)][(int)(cub->pos->y + cub->proj_plane->y * move_speed * edge)] == 0)
+	if (cub->map[(int)(cub->pos->y + cub->proj_plane->y * move_speed * edge)][(int)(cub->pos->x)] == 0)
 		cub->pos->y += cub->proj_plane->y * move_speed;
 }
 
 void	move_left(t_cub *cub, double edge, double move_speed)
 {
-	if (g_worldMap[(int)(cub->pos->x - cub->proj_plane->x * move_speed * edge)][(int)(cub->pos->y)] == 0)
+	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x - cub->proj_plane->x * move_speed * edge)] == 0)
 		cub->pos->x -= cub->proj_plane->x * move_speed;
-	if (g_worldMap[(int)(cub->pos->x)][(int)(cub->pos->y - cub->proj_plane->y * move_speed * edge)] == 0)
+	if (cub->map[(int)(cub->pos->y - cub->proj_plane->y * move_speed * edge)][(int)(cub->pos->x)] == 0)
 		cub->pos->y -= cub->proj_plane->y * move_speed;
 }
 
@@ -94,7 +116,7 @@ int	key_hook(int keycode, t_cub *cub)
 
 	edge = 1.1;
 	move_speed = 0.5;
-	rot_speed = 0.05;
+	rot_speed = 0.08;
 
 	printf("hello from keycode %d\n", keycode);
 
@@ -165,17 +187,21 @@ int	main(int ac, char **av)
 	t_cub	cub;
 	int		map_fd;
 
-	// if ((map_fd = check_args(ac, av)) == -1)
-	// 	return (1);
+	if ((map_fd = check_args(ac, av)) == -1)
+		return (1);
 	cub = init_cub();
+	init_mlx(&cub);
 	validate_map(map_fd, av[1], &cub);
 	print_cub(&cub);
-	free_cub(&cub); // just for now
-	//init_mlx(&cub);
-	//mlx_mouse_hook(cub.window, mouse_hook, &cub);
-	//mlx_key_hook(cub.window, key_hook, &cub);
-	// RENDER CUB
-	//mlx_loop(cub.mlx);
-	//graceful_exit(&cub); // only on key_hook - here it doesn't work
+	// free_cub(&cub); // just for now
+	// printf("map pos x is %d\n", cub.map_pos->x);
+	// printf("map pos y is %d\n", cub.map_pos->y);
+	// printf("map pos x is %d", cub.map[cub.map_pos->x][cub.map_pos->y]);
+	
+	raycast_loop(&cub);
+	mlx_put_image_to_window(cub.mlx, cub.window, cub.img, 0, 0);
+	mlx_loop_hook(cub.mlx, display_fps, &cub);
+	mlx_hook(cub.window, 2, 1L<<0, key_hook, &cub);
+	mlx_loop(cub.mlx);
 	return (0);
 }
