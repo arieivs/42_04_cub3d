@@ -88,6 +88,9 @@ typedef struct s_cub {
 	/* fps */
 	unsigned long long			time;
 	unsigned long long			old_time;
+	double						curr_fps;
+	double						prev_fps;
+	int							fps_counter;
 	/* drawing pixels */
     int             line_height;
     int             draw_start;
@@ -130,7 +133,7 @@ unsigned int	draw_pixels(t_cub *cub);
 
 /* FPS */
 unsigned long long	get_time_micros(void);
-void				display_fps(t_cub *cub);
+int					display_fps(t_cub *cub);
 
 /* GAMEOVER - Error management */
 void	error_message(t_error_code error_code);

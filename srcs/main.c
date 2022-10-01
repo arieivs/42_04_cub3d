@@ -114,24 +114,50 @@ int	key_hook(int keycode, t_cub *cub)
 		move_right(cub, edge, move_speed);
 	raycast_loop(cub);
 	mlx_put_image_to_window(cub->mlx, cub->window, cub->img, 0, 0);
-	// display_fps(cub);
 	return (0);
 }
 
-void	display_fps(t_cub *cub)
+char	*set_fps_string(char *str1, t_cub *cub, int mode)
+{
+	char	*new;
+
+	if (mode == 0)
+		str1 = ft_itoa((int)cub->curr_fps);
+	else if (mode == 1)
+		str1 = ft_itoa((int)cub->prev_fps);
+	if (str1)
+	{
+		new =  ft_strjoin("FPS: ", str1);
+		free(str1);
+	}
+	else
+		return (NULL);
+	return (new);
+}
+
+int	display_fps(t_cub *cub)
 {
 	char				*time_str;
-	unsigned long long	frame_time;
-	double				fps;
+	char				*prev_str;
+	long double			frame_time;
 
+	time_str = NULL;
+	prev_str = NULL;
 	cub->old_time = cub->time;
 	cub->time = get_time_micros();
-	frame_time = (cub->time - cub->old_time) / 1000; // microsec -> seconds
-	printf("frame_time is %llu\n", frame_time);
-	fps = 1.0 / frame_time;
-	printf("fps is %lf\n", fps);
-	//time_str = ft_itoa(fps);
-	mlx_string_put(cub->mlx, cub->window, 25, 25, 0x00FFFFFF, time_str);
+	frame_time = ((long double)(cub->time - cub->old_time)) / 1000000;
+	cub->prev_fps = cub->curr_fps;
+	cub->curr_fps = 1.0 / frame_time;
+	if (fabs(cub->curr_fps - cub->prev_fps) > 1)
+	{
+		time_str = set_fps_string(time_str, cub, 0);
+		prev_str = set_fps_string(prev_str, cub, 1);
+		mlx_string_put(cub->mlx, cub->window, 25, 25, 0x00000000, prev_str);
+		mlx_string_put(cub->mlx, cub->window, 25, 25, 0x00FFFFFF, time_str);
+		free(time_str);
+		free(prev_str);
+	}
+	return (0);
 }
 
 int	main(int ac, char **av)
@@ -156,9 +182,14 @@ int	main(int ac, char **av)
 	initialize_map_pos(&cub);
 	raycast_loop(&cub);
 	mlx_put_image_to_window(cub.mlx, cub.window, cub.img, 0, 0);
-	display_fps(&cub);
+	
+	// FPS
+	cub.fps_counter = 0;
+	mlx_loop_hook(cub.mlx, display_fps, &cub);
+
+	// MOVEMENT
 	mlx_hook(cub.window, 2, 1L<<0, key_hook, &cub);
-	//mlx_loop_hook();
 	mlx_loop(cub.mlx);
+	// destroy images when quitting?
 	return (0);
 }

@@ -5,17 +5,21 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 	char	*dst;
 
 	dst = cub->addr + (y * cub->line_length + x * (cub->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 }
 
 void	ver_line(t_cub *cub, int x, unsigned int color)
 {
-	for (int i = 0; i < HEIGHT; i++)
+	int	i;
+
+	i = 0;
+	while (i < HEIGHT)
 	{
 		if (i >= cub->draw_start && i <= cub->draw_end)
 			my_mlx_pixel_put(cub, x, i, color);
 		else
 			my_mlx_pixel_put(cub, x, i, 0x00000000);
+		i++;
 	}
 }
 
@@ -24,15 +28,15 @@ int	set_pixel_color(t_cub *cub)
 	unsigned int	color;
 
 	if (g_worldMap[cub->map_pos->x][cub->map_pos->y] == 1)
-		color = 0x00FF0000; // red
+		color = 0x00FF0000;
 	else if (g_worldMap[cub->map_pos->x][cub->map_pos->y] == 2)
-		color = 0x0000FF00; // green
+		color = 0x0000FF00;
 	else if (g_worldMap[cub->map_pos->x][cub->map_pos->y] == 3)
-		color = 0x000000FF; // blue
+		color = 0x000000FF;
 	else if (g_worldMap[cub->map_pos->x][cub->map_pos->y] == 4)
-		color = 0x00FFFF00;	// yellow
+		color = 0x00FFFF00;
 	else
-		color = 0x00FFFFFF; // white
+		color = 0x00FFFFFF;
 	return (color);
 }
 

@@ -17,7 +17,7 @@ void	error_message(t_error_code error_code)
 			STDERR_FILENO);
 	else if (error_code == MLX_FAILURE)
 		ft_putstr_fd("MiniLibx failure. Please check your configuration\n",
-			STDERR_FILENO);	
+			STDERR_FILENO);
 	else
 	{
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
