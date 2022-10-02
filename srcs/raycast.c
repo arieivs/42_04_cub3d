@@ -42,6 +42,12 @@ void	set_delta_dist(t_cub *cub)
 		cub->delta_dist->y = fabs(1.0 / cub->ray_dir->y);
 }
 
+/*
+	INITIALIZE RAYCASTING
+	- camera_x: Sets the x-coordinate in camera space (ranging from -1 to 1 over the screen's width)
+	- ray_dir->x|y: 
+*/
+
 void	initialize_raycasting(t_cub *cub, int x)
 {
 	// Camera Position
@@ -127,7 +133,7 @@ void	perform_dda(t_cub *cub)
 		}
 		// printf("map pos x is %d\n", cub->map_pos->x);
 		// printf("map pos y is %d\n", cub->map_pos->y);
-		if (cub->map[cub->map_pos->y][cub->map_pos->x] > 0)
+		if (cub->map[cub->map_pos->y][cub->map_pos->x] == 1)
 		{
 			// printf("test\n");
 			cub->hit = 1;

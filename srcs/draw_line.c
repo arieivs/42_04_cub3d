@@ -28,7 +28,7 @@ int	set_pixel_color(t_cub *cub)
 	unsigned int	color;
 
 	if (cub->map[cub->map_pos->y][cub->map_pos->x] == 1)
-		color = 0x00FF0000;
+		color = 0x00FFF000;
 	else if (cub->map[cub->map_pos->y][cub->map_pos->x] == 2)
 		color = 0x0000FF00;
 	else if (cub->map[cub->map_pos->y][cub->map_pos->x] == 3)
