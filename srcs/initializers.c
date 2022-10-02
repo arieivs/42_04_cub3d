@@ -25,7 +25,7 @@ t_cub	init_cub(void)
 	cub.dir->y = 0.0;
 	cub.proj_plane = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
 	cub.proj_plane->x = 0.0;
-	cub.proj_plane->y = 0.66;
+	cub.proj_plane->y = 0.0;
 	return (cub);
 }
 
