@@ -191,6 +191,15 @@ unsigned int	draw_pixels(t_cub *cub);
 /* FPS */
 unsigned long long	get_time_micros(void);
 int					display_fps(t_cub *cub);
+char	*set_fps_string(char *str1, t_cub *cub, int mode);
+
+/* MOVEMENT */
+void	move_forward(t_cub *cub, double edge, double move_speed);
+void	move_backward(t_cub *cub, double edge, double move_speed);
+void	rotate_left(t_cub *cub, double rot_speed);
+void	rotate_right(t_cub *cub, double rot_speed);
+void	move_right(t_cub *cub, double edge, double move_speed);
+void	move_left(t_cub *cub, double edge, double move_speed);
 
 /* GAMEOVER - Error management */
 void	error_message(t_error_code error_code);

@@ -2,17 +2,16 @@
 
 void	initialize_map_pos(t_cub *cub)
 {
-	// timers for FPS calculation
 	cub->time = 0;
 	cub->old_time = 0;
 }
 
 /*
 	SET_RAY_DIR:
-	- Add to the direction vector, the projection plane vector and multiply it by the x-coordinate in camera space
+	- Add to the direction vector, the projection plane vector and 
+	multiply it by the x-coordinate in camera space
 	- Vectors have both an x and y component, so do this for both dimensions
 */
-
 void	set_ray_dir(t_cub *cub)
 {
 	cub->ray_dir = (t_pair_d *)malloc(1 * sizeof(t_pair_d));
@@ -44,7 +43,8 @@ void	set_delta_dist(t_cub *cub)
 
 /*
 	INITIALIZE RAYCASTING
-	- In this function we set the variables needed to perform the distance calculation to the walls
+	- In this function we set the variables needed to perform
+	the distance calculation to the walls
 		- camera_x: 		Sets the x-coordinate in camera space (ranging from -1 to 1 over the screen's width)
 		- ray_dir->x|y: 	The coordinates of the ray direction vector
 		- map_pos->x|y: 	Integer value of the map pos to indicate in which square we are currently
