@@ -17,8 +17,10 @@ void	ver_line(t_cub *cub, int x, unsigned int color)
 	{
 		if (i >= cub->draw_start && i <= cub->draw_end)
 			my_mlx_pixel_put(cub, x, i, color);
-		else
-			my_mlx_pixel_put(cub, x, i, 0x00000000);
+		else if (i <= cub->draw_start)
+			my_mlx_pixel_put(cub, x, i, cub->ceil_color);
+		else if (i >= cub->draw_end)
+			my_mlx_pixel_put(cub, x, i, cub->floor_color);
 		i++;
 	}
 }

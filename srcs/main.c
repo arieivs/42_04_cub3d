@@ -2,17 +2,17 @@
 
 void	move_forward(t_cub *cub, double edge, double move_speed)
 {
-	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x + cub->dir->x * move_speed * edge)] == 0)
+	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x + cub->dir->x * move_speed * edge)] != 1)
 		cub->pos->x += cub->dir->x * move_speed;
-	if (cub->map[(int)(cub->pos->y + cub->dir->y * move_speed * edge)] [(int)(cub->pos->x)]== 0)
+	if (cub->map[(int)(cub->pos->y + cub->dir->y * move_speed * edge)] [(int)(cub->pos->x)] != 1)
 		cub->pos->y += cub->dir->y * move_speed;
 }
 
 void	move_backward(t_cub *cub, double edge, double move_speed)
 {
-	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x - cub->dir->x * move_speed * edge)] == 0)
+	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x - cub->dir->x * move_speed * edge)] != 1)
 		cub->pos->x -= cub->dir->x * move_speed;
-	if (cub->map[(int)(cub->pos->y - cub->dir->y * move_speed * edge)][(int)(cub->pos->x)] == 0)
+	if (cub->map[(int)(cub->pos->y - cub->dir->y * move_speed * edge)][(int)(cub->pos->x)] != 1)
 		cub->pos->y -= cub->dir->y * move_speed;
 }
 
@@ -47,17 +47,17 @@ void	rotate_right(t_cub *cub, double rot_speed)
 
 void	move_right(t_cub *cub, double edge, double move_speed)
 {
-	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x + cub->proj_plane->x * move_speed * edge)] == 0)
+	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x + cub->proj_plane->x * move_speed * edge)] != 1)
 		cub->pos->x += cub->proj_plane->x * move_speed;
-	if (cub->map[(int)(cub->pos->y + cub->proj_plane->y * move_speed * edge)][(int)(cub->pos->x)] == 0)
+	if (cub->map[(int)(cub->pos->y + cub->proj_plane->y * move_speed * edge)][(int)(cub->pos->x)] != 1)
 		cub->pos->y += cub->proj_plane->y * move_speed;
 }
 
 void	move_left(t_cub *cub, double edge, double move_speed)
 {
-	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x - cub->proj_plane->x * move_speed * edge)] == 0)
+	if (cub->map[(int)(cub->pos->y)][(int)(cub->pos->x - cub->proj_plane->x * move_speed * edge)] != 1)
 		cub->pos->x -= cub->proj_plane->x * move_speed;
-	if (cub->map[(int)(cub->pos->y - cub->proj_plane->y * move_speed * edge)][(int)(cub->pos->x)] == 0)
+	if (cub->map[(int)(cub->pos->y - cub->proj_plane->y * move_speed * edge)][(int)(cub->pos->x)] != 1)
 		cub->pos->y -= cub->proj_plane->y * move_speed;
 }
 

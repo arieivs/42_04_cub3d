@@ -19,8 +19,8 @@
 // # define OUT 2
 
 // Macros for testing
-# define mapWidth 24
-# define mapHeight 24
+//# define mapWidth 24
+//# define mapHeight 24
 
 /* OS CHECK */
 # ifdef APPLE

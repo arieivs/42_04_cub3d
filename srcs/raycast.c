@@ -2,16 +2,6 @@
 
 void	initialize_map_pos(t_cub *cub)
 {
-// 	// Set variables
-// 	cub->pos->x = 12.0;
-// 	cub->pos->y = 12.0;
-
-// 	cub->dir->x = -0.5;
-// 	cub->dir->y = 0.0;
-
-// 	cub->proj_plane->x = 0;
-// 	cub->proj_plane->y = 0.66;
-
 	// timers for FPS calculation
 	cub->time = 0;
 	cub->old_time = 0;
@@ -146,14 +136,8 @@ void	perform_dda(t_cub *cub)
 			cub->map_pos->y += cub->step->y;
 			cub->side = 1;
 		}
-		// printf("map pos x is %d\n", cub->map_pos->x);
-		// printf("map pos y is %d\n", cub->map_pos->y);
 		if (cub->map[cub->map_pos->y][cub->map_pos->x] == 1)
-		{
-			// printf("test\n");
 			cub->hit = 1;
-			// printf("haha\n");
-		}
 	}
 }
 
