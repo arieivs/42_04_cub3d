@@ -2,21 +2,16 @@
 
 void	initialize_map_pos(t_cub *cub)
 {
-// 	// Set variables
-// 	cub->pos->x = 12.0;
-// 	cub->pos->y = 12.0;
-
-// 	cub->dir->x = -0.5;
-// 	cub->dir->y = 0.0;
-
-// 	cub->proj_plane->x = 0;
-// 	cub->proj_plane->y = 0.66;
-
-	// timers for FPS calculation
 	cub->time = 0;
 	cub->old_time = 0;
 }
 
+/*
+	SET_RAY_DIR:
+	- Add to the direction vector, the projection plane vector and
+	multiply it by the x-coordinate in camera space
+	- Vectors have both an x and y component, so do this for both dimensions
+*/
 void	set_ray_dir(t_cub *cub)
 {
 	cub->ray_dir = (t_pair_d *)malloc(1 * sizeof(t_pair_d));
@@ -26,6 +21,11 @@ void	set_ray_dir(t_cub *cub)
 	cub->ray_dir->y = cub->dir->y + cub->proj_plane->y * cub->camera_x;
 }
 
+/*
+	SET_DELTA_DIST
+	- Calculates the distance to the next gridline
+	- If the ray is paralel to an axis, this distance is equal to 1e30.
+*/
 void	set_delta_dist(t_cub *cub)
 {
 	cub->delta_dist = (t_pair_d *)malloc(1 * sizeof(t_pair_d));
@@ -35,7 +35,6 @@ void	set_delta_dist(t_cub *cub)
 		cub->delta_dist->x = 1e30;
 	else
 		cub->delta_dist->x = fabs(1.0 / cub->ray_dir->x);
-
 	if (cub->ray_dir->y == 0)
 		cub->delta_dist->y = 1e30;
 	else
@@ -44,10 +43,16 @@ void	set_delta_dist(t_cub *cub)
 
 /*
 	INITIALIZE RAYCASTING
-	- camera_x: Sets the x-coordinate in camera space (ranging from -1 to 1 over the screen's width)
-	- ray_dir->x|y: 
+	- In this function we set the variables needed to perform
+	the distance calculation to the walls
+		- camera_x: 		Sets the x-coord in camera space (ranging from -1 to 1 over the screen's width)
+		- ray_dir->x|y: 	The coord of the ray direction vector
+		- map_pos->x|y: 	Integer value of the map pos to indicate in which square we are currently
+		- side_dist->x|y: 	From the current position, this is the distance to the first gridline in x and y direction
+		- delta_dist->x|y: 	The distance to cross a grid square in both x and y direction for the ray
+		- step->x|y: 		The direction to step in x or y direction
+		- hit: 				This variable checks later on whether or not the ray is hitting a wall or not
 */
-
 void	initialize_raycasting(t_cub *cub, int x)
 {
 	// Camera Position
@@ -131,14 +136,8 @@ void	perform_dda(t_cub *cub)
 			cub->map_pos->y += cub->step->y;
 			cub->side = 1;
 		}
-		// printf("map pos x is %d\n", cub->map_pos->x);
-		// printf("map pos y is %d\n", cub->map_pos->y);
 		if (cub->map[cub->map_pos->y][cub->map_pos->x] == 1)
-		{
-			// printf("test\n");
 			cub->hit = 1;
-			// printf("haha\n");
-		}
 	}
 }
 
@@ -150,7 +149,7 @@ void	calculate_dist(t_cub *cub)
 		cub->perp_wall_dist = cub->side_dist->y - cub->delta_dist->y;
 }
 
-void	raycast_loop(t_cub *cub)
+void	raycast(t_cub *cub)
 {
 	int				x;
 	unsigned int	color;
