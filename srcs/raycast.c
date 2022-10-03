@@ -1,46 +1,5 @@
 #include "cub.h"
 
-void	initialize_map_pos(t_cub *cub)
-{
-	cub->time = 0;
-	cub->old_time = 0;
-}
-
-/*
-	SET_RAY_DIR:
-	- Add to the direction vector, the projection plane vector and
-	multiply it by the x-coordinate in camera space
-	- Vectors have both an x and y component, so do this for both dimensions
-*/
-void	set_ray_dir(t_cub *cub)
-{
-	cub->ray_dir = (t_pair_d *)malloc(1 * sizeof(t_pair_d));
-	if (cub->ray_dir == NULL)
-		error_and_exit(ERRNO, cub);
-	cub->ray_dir->x = cub->dir->x + cub->proj_plane->x * cub->camera_x;
-	cub->ray_dir->y = cub->dir->y + cub->proj_plane->y * cub->camera_x;
-}
-
-/*
-	SET_DELTA_DIST
-	- Calculates the distance to the next gridline
-	- If the ray is paralel to an axis, this distance is equal to 1e30.
-*/
-void	set_delta_dist(t_cub *cub)
-{
-	cub->delta_dist = (t_pair_d *)malloc(1 * sizeof(t_pair_d));
-	if (cub->delta_dist == NULL)
-		error_and_exit(ERRNO, cub);
-	if (cub->ray_dir->x == 0)
-		cub->delta_dist->x = 1e30;
-	else
-		cub->delta_dist->x = fabs(1.0 / cub->ray_dir->x);
-	if (cub->ray_dir->y == 0)
-		cub->delta_dist->y = 1e30;
-	else
-		cub->delta_dist->y = fabs(1.0 / cub->ray_dir->y);
-}
-
 /*
 	INITIALIZE RAYCASTING
 	- In this function we set the variables needed to perform
@@ -59,40 +18,35 @@ void	initialize_raycasting(t_cub *cub, int x)
 	cub->camera_x = (((double)(2 * x)) / (double)(WIDTH)) - 1;
 
 	// Ray Direction
-	set_ray_dir(cub);
+	cub->ray_dir->x = cub->dir->x + cub->proj_plane->x * cub->camera_x;
+	cub->ray_dir->y = cub->dir->y + cub->proj_plane->y * cub->camera_x;
 
 	// Position in map grid (int)
-	cub->map_pos = (t_pair_i *)malloc(1 * sizeof(t_pair_i));
-	if (cub->map_pos == NULL)
-		error_and_exit(ERRNO, cub);
 	cub->map_pos->x = (int)(cub->pos->x);
 	cub->map_pos->y = (int)(cub->pos->y);
 
-	// Position to the nearest side
-	cub->side_dist = (t_pair_d *)malloc(1 * sizeof(t_pair_d));
-	if (cub->side_dist == NULL)
-		error_and_exit(ERRNO, cub);
-
 	// Distance between X-pos or Y-pos
-	set_delta_dist(cub);
-
-	// initialize the step pair
-	cub->step = (t_pair_i *)malloc(1 * sizeof(t_pair_i));
-	if (cub->step == NULL)
-		error_and_exit(ERRNO, cub);
+	if (cub->ray_dir->x == 0)
+		cub->delta_dist->x = 1e30;
+	else
+		cub->delta_dist->x = fabs(1.0 / cub->ray_dir->x);
+	if (cub->ray_dir->y == 0)
+		cub->delta_dist->y = 1e30;
+	else
+		cub->delta_dist->y = fabs(1.0 / cub->ray_dir->y);
 
 	// set hit
 	cub->hit = 0;
 }
 
-void	free_raycasting_vars(t_cub *cub)
-{
-	free(cub->ray_dir);
-	free(cub->map_pos);
-	free(cub->side_dist);
-	free(cub->delta_dist);
-}
-
+/*
+	CALCULATE_STEP
+	
+	-	This function calculates for a given position, what the distance
+		is to the next gridsquare
+	-	This distance to the first grid square (side_dist) is basically
+		a proportion of the distance to cross a full square (delta_dist).
+*/
 void	calculate_step(t_cub *cub)
 {
 	// for x-pos
@@ -119,11 +73,17 @@ void	calculate_step(t_cub *cub)
 	}
 }
 
+/*
+	PERFORM_DDA:
+	-	DDA = Digital Differential Analysis
+	-	A fast algorithm used to find when a ray hits the square grids of the map
+	-	From the current position, it adds to the side_dist the delta_dist
+	-	We keep repeating this until we hit a gridsquare with value 1.
+*/
 void	perform_dda(t_cub *cub)
 {
 	while (cub->hit == 0)
 	{
-		// jump to the next map square either in x or y direction
 		if (cub->side_dist->x < cub->side_dist->y)
 		{
 			cub->side_dist->x += cub->delta_dist->x;
@@ -155,7 +115,6 @@ void	raycast(t_cub *cub)
 	unsigned int	color;
 
 	x = 0;
-	initialize_map_pos(cub);
 	while (x < WIDTH)
 	{
 		initialize_raycasting(cub, x);
@@ -164,7 +123,6 @@ void	raycast(t_cub *cub)
 		calculate_dist(cub);
 		color = draw_pixels(cub);
 		ver_line(cub, x, color);
-		// free_raycasting_vars(cub);
 		x++;
 	}
 }

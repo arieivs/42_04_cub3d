@@ -12,8 +12,8 @@
 # include "mlx.h"
 # include "libft.h"
 
-# define WIDTH 1600
-# define HEIGHT 900
+# define WIDTH 1920
+# define HEIGHT 1080
 
 /* OS CHECK */
 # ifdef APPLE
@@ -165,9 +165,6 @@ void	free_parse_info(t_parse_info *parse_info);
 void	graceful_exit(t_cub *cub);
 
 /* RAYCASTING */
-void	initialize_map_pos(t_cub *cub);
-void	set_ray_dir(t_cub *cub);
-void	set_delta_dist(t_cub *cub);
 void	initialize_raycasting(t_cub *cub, int x);
 void	free_raycasting_vars(t_cub *cub);
 void	calculate_step(t_cub *cub);
@@ -210,8 +207,5 @@ int		has_right_file_ext(char *file_name, char *extension);
 int		count_appearances(char *str, char c);
 int		ft_split_len(char **split);
 int		is_number(char *str);
-
-/* WORLD MAP FOR TESTING */
-// extern int g_worldMap[mapWidth][mapHeight];
 
 #endif

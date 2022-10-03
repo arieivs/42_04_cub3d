@@ -26,6 +26,13 @@ t_cub	init_cub(void)
 	cub.proj_plane = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
 	cub.proj_plane->x = 0.0;
 	cub.proj_plane->y = 0.0;
+	cub.time = 0;
+	cub.old_time = 0;
+	cub.map_pos = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, &cub);
+	cub.ray_dir = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
+	cub.side_dist = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
+	cub.delta_dist = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
+	cub.step = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, &cub);
 	return (cub);
 }
 

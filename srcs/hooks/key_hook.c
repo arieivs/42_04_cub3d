@@ -7,8 +7,8 @@ int	key_hook(int keycode, t_cub *cub)
 	double	rot_speed;
 
 	edge = 1.1;
-	move_speed = 0.5;
-	rot_speed = 0.08;
+	move_speed = 0.6;
+	rot_speed = 0.1;
 	if (keycode == ESC_KEY)
 		graceful_exit(cub);
 	else if (keycode == W_KEY || keycode == UP_KEY)

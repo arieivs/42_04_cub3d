@@ -28,6 +28,16 @@ void	free_cub(t_cub *cub)
 		free(cub->dir);
 	if (cub->proj_plane)
 		free(cub->proj_plane);
+	if (cub->map_pos)
+		free(cub->map_pos);
+	if (cub->ray_dir)
+		free(cub->ray_dir);
+	if (cub->side_dist)
+		free(cub->side_dist);
+	if (cub->delta_dist)
+		free(cub->delta_dist);
+	if (cub->step)
+		free(cub->step);	
 }
 
 void	free_split(char **split)
