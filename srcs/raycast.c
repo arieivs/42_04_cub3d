@@ -8,7 +8,7 @@ void	initialize_map_pos(t_cub *cub)
 
 /*
 	SET_RAY_DIR:
-	- Add to the direction vector, the projection plane vector and 
+	- Add to the direction vector, the projection plane vector and
 	multiply it by the x-coordinate in camera space
 	- Vectors have both an x and y component, so do this for both dimensions
 */
@@ -45,8 +45,8 @@ void	set_delta_dist(t_cub *cub)
 	INITIALIZE RAYCASTING
 	- In this function we set the variables needed to perform
 	the distance calculation to the walls
-		- camera_x: 		Sets the x-coordinate in camera space (ranging from -1 to 1 over the screen's width)
-		- ray_dir->x|y: 	The coordinates of the ray direction vector
+		- camera_x: 		Sets the x-coord in camera space (ranging from -1 to 1 over the screen's width)
+		- ray_dir->x|y: 	The coord of the ray direction vector
 		- map_pos->x|y: 	Integer value of the map pos to indicate in which square we are currently
 		- side_dist->x|y: 	From the current position, this is the distance to the first gridline in x and y direction
 		- delta_dist->x|y: 	The distance to cross a grid square in both x and y direction for the ray
@@ -149,7 +149,7 @@ void	calculate_dist(t_cub *cub)
 		cub->perp_wall_dist = cub->side_dist->y - cub->delta_dist->y;
 }
 
-void	raycast_loop(t_cub *cub)
+void	raycast(t_cub *cub)
 {
 	int				x;
 	unsigned int	color;

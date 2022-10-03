@@ -14,18 +14,11 @@
 
 # define WIDTH 1600
 # define HEIGHT 900
-// # define IN 0
-// # define WALL 1
-// # define OUT 2
-
-// Macros for testing
-//# define mapWidth 24
-//# define mapHeight 24
 
 /* OS CHECK */
 # ifdef APPLE
 #  define ESC_KEY 53
-#  define UP_KEY 126 
+#  define UP_KEY 126
 #  define DOWN_KEY 125
 #  define LEFT_KEY 123
 #  define RIGHT_KEY 124
@@ -180,7 +173,7 @@ void	free_raycasting_vars(t_cub *cub);
 void	calculate_step(t_cub *cub);
 void	perform_dda(t_cub *cub);
 void	calculate_dist(t_cub *cub);
-void	raycast_loop(t_cub *cub);
+void	raycast(t_cub *cub);
 
 /* DRAWING LINES TO THE SCREEN */
 void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
@@ -192,6 +185,9 @@ unsigned int	draw_pixels(t_cub *cub);
 unsigned long long	get_time_micros(void);
 int					display_fps(t_cub *cub);
 char	*set_fps_string(char *str1, t_cub *cub, int mode);
+
+/* HOOKING */
+int	key_hook(int keycode, t_cub *cub);
 
 /* MOVEMENT */
 void	move_forward(t_cub *cub, double edge, double move_speed);
