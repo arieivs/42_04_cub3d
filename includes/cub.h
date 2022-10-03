@@ -174,9 +174,9 @@ void	raycast(t_cub *cub);
 
 /* DRAWING LINES TO THE SCREEN */
 void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
-void	ver_line(t_cub *cub, int x, unsigned int color);
-int	set_pixel_color(t_cub *cub);
-unsigned int	draw_pixels(t_cub *cub);
+void	draw_verline(t_cub *cub, int x, unsigned int color);
+int		set_pixel_color(t_cub *cub);
+unsigned int	set_pixels(t_cub *cub);
 
 /* FPS */
 unsigned long long	get_time_micros(void);

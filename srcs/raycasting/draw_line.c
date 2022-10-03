@@ -8,7 +8,7 @@ void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	ver_line(t_cub *cub, int x, unsigned int color)
+void	draw_verline(t_cub *cub, int x, unsigned int color)
 {
 	int	i;
 
@@ -42,7 +42,7 @@ int	set_pixel_color(t_cub *cub)
 	return (color);
 }
 
-unsigned int	draw_pixels(t_cub *cub)
+unsigned int	set_pixels(t_cub *cub)
 {
 	unsigned int	color;
 

@@ -121,8 +121,8 @@ void	raycast(t_cub *cub)
 		calculate_step(cub);
 		perform_dda(cub);
 		calculate_dist(cub);
-		color = draw_pixels(cub);
-		ver_line(cub, x, color);
+		color = set_pixels(cub);
+		draw_verline(cub, x, color);
 		x++;
 	}
 }
