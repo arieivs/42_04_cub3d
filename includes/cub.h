@@ -7,39 +7,90 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h>
+# include <math.h>
+# include <sys/time.h>
 # include "mlx.h"
 # include "libft.h"
 
 # define WIDTH 1920
 # define HEIGHT 1080
 
-typedef struct s_pair {
+/* OS CHECK */
+# ifdef APPLE
+#  define ESC_KEY 53
+#  define UP_KEY 126
+#  define DOWN_KEY 125
+#  define LEFT_KEY 123
+#  define RIGHT_KEY 124
+#  define W_KEY 13
+#  define A_KEY 0
+#  define S_KEY 1
+#  define D_KEY 2
+# else
+#  define ESC_KEY 65307
+#  define UP_KEY 65362
+#  define DOWN_KEY 65364
+#  define LEFT_KEY 65361
+#  define RIGHT_KEY 65363
+#  define W_KEY 119
+#  define A_KEY 97
+#  define S_KEY 115
+#  define D_KEY 100
+# endif
+
+typedef struct s_pair_d {
 	double	x;
 	double	y;
-}				t_pair;
+}				t_pair_d;
+
+typedef struct s_pair_i {
+	int	x;
+	int	y;
+}				t_pair_i;
 
 typedef struct s_cub {
 	/* minilibx */
-	void	*mlx;
-	void	*window;
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+	void			*mlx;
+	void			*window;
+	void			*img;
+	char			*addr;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
 	/* parsing map */
-	int		no_fd;
-	int		so_fd;
-	int		we_fd;
-	int		ea_fd;
-	int		floor_color;
-	int		ceil_color;
-	int		**map;
-	int		map_height;
-	int		map_width;
-	t_pair	*pos;
-	t_pair	*dir;
-	t_pair	*proj_plane;
+	int				no_fd;
+	int				so_fd;
+	int				we_fd;
+	int				ea_fd;
+	int				floor_color;
+	int				ceil_color;
+	int				**map;
+	int				map_height;
+	int				map_width;
+	t_pair_d		*pos;
+	t_pair_d		*dir;
+	t_pair_d		*proj_plane;
+	/* raycasting */
+    double          camera_x;
+    t_pair_d        *ray_dir;
+    t_pair_i        *map_pos;
+    t_pair_d        *side_dist;
+    t_pair_d        *delta_dist;
+    double          perp_wall_dist;
+    t_pair_i        *step;
+    int             hit;
+    int             side;
+	/* fps */
+	unsigned long long			time;
+	unsigned long long			old_time;
+	double						curr_fps;
+	double						prev_fps;
+	int							fps_counter;
+	/* drawing pixels */
+    int             line_height;
+    int             draw_start;
+    int             draw_end;
+	/*  */
 }				t_cub;
 
 typedef struct s_parse_info {
@@ -72,7 +123,8 @@ typedef enum e_error_code {
 	WRONG_ARGC,
 	WRONG_FILE_EXT,
 	FILE_INEXISTENT,
-	MAP_INCORRECT
+	MAP_INCORRECT,
+	MLX_FAILURE
 }			t_error_code;
 
 /* DEAL with user INPUT */
@@ -111,6 +163,36 @@ void	free_cub(t_cub *cub);
 void	free_split(char **split);
 void	free_parse_info(t_parse_info *parse_info);
 void	graceful_exit(t_cub *cub);
+
+/* RAYCASTING */
+void	initialize_raycasting(t_cub *cub, int x);
+void	free_raycasting_vars(t_cub *cub);
+void	calculate_step(t_cub *cub);
+void	perform_dda(t_cub *cub);
+void	calculate_dist(t_cub *cub);
+void	raycast(t_cub *cub);
+
+/* DRAWING LINES TO THE SCREEN */
+void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
+void	draw_verline(t_cub *cub, int x, unsigned int color);
+int		set_pixel_color(t_cub *cub);
+unsigned int	set_pixels(t_cub *cub);
+
+/* FPS */
+unsigned long long	get_time_micros(void);
+int					display_fps(t_cub *cub);
+char	*set_fps_string(char *str1, t_cub *cub, int mode);
+
+/* HOOKING */
+int	key_hook(int keycode, t_cub *cub);
+
+/* MOVEMENT */
+void	move_forward(t_cub *cub, double edge, double move_speed);
+void	move_backward(t_cub *cub, double edge, double move_speed);
+void	rotate_left(t_cub *cub, double rot_speed);
+void	rotate_right(t_cub *cub, double rot_speed);
+void	move_right(t_cub *cub, double edge, double move_speed);
+void	move_left(t_cub *cub, double edge, double move_speed);
 
 /* GAMEOVER - Error management */
 void	error_message(t_error_code error_code);

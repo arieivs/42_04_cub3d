@@ -14,6 +14,9 @@ void	error_message(t_error_code error_code)
 	else if (error_code == MAP_INCORRECT)
 		ft_putstr_fd("Incorrect Map. Please provide a valid .cub file\n",
 			STDERR_FILENO);
+	else if (error_code == MLX_FAILURE)
+		ft_putstr_fd("MiniLibx failure. Please check your configuration\n",
+			STDERR_FILENO);
 	else
 	{
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
