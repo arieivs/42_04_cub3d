@@ -12,8 +12,8 @@
 # include "mlx.h"
 # include "libft.h"
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 960//1920
+# define HEIGHT 720//1080
 
 /* OS CHECK */
 # ifdef APPLE
