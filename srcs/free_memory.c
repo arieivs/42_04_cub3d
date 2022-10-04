@@ -6,14 +6,14 @@ void	free_cub(t_cub *cub)
 
 	if (cub->mlx)
 		mlx_destroy_window(cub->mlx, cub->window);
-	if (cub->no_fd != 0)
-		close(cub->no_fd);
-	if (cub->so_fd != 0)
-		close(cub->so_fd);
-	if (cub->we_fd != 0)
-		close(cub->we_fd);
-	if (cub->ea_fd != 0)
-		close(cub->ea_fd); // TODO protect close?
+	if (cub->walls.no_fd != 0)
+		close(cub->walls.no_fd);
+	if (cub->walls.so_fd != 0)
+		close(cub->walls.so_fd);
+	if (cub->walls.we_fd != 0)
+		close(cub->walls.we_fd);
+	if (cub->walls.ea_fd != 0)
+		close(cub->walls.ea_fd); // TODO protect close?
 	if (cub->map)
 	{
 		i = 0;

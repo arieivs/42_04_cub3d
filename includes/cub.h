@@ -14,6 +14,7 @@
 
 # define WIDTH 1920
 # define HEIGHT 1080
+# define ASSET_SIZE 512
 
 /* OS CHECK */
 # ifdef APPLE
@@ -48,6 +49,34 @@ typedef struct s_pair_i {
 	int	y;
 }				t_pair_i;
 
+typedef struct s_window {
+	void	*mlx_ptr;
+	void	*window_ptr;
+	int		height;
+	int		width;
+}	t_window;
+
+typedef struct s_img {
+	t_window	*win;
+	char		*addr;
+	int			height;
+	int			width;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+}	t_img;
+
+typedef struct s_walls {
+	int		no_fd;
+	t_img	*no_tex;
+	int		so_fd;
+	t_img	*so_tex;
+	int		we_fd;
+	t_img	*we_tex;
+	int		ea_fd;
+	t_img	*ea_tex;
+}	t_walls;
+
 typedef struct s_cub {
 	/* minilibx */
 	void			*mlx;
@@ -58,6 +87,7 @@ typedef struct s_cub {
 	int				line_length;
 	int				endian;
 	/* parsing map */
+	t_walls			walls;
 	int				no_fd;
 	int				so_fd;
 	int				we_fd;
