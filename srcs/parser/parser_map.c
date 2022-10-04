@@ -1,12 +1,13 @@
 #include "cub.h"
 
-/* Goes through the map for the first time and checks
- * its height and width, so later the appropriate memory
- * can be allocated */
+/* Goes through the map for the first time and checks its height and width,
+ * so later the appropriate memory can be allocated.
+ * need to go until the end of the file, else it won't restart properly
+ */
 void	evaluate_map_size(int map_fd, t_cub *cub, t_parse_info* parse_info)
 {
 	parse_info->line_nb_map_start = parse_info->line_nb;
-	while (parse_info->ret > 0)
+	while (parse_info->ret > 0 && !line_is_empty(parse_info->buff))
 	{
 		parse_info->buff = replace_tab_with_spaces(parse_info->buff, cub);
 		if (ft_strlen(parse_info->buff) > parse_info->max_map_width)
@@ -17,11 +18,18 @@ void	evaluate_map_size(int map_fd, t_cub *cub, t_parse_info* parse_info)
 	}
 	if (parse_info->ret == -1)
 		error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
-	parse_info->buff = replace_tab_with_spaces(parse_info->buff, cub);
-	if (ft_strlen(parse_info->buff) > parse_info->max_map_width)
-		parse_info->max_map_width = ft_strlen(parse_info->buff);
+	if (!line_is_empty(parse_info->buff))
+	{
+		parse_info->buff = replace_tab_with_spaces(parse_info->buff, cub);
+		if (ft_strlen(parse_info->buff) > parse_info->max_map_width)
+			parse_info->max_map_width = ft_strlen(parse_info->buff);
+		parse_info->line_nb++;
+	}
+	while ((parse_info->ret = get_next_line(map_fd, &parse_info->buff)) > 0)
+		free(parse_info->buff);
 	free(parse_info->buff);
-	parse_info->line_nb++;
+	cub->map_height = parse_info->line_nb - parse_info->line_nb_map_start;
+	cub->map_width = parse_info->max_map_width;
 }
 
 /* Sets player's initial position and direction */
@@ -130,25 +138,27 @@ void	validate_map_grid(int map_fd, t_cub *cub, t_parse_info* parse_info)
 {
 	int	i;
 
-	cub->map_height = parse_info->line_nb - parse_info->line_nb_map_start;
-	cub->map_width = parse_info->max_map_width;
 	cub->map = (int **)ft_calloc(sizeof(int *), cub->map_height);
 	i = 0;
-	while ((parse_info->ret = get_next_line(map_fd, &parse_info->buff)) > 0)
+	while (i < cub->map_height)
 	{
+		parse_info->ret = get_next_line(map_fd, &parse_info->buff);
+		if (parse_info->ret == -1)
+			error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
 		cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
 		if (!map_line_is_valid(cub, parse_info, i))
 			error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
 		i++;
 		free(parse_info->buff);
 	}
-	if (parse_info->ret == -1)
-		error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
-	cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
-	if (!map_line_is_valid(cub, parse_info, i))
-		error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
-	free(parse_info->buff); // or remove these two lines
-	parse_info->buff = NULL; // and leave it for free_parse_info
+	while (parse_info->ret > 0)
+	{
+		parse_info->ret = get_next_line(map_fd, &parse_info->buff);
+		if (parse_info->ret == -1 || !line_is_empty(parse_info->buff))
+			error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
+		free(parse_info->buff);
+	}
+	parse_info->buff = NULL;
 	if (!map_is_valid(cub, parse_info))
 		error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
 }
