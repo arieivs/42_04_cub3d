@@ -36,8 +36,8 @@ void	evaluate_map_size(int map_fd, t_cub *cub, t_parse_info* parse_info)
 void	set_player(t_cub *cub, char player, int x, int y)
 {
 	cub->map[y][x] = PLAYER;
-	cub->pos->x = (double)x;
-	cub->pos->y = (double)y;
+	cub->pos->x = (double)x + 0.5;
+	cub->pos->y = (double)y + 0.5;
 	if (player == 'N')
 	{
 		cub->dir->y = -1.0;
