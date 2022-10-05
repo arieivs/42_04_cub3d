@@ -33,6 +33,14 @@ t_cub	init_cub(void)
 	cub.side_dist = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
 	cub.delta_dist = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
 	cub.step = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, &cub);
+	cub.keys.w = 0;
+	cub.keys.a = 0;
+	cub.keys.s = 0;
+	cub.keys.d = 0;
+	cub.keys.up = 0;
+	cub.keys.down = 0;
+	cub.keys.left = 0;
+	cub.keys.right = 0;
 	return (cub);
 }
 

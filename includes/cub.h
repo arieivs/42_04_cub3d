@@ -12,8 +12,8 @@
 # include "mlx.h"
 # include "libft.h"
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 960
+# define HEIGHT 720
 # define ASSET_SIZE 512
 
 /* OS CHECK */
@@ -77,6 +77,17 @@ typedef struct s_walls {
 	t_img	*ea_tex;
 }	t_walls;
 
+typedef struct s_keys {
+	int	w;
+	int a;
+	int s;
+	int d;
+	int up;
+	int left;
+	int down;
+	int right;
+}	t_keys;
+
 typedef struct s_cub {
 	/* minilibx */
 	void			*mlx;
@@ -88,10 +99,6 @@ typedef struct s_cub {
 	int				endian;
 	/* parsing map */
 	t_walls			walls;
-	int				no_fd;
-	int				so_fd;
-	int				we_fd;
-	int				ea_fd;
 	int				floor_color;
 	int				ceil_color;
 	int				**map;
@@ -110,6 +117,8 @@ typedef struct s_cub {
 	t_pair_i		*step;
 	int				hit;
 	int				side;
+	/* movement */
+	t_keys			keys;
 	/* fps */
 	unsigned long long	time;
 	unsigned long long	old_time;
@@ -208,11 +217,17 @@ char				*set_fps_string(char *str1, t_cub *cub, int mode);
 
 /* HOOKING */
 int	key_hook(int keycode, t_cub *cub);
+int	key_up(int keycode, t_cub *cub);
+int	key_down(int keycode, t_cub *cub);
+
 /* MOVEMENT */
 void	move_forward(t_cub *cub, double edge, double move_speed);
 void	move_backward(t_cub *cub, double edge, double move_speed);
 void	move_right(t_cub *cub, double edge, double move_speed);
 void	move_left(t_cub *cub, double edge, double move_speed);
+void button_down(int key, t_cub *cub);
+void button_up(int key, t_cub *cub);
+
 /* ROTATE */
 void	rotate_left(t_cub *cub, double rot_speed);
 void	rotate_right(t_cub *cub, double rot_speed);
