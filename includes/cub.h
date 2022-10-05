@@ -12,7 +12,7 @@
 # include "mlx.h"
 # include "libft.h"
 
-# define WIDTH 960//1920
+# define WIDTH 920//1920
 # define HEIGHT 720//1080
 
 /* OS CHECK */
@@ -132,8 +132,8 @@ typedef enum e_error_code {
 int		check_args(int ac, char **av);
 
 /* INITIALIZERS */
-t_pair_d		init_pair_double(t_cub *cub);
-t_pair_i		init_pair_int(t_cub *cub);
+t_pair_d		*init_pair_double(t_cub *cub);
+t_pair_i		*init_pair_int(t_cub *cub);
 t_cub			init_cub(void);
 t_parse_info	init_parse_info(void);
 void			init_mlx_and_raycast(t_cub *cub);
@@ -173,6 +173,9 @@ void			my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
 void			draw_verline(t_cub *cub, int x, unsigned int color);
 int				set_pixel_color(t_cub *cub);
 unsigned int	set_pixels(t_cub *cub);
+
+/* DRAW NAVIGATOR */
+void	draw_navigator(t_cub *cub);
 
 /* FPS */
 unsigned long long	get_time_micros(void);

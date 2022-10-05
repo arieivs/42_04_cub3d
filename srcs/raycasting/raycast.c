@@ -125,4 +125,5 @@ void	raycast(t_cub *cub)
 		draw_verline(cub, x, color);
 		x++;
 	}
+	draw_navigator(cub);
 }

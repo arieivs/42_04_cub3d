@@ -1,22 +1,22 @@
 #include "cub.h"
 
-t_pair_d	init_pair_double(t_cub *cub)
+t_pair_d	*init_pair_double(t_cub *cub)
 {
-	t_paid_d	pair;
+	t_pair_d	*pair;
 
 	pair = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, cub);
-	pair.x = 0.0;
-	pair.y = 0.0;
+	pair->x = 0.0;
+	pair->y = 0.0;
 	return (pair);
 }
 
-t_pair_i	init_pair_int(t_cub *cub)
+t_pair_i	*init_pair_int(t_cub *cub)
 {
-	t_paid_i	pair;
+	t_pair_i	*pair;
 
 	pair = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, cub);
-	pair.x = 0;
-	pair.y = 0;
+	pair->x = 0;
+	pair->y = 0;
 	return (pair);
 }
 
@@ -73,11 +73,11 @@ void	init_mlx_and_raycast(t_cub *cub)
 {
 	cub->time = 0;
 	cub->old_time = 0;
-	cub->pixel_per_square = 10;
-	if (cub->map_width > WIDTH / 2)
-		cub->pixel_per_square = (int)WIDTH / (2 * cub->map_width);
-	if (cub->map_height > HEIGHT / 2)
-		cub->pixel_per_square = (int)HEIGHT / (2 * cub->map_height);
+	cub->pixel_per_square = 10; // TODO Should change somewhere else?
+	//if (cub->map_width > WIDTH / 2)
+	//	cub->pixel_per_square = (int)(WIDTH / (2 * cub->map_width));
+	//if (cub->map_height > HEIGHT / 2)
+	//	cub->pixel_per_square = (int)(HEIGHT / (2 * cub->map_height));
 	cub->mlx = mlx_init();
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
