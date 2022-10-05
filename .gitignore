@@ -5,3 +5,4 @@ objs/
 *.o
 libft.a
 cub3D
+*.dSYM/
