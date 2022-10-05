@@ -1,5 +1,25 @@
 #include "cub.h"
 
+t_pair_d	init_pair_double(t_cub *cub)
+{
+	t_paid_d	pair;
+
+	pair = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, cub);
+	pair.x = 0.0;
+	pair.y = 0.0;
+	return (pair);
+}
+
+t_pair_i	init_pair_int(t_cub *cub)
+{
+	t_paid_i	pair;
+
+	pair = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, cub);
+	pair.x = 0;
+	pair.y = 0;
+	return (pair);
+}
+
 t_cub	init_cub(void)
 {
 	t_cub	cub;
@@ -17,22 +37,14 @@ t_cub	init_cub(void)
 	cub.map = NULL;
 	cub.map_height = 0;
 	cub.map_width = 0;
-	cub.pos = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.pos->x = 0.0;
-	cub.pos->y = 0.0;
-	cub.dir = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.dir->x = 0.0;
-	cub.dir->y = 0.0;
-	cub.proj_plane = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.proj_plane->x = 0.0;
-	cub.proj_plane->y = 0.0;
-	cub.time = 0;
-	cub.old_time = 0;
-	cub.map_pos = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, &cub);
-	cub.ray_dir = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.side_dist = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.delta_dist = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.step = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, &cub);
+	cub.pos = init_pair_double(&cub);
+	cub.dir = init_pair_double(&cub);
+	cub.proj_plane = init_pair_double(&cub);
+	cub.ray_dir = init_pair_double(&cub);
+	cub.map_pos = init_pair_int(&cub);
+	cub.side_dist = init_pair_double(&cub);
+	cub.delta_dist = init_pair_double(&cub);
+	cub.step = init_pair_int(&cub);
 	return (cub);
 }
 
@@ -57,8 +69,15 @@ t_parse_info	init_parse_info(void)
 	return (parse_info);
 }
 
-void	init_mlx(t_cub *cub)
+void	init_mlx_and_raycast(t_cub *cub)
 {
+	cub->time = 0;
+	cub->old_time = 0;
+	cub->pixel_per_square = 10;
+	if (cub->map_width > WIDTH / 2)
+		cub->pixel_per_square = (int)WIDTH / (2 * cub->map_width);
+	if (cub->map_height > HEIGHT / 2)
+		cub->pixel_per_square = (int)HEIGHT / (2 * cub->map_height);
 	cub->mlx = mlx_init();
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);

@@ -90,7 +90,8 @@ typedef struct s_cub {
 	int				line_height;
 	int				draw_start;
 	int				draw_end;
-	/*  */
+	/* drawing navigator */
+	int				pixel_per_square;
 }				t_cub;
 
 typedef struct s_parse_info {
@@ -131,9 +132,11 @@ typedef enum e_error_code {
 int		check_args(int ac, char **av);
 
 /* INITIALIZERS */
+t_pair_d		init_pair_double(t_cub *cub);
+t_pair_i		init_pair_int(t_cub *cub);
 t_cub			init_cub(void);
 t_parse_info	init_parse_info(void);
-void			init_mlx(t_cub *cub);
+void			init_mlx_and_raycast(t_cub *cub);
 
 /* PARSER */
 void	validate_map(int map_fd, char *map_name, t_cub	*cub);

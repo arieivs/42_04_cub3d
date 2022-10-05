@@ -11,7 +11,7 @@ int	main(int ac, char **av)
 	cub = init_cub();
 	validate_map(map_fd, av[1], &cub);
 	print_cub(&cub);
-	init_mlx(&cub);
+	init_mlx_and_raycast(&cub);
 	raycast(&cub);
 	mlx_put_image_to_window(cub.mlx, cub.window, cub.img, 0, 0);
 	mlx_loop_hook(cub.mlx, display_fps, &cub);
