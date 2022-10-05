@@ -8,10 +8,10 @@ t_cub	init_cub(void)
 	cub.window = NULL;
 	cub.img = NULL;
 	cub.addr = NULL;
-	cub.no_fd = 0;
-	cub.so_fd = 0;
-	cub.we_fd = 0;
-	cub.ea_fd = 0;
+	cub.walls.no_fd = 0;
+	cub.walls.so_fd = 0;
+	cub.walls.we_fd = 0;
+	cub.walls.ea_fd = 0;
 	cub.floor_color = 0;
 	cub.ceil_color = 0;
 	cub.map = NULL;

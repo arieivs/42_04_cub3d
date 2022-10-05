@@ -2,8 +2,8 @@
 
 int	textures_colors_not_set(t_cub *cub, t_parse_info *parse_info)
 {
-	return (cub->no_fd == 0 || cub->so_fd == 0 || cub->we_fd == 0 ||
-		cub->ea_fd == 0 || parse_info->is_floor_color_set == 0 ||
+	return (cub->walls.no_fd == 0 || cub->walls.so_fd == 0 || cub->walls.we_fd == 0 ||
+		cub->walls.ea_fd == 0 || parse_info->is_floor_color_set == 0 ||
 		parse_info->is_ceil_color_set == 0);
 }
 
@@ -73,19 +73,19 @@ int	texture_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 		return (0);
 	if ((fd = open(parse_info->file_name, O_RDONLY)) == -1)
 		return (error_and_return(FILE_INEXISTENT, 0));
-	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 && cub->no_fd != 0) ||
-		(ft_strncmp(parse_info->prefix, "SO", 2) == 0 && cub->so_fd != 0) ||
-		(ft_strncmp(parse_info->prefix, "WE", 2) == 0 && cub->we_fd != 0) ||
-		(ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->ea_fd != 0))
+	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 && cub->walls.no_fd != 0) ||
+		(ft_strncmp(parse_info->prefix, "SO", 2) == 0 && cub->walls.so_fd != 0) ||
+		(ft_strncmp(parse_info->prefix, "WE", 2) == 0 && cub->walls.we_fd != 0) ||
+		(ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->walls.ea_fd != 0))
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "NO", 2) == 0)
-		cub->no_fd = fd;
+		cub->walls.no_fd = fd;
 	else if (ft_strncmp(parse_info->prefix, "SO", 2) == 0)
-		cub->so_fd = fd;
+		cub->walls.so_fd = fd;
 	else if (ft_strncmp(parse_info->prefix, "WE", 2) == 0)
-		cub->we_fd = fd;
+		cub->walls.we_fd = fd;
 	else
-		cub->ea_fd = fd;
+		cub->walls.ea_fd = fd;
 	return (1);
 }
 
