@@ -42,30 +42,41 @@ int	key_down(int keycode, t_cub *cub)
 	return (0);
 }
 
-int	key_hook(int keycode, t_cub *cub)
-{
-	double	edge;
-	double	move_speed;
-	double	rot_speed;
+/*
+	UPDATE_DISPLAY:
+	-	Inside of mlx_loop_hook, so happening when NO event happens
+	-	Checks the key value in the relevant struct set by key_down and key_up
+	-	If values in the struct are non-zero, apply movement to coords
+	
+	-	VAR: Edge detection = 1.1]
+	-	VAR: Movement Speed = 0.05 squares/frame]
+	-	VAR: Rotation Speed = 0.02 radians]
 
-	edge = 1.1;
-	move_speed = 0.6;
-	rot_speed = 0.1;
-	if (keycode == ESC_KEY)
-		graceful_exit(cub);
-	else if (keycode == W_KEY || keycode == UP_KEY)
-		move_forward(cub, edge, move_speed);
-	else if (keycode == S_KEY || keycode == DOWN_KEY)
-		move_backward(cub, edge, move_speed);
-	else if (keycode == LEFT_KEY)
-		rotate_left(cub, rot_speed);
-	else if (keycode == RIGHT_KEY)
-		rotate_right(cub, rot_speed);
-	else if (keycode == A_KEY)
-		move_left(cub, edge, move_speed);
-	else if (keycode == D_KEY)
-		move_right(cub, edge, move_speed);
-	raycast(cub);
-	mlx_put_image_to_window(cub->mlx, cub->window, cub->img, 0, 0);
+	-	Above values were set by experimentation. We can also change the
+		static int frame value in the if statement
+*/
+int update_display(t_cub *cub)
+{
+	static int frames = 0;
+
+	if (frames++ == 1000)
+	{
+		if (cub->keys.w || cub->keys.up)
+			move_forward(cub, 1.1, 0.05);
+		else if (cub->keys.s || cub->keys.down)
+			move_backward(cub, 1.1, 0.05);
+		if (cub->keys.left)
+			rotate_left(cub, 0.02);
+		else if (cub->keys.right)
+			rotate_right(cub, 0.02);
+		if (cub->keys.a)
+			move_left(cub, 1.1, 0.05);
+		else if (cub->keys.d)
+			move_right(cub, 1.1, 0.05);
+		if (cub->keys.w || cub->keys.a || cub->keys.s || cub->keys.d
+			|| cub->keys.up || cub->keys.down || cub->keys.left || cub->keys.right)
+			raycast(cub);
+		frames = 0;
+	}
 	return (0);
 }

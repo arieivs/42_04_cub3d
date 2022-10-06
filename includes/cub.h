@@ -58,6 +58,7 @@ typedef struct s_window {
 
 typedef struct s_img {
 	t_window	*win;
+	void		*img_ptr;
 	char		*addr;
 	int			height;
 	int			width;
@@ -67,12 +68,16 @@ typedef struct s_img {
 }	t_img;
 
 typedef struct s_walls {
+	char	*no_path;
 	int		no_fd;
 	t_img	*no_tex;
+	char	*so_path;
 	int		so_fd;
 	t_img	*so_tex;
+	char	*we_path;
 	int		we_fd;
 	t_img	*we_tex;
+	char	*ea_path;
 	int		ea_fd;
 	t_img	*ea_tex;
 }	t_walls;
@@ -216,7 +221,7 @@ int					display_fps(t_cub *cub);
 char				*set_fps_string(char *str1, t_cub *cub, int mode);
 
 /* HOOKING */
-int	key_hook(int keycode, t_cub *cub);
+int update_display(t_cub *cub);
 int	key_up(int keycode, t_cub *cub);
 int	key_down(int keycode, t_cub *cub);
 
@@ -225,12 +230,13 @@ void	move_forward(t_cub *cub, double edge, double move_speed);
 void	move_backward(t_cub *cub, double edge, double move_speed);
 void	move_right(t_cub *cub, double edge, double move_speed);
 void	move_left(t_cub *cub, double edge, double move_speed);
-void button_down(int key, t_cub *cub);
-void button_up(int key, t_cub *cub);
 
 /* ROTATE */
 void	rotate_left(t_cub *cub, double rot_speed);
 void	rotate_right(t_cub *cub, double rot_speed);
+
+/* TEXTURES */
+void	init_textures(t_cub *cub);
 
 /* FREE MEMORY */
 void	free_cub(t_cub *cub);

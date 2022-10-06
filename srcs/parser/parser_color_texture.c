@@ -79,13 +79,28 @@ int	texture_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 		(ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->walls.ea_fd != 0))
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "NO", 2) == 0)
+	{
+		cub->walls.no_path = ft_strdup(parse_info->file_name); // FREE THESE LATER
 		cub->walls.no_fd = fd;
+	}
 	else if (ft_strncmp(parse_info->prefix, "SO", 2) == 0)
+	{void button_down(int key, t_cub *cub);
+void button_up(int key, t_cub *cub);
+
+		cub->walls.so_path = ft_strdup(parse_info->file_name);
 		cub->walls.so_fd = fd;
+	}
 	else if (ft_strncmp(parse_info->prefix, "WE", 2) == 0)
+	{
+		cub->walls.we_path = ft_strdup(parse_info->file_name);
 		cub->walls.we_fd = fd;
+	}
 	else
+	{
+		cub->walls.ea_path = ft_strdup(parse_info->file_name);
 		cub->walls.ea_fd = fd;
+	}
+		
 	return (1);
 }
 
