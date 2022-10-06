@@ -6,8 +6,8 @@ void	print_cub(t_cub *cub)
 	int	j;
 
 	printf("\n***	🎨 CUB 🍻	***\n\n");
-	printf("NO fd: %d, SO fd: %d, WE fd: %d, EA fd: %d\n",
-		cub->walls.no_fd, cub->walls.so_fd, cub->walls.we_fd, cub->walls.ea_fd);
+	// printf("NO fd: %d, SO fd: %d, WE fd: %d, EA fd: %d\n",
+	// 	cub->walls.no_fd, cub->walls.so_fd, cub->walls.we_fd, cub->walls.ea_fd);
 	printf("Floor color: #%X%X%X%X or rgb(%d, %d, %d)\n", get_t(cub->floor_color),
 		get_r(cub->floor_color), get_g(cub->floor_color), get_b(cub->floor_color),
 		get_r(cub->floor_color), get_g(cub->floor_color), get_b(cub->floor_color));

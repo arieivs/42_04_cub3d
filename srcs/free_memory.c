@@ -6,14 +6,6 @@ void	free_cub(t_cub *cub)
 
 	if (cub->mlx)
 		mlx_destroy_window(cub->mlx, cub->window);
-	if (cub->walls.no_fd != 0)
-		close(cub->walls.no_fd);
-	if (cub->walls.so_fd != 0)
-		close(cub->walls.so_fd);
-	if (cub->walls.we_fd != 0)
-		close(cub->walls.we_fd);
-	if (cub->walls.ea_fd != 0)
-		close(cub->walls.ea_fd); // TODO protect close?
 	if (cub->map)
 	{
 		i = 0;
@@ -21,6 +13,12 @@ void	free_cub(t_cub *cub)
 			free(cub->map[i++]);
 		free(cub->map);
 		cub->map = NULL;
+	}
+	i = 0;
+	while (i < 4)
+	{
+	if (cub->walls[i].path)
+		free(cub->walls[i++].path);
 	}
 	if (cub->pos)
 		free(cub->pos);
@@ -37,7 +35,7 @@ void	free_cub(t_cub *cub)
 	if (cub->delta_dist)
 		free(cub->delta_dist);
 	if (cub->step)
-		free(cub->step);	
+		free(cub->step);
 }
 
 void	free_split(char **split)

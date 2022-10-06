@@ -49,15 +49,7 @@ typedef struct s_pair_i {
 	int	y;
 }				t_pair_i;
 
-typedef struct s_window {
-	void	*mlx_ptr;
-	void	*window_ptr;
-	int		height;
-	int		width;
-}	t_window;
-
 typedef struct s_img {
-	t_window	*win;
 	void		*img_ptr;
 	char		*addr;
 	int			height;
@@ -67,20 +59,21 @@ typedef struct s_img {
 	int			endian;
 }	t_img;
 
-typedef struct s_walls {
-	char	*no_path;
-	int		no_fd;
-	t_img	*no_tex;
-	char	*so_path;
-	int		so_fd;
-	t_img	*so_tex;
-	char	*we_path;
-	int		we_fd;
-	t_img	*we_tex;
-	char	*ea_path;
-	int		ea_fd;
-	t_img	*ea_tex;
-}	t_walls;
+// typedef struct s_walls {
+// 	char	*no_path;
+// 	t_img	*no_tex;
+// 	char	*so_path;
+// 	t_img	*so_tex;
+// 	char	*we_path;
+// 	t_img	*we_tex;
+// 	char	*ea_path;
+// 	t_img	*ea_tex;
+// }	t_walls;
+
+typedef struct s_wall {
+	char	*path;
+	t_img	*tex;
+}	t_wall;
 
 typedef struct s_keys {
 	int	w;
@@ -103,7 +96,7 @@ typedef struct s_cub {
 	int				line_length;
 	int				endian;
 	/* parsing map */
-	t_walls			walls;
+	t_wall			walls[4]; // NO SO WE EA
 	int				floor_color;
 	int				ceil_color;
 	int				**map;
