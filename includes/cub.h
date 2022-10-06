@@ -12,7 +12,7 @@
 # include "mlx.h"
 # include "libft.h"
 
-# define WIDTH 920//1920
+# define WIDTH 1220//1920
 # define HEIGHT 720//1080
 
 /* OS CHECK */

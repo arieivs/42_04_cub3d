@@ -73,11 +73,7 @@ void	init_mlx_and_raycast(t_cub *cub)
 {
 	cub->time = 0;
 	cub->old_time = 0;
-	cub->pixel_per_square = 10; // TODO Should change somewhere else?
-	//if (cub->map_width > WIDTH / 2)
-	//	cub->pixel_per_square = (int)(WIDTH / (2 * cub->map_width));
-	//if (cub->map_height > HEIGHT / 2)
-	//	cub->pixel_per_square = (int)(HEIGHT / (2 * cub->map_height));
+	cub->pixel_per_square = 12;
 	cub->mlx = mlx_init();
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
