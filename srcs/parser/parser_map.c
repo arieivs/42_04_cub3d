@@ -41,22 +41,22 @@ void	set_player(t_cub *cub, char player, int x, int y)
 	if (player == 'N')
 	{
 		cub->dir->y = -1.0;
-		cub->proj_plane->x = -0.66;
+		cub->proj_plane->x = 0.66;
 	}
 	else if (player == 'S')
 	{
 		cub->dir->y = 1.0;
-		cub->proj_plane->x = 0.66;
+		cub->proj_plane->x = -0.66;
 	}
 	else if (player == 'W')
 	{
 		cub->dir->x = -1.0;
-		cub->proj_plane->y = 0.66;
+		cub->proj_plane->y = -0.66;
 	}
 	else if (player == 'E')
 	{
 		cub->dir->x = 1.0;
-		cub->proj_plane->y = -0.66;
+		cub->proj_plane->y = 0.66;
 	}
 }
 
