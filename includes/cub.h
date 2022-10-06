@@ -12,8 +12,9 @@
 # include "mlx.h"
 # include "libft.h"
 
-# define WIDTH 960//1920
-# define HEIGHT 720//1080
+# define WIDTH 960
+# define HEIGHT 720
+# define ASSET_SIZE 512
 
 /* OS CHECK */
 # ifdef APPLE
@@ -48,6 +49,43 @@ typedef struct s_pair_i {
 	int	y;
 }				t_pair_i;
 
+typedef struct s_img {
+	void		*img_ptr;
+	char		*addr;
+	int			height;
+	int			width;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+}	t_img;
+
+// typedef struct s_walls {
+// 	char	*no_path;
+// 	t_img	*no_tex;
+// 	char	*so_path;
+// 	t_img	*so_tex;
+// 	char	*we_path;
+// 	t_img	*we_tex;
+// 	char	*ea_path;
+// 	t_img	*ea_tex;
+// }	t_walls;
+
+typedef struct s_wall {
+	char	*path;
+	t_img	*tex;
+}	t_wall;
+
+typedef struct s_keys {
+	int	w;
+	int a;
+	int s;
+	int d;
+	int up;
+	int left;
+	int down;
+	int right;
+}	t_keys;
+
 typedef struct s_cub {
 	/* minilibx */
 	void			*mlx;
@@ -58,10 +96,7 @@ typedef struct s_cub {
 	int				line_length;
 	int				endian;
 	/* parsing map */
-	int				no_fd;
-	int				so_fd;
-	int				we_fd;
-	int				ea_fd;
+	t_wall			walls[4]; // NO SO WE EA
 	int				floor_color;
 	int				ceil_color;
 	int				**map;
@@ -80,6 +115,8 @@ typedef struct s_cub {
 	t_pair_i		*step;
 	int				hit;
 	int				side;
+	/* movement */
+	t_keys			keys;
 	/* fps */
 	unsigned long long	time;
 	unsigned long long	old_time;
@@ -177,15 +214,22 @@ int					display_fps(t_cub *cub);
 char				*set_fps_string(char *str1, t_cub *cub, int mode);
 
 /* HOOKING */
-int	key_hook(int keycode, t_cub *cub);
+int update_display(t_cub *cub);
+int	key_up(int keycode, t_cub *cub);
+int	key_down(int keycode, t_cub *cub);
+
 /* MOVEMENT */
 void	move_forward(t_cub *cub, double edge, double move_speed);
 void	move_backward(t_cub *cub, double edge, double move_speed);
 void	move_right(t_cub *cub, double edge, double move_speed);
 void	move_left(t_cub *cub, double edge, double move_speed);
+
 /* ROTATE */
 void	rotate_left(t_cub *cub, double rot_speed);
 void	rotate_right(t_cub *cub, double rot_speed);
+
+/* TEXTURES */
+void	init_textures(t_cub *cub);
 
 /* FREE MEMORY */
 void	free_cub(t_cub *cub);

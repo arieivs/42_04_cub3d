@@ -12,10 +12,11 @@ int	main(int ac, char **av)
 	validate_map(map_fd, av[1], &cub);
 	print_cub(&cub);
 	init_mlx(&cub);
+	init_textures(&cub);
 	raycast(&cub);
-	mlx_put_image_to_window(cub.mlx, cub.window, cub.img, 0, 0);
-	mlx_loop_hook(cub.mlx, display_fps, &cub);
-	mlx_hook(cub.window, 2, 1L << 0, key_hook, &cub);
+	mlx_hook(cub.window, 3, 1L << 1, key_up, &cub);
+	mlx_hook(cub.window, 2, 1L << 0, key_down, &cub);
+	mlx_loop_hook(cub.mlx, update_display, &cub);
 	mlx_loop(cub.mlx);
 	return (0);
 }
