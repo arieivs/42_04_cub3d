@@ -20,18 +20,27 @@ t_pair_i	*init_pair_int(t_cub *cub)
 	return (pair);
 }
 
+static void	init_keys(t_cub *cub)
+{
+	cub->keys.w = 0;
+	cub->keys.a = 0;
+	cub->keys.s = 0;
+	cub->keys.d = 0;
+	cub->keys.up = 0;
+	cub->keys.down = 0;
+	cub->keys.left = 0;
+	cub->keys.right = 0;
+}
+
 t_cub	init_cub(void)
 {
 	t_cub	cub;
+	int		i;
 
 	cub.mlx = NULL;
 	cub.window = NULL;
 	cub.img = NULL;
 	cub.addr = NULL;
-	cub.no_fd = 0;
-	cub.so_fd = 0;
-	cub.we_fd = 0;
-	cub.ea_fd = 0;
 	cub.floor_color = 0;
 	cub.ceil_color = 0;
 	cub.map = NULL;
@@ -45,6 +54,10 @@ t_cub	init_cub(void)
 	cub.side_dist = init_pair_double(&cub);
 	cub.delta_dist = init_pair_double(&cub);
 	cub.step = init_pair_int(&cub);
+	init_keys(&cub);
+	i = 0;
+	while (i < 4)
+		cub.walls[i++].path = NULL;
 	return (cub);
 }
 
@@ -79,4 +92,19 @@ void	init_mlx_and_raycast(t_cub *cub)
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
 	cub->addr = mlx_get_data_addr(cub->img, &cub->bits_per_pixel,
 			&cub->line_length, &cub->endian);
+}
+
+void	init_textures(t_cub *cub)
+{
+  int i;
+  
+  i = 0;
+  while (i < 4)
+  {
+	  cub->walls[i].tex = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
+	  cub->walls[i].tex->width = ASSET_SIZE;
+	  cub->walls[i].tex->height = ASSET_SIZE;
+	  cub->walls[i].tex->img_ptr = mlx_xpm_file_to_image(cub->mlx, cub->walls[i].path, &(cub->walls[i].tex->width), &(cub->walls[i].tex->height));
+    i++;
+  }
 }

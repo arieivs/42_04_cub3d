@@ -12,8 +12,9 @@
 # include "mlx.h"
 # include "libft.h"
 
-# define WIDTH 1220//1920
-# define HEIGHT 720//1080
+# define WIDTH 1220 //1920
+# define HEIGHT 720 //1080
+# define ASSET_SIZE 512
 
 /* OS CHECK */
 # ifdef APPLE
@@ -48,6 +49,32 @@ typedef struct s_pair_i {
 	int	y;
 }				t_pair_i;
 
+typedef struct s_img {
+	void		*img_ptr;
+	char		*addr;
+	int			height;
+	int			width;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+}	t_img;
+
+typedef struct s_wall {
+	char	*path;
+	t_img	*tex;
+}	t_wall;
+
+typedef struct s_keys {
+	int	w;
+	int a;
+	int s;
+	int d;
+	int up;
+	int left;
+	int down;
+	int right;
+}	t_keys;
+
 typedef struct s_cub {
 	/* minilibx */
 	void			*mlx;
@@ -58,10 +85,7 @@ typedef struct s_cub {
 	int				line_length;
 	int				endian;
 	/* parsing map */
-	int				no_fd;
-	int				so_fd;
-	int				we_fd;
-	int				ea_fd;
+	t_wall			walls[4]; // NO SO WE EA
 	int				floor_color;
 	int				ceil_color;
 	int				**map;
@@ -80,6 +104,8 @@ typedef struct s_cub {
 	t_pair_i		*step;
 	int				hit;
 	int				side;
+	/* movement */
+	t_keys			keys;
 	/* fps */
 	unsigned long long	time;
 	unsigned long long	old_time;
@@ -137,6 +163,7 @@ t_pair_i		*init_pair_int(t_cub *cub);
 t_cub			init_cub(void);
 t_parse_info	init_parse_info(void);
 void			init_mlx_and_raycast(t_cub *cub);
+void	    init_textures(t_cub *cub);
 
 /* PARSER */
 void	validate_map(int map_fd, char *map_name, t_cub	*cub);
@@ -183,12 +210,16 @@ int					display_fps(t_cub *cub);
 char				*set_fps_string(char *str1, t_cub *cub, int mode);
 
 /* HOOKING */
-int	key_hook(int keycode, t_cub *cub);
+int update_display(t_cub *cub);
+int	key_up(int keycode, t_cub *cub);
+int	key_down(int keycode, t_cub *cub);
+
 /* MOVEMENT */
 void	move_forward(t_cub *cub, double edge, double move_speed);
 void	move_backward(t_cub *cub, double edge, double move_speed);
 void	move_right(t_cub *cub, double edge, double move_speed);
 void	move_left(t_cub *cub, double edge, double move_speed);
+
 /* ROTATE */
 void	rotate_left(t_cub *cub, double rot_speed);
 void	rotate_right(t_cub *cub, double rot_speed);

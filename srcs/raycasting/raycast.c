@@ -126,4 +126,5 @@ void	raycast(t_cub *cub)
 		x++;
 	}
 	draw_navigator(cub);
+	mlx_put_image_to_window(cub->mlx, cub->window, cub->img, 0, 0);
 }
