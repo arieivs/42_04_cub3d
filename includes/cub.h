@@ -220,6 +220,7 @@ char				*set_fps_string(char *str1, t_cub *cub, int mode);
 int update_display(t_cub *cub);
 int	key_up(int keycode, t_cub *cub);
 int	key_down(int keycode, t_cub *cub);
+int	exit_game(int keycode, t_cub *cub);
 
 /* MOVEMENT */
 void	move_forward(t_cub *cub, double edge, double move_speed);

@@ -1,5 +1,12 @@
 #include "cub.h"
 
+int	exit_game(int keycode, t_cub *cub)
+{
+	if (keycode == ESC_KEY)
+		graceful_exit(cub);
+	return (0);
+}
+
 int	key_up(int keycode, t_cub *cub)
 {
 	if (keycode == W_KEY)
@@ -63,7 +70,7 @@ int update_display(t_cub *cub)
 	cub->old_time = cub->time;
 	cub->time = get_time_micros();
 	frame_time = (double)(cub->time - cub->old_time) / 1000; // in milliseconds
-	if (frames++ == 10)
+	if (frames++ == 15)
 	{
 		if (cub->keys.w || cub->keys.up)
 			move_forward(cub, 1.1, 0.5 * frame_time);

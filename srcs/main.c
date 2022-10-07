@@ -16,6 +16,7 @@ int	main(int ac, char **av)
 	raycast(&cub);
 	mlx_hook(cub.window, 3, 1L << 1, key_up, &cub);
 	mlx_hook(cub.window, 2, 1L << 0, key_down, &cub);
+	mlx_key_hook(cub.window, exit_game, &cub);
 	mlx_loop_hook(cub.mlx, update_display, &cub);
 	mlx_loop(cub.mlx);
 	return (0);
