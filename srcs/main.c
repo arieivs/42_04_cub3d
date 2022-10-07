@@ -11,7 +11,7 @@ int	main(int ac, char **av)
 	cub = init_cub();
 	validate_map(map_fd, av[1], &cub);
 	print_cub(&cub);
-	init_mlx(&cub);
+	init_mlx_and_raycast(&cub);
 	init_textures(&cub);
 	raycast(&cub);
 	mlx_hook(cub.window, 3, 1L << 1, key_up, &cub);

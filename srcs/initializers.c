@@ -1,5 +1,25 @@
 #include "cub.h"
 
+t_pair_d	*init_pair_double(t_cub *cub)
+{
+	t_pair_d	*pair;
+
+	pair = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, cub);
+	pair->x = 0.0;
+	pair->y = 0.0;
+	return (pair);
+}
+
+t_pair_i	*init_pair_int(t_cub *cub)
+{
+	t_pair_i	*pair;
+
+	pair = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, cub);
+	pair->x = 0;
+	pair->y = 0;
+	return (pair);
+}
+
 static void	init_keys(t_cub *cub)
 {
 	cub->keys.w = 0;
@@ -26,22 +46,14 @@ t_cub	init_cub(void)
 	cub.map = NULL;
 	cub.map_height = 0;
 	cub.map_width = 0;
-	cub.pos = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.pos->x = 0.0;
-	cub.pos->y = 0.0;
-	cub.dir = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.dir->x = 0.0;
-	cub.dir->y = 0.0;
-	cub.proj_plane = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.proj_plane->x = 0.0;
-	cub.proj_plane->y = 0.0;
-	cub.time = 0;
-	cub.old_time = 0;
-	cub.map_pos = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, &cub);
-	cub.ray_dir = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.side_dist = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.delta_dist = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, &cub);
-	cub.step = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, &cub);
+	cub.pos = init_pair_double(&cub);
+	cub.dir = init_pair_double(&cub);
+	cub.proj_plane = init_pair_double(&cub);
+	cub.ray_dir = init_pair_double(&cub);
+	cub.map_pos = init_pair_int(&cub);
+	cub.side_dist = init_pair_double(&cub);
+	cub.delta_dist = init_pair_double(&cub);
+	cub.step = init_pair_int(&cub);
 	init_keys(&cub);
 	i = 0;
 	while (i < 4)
@@ -70,8 +82,11 @@ t_parse_info	init_parse_info(void)
 	return (parse_info);
 }
 
-void	init_mlx(t_cub *cub)
+void	init_mlx_and_raycast(t_cub *cub)
 {
+	cub->time = 0;
+	cub->old_time = 0;
+	cub->pixel_per_square = 12;
 	cub->mlx = mlx_init();
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
 	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
@@ -81,23 +96,15 @@ void	init_mlx(t_cub *cub)
 
 void	init_textures(t_cub *cub)
 {
-	cub->walls[0].tex = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
-	cub->walls[0].tex->width = ASSET_SIZE;
-	cub->walls[0].tex->height = ASSET_SIZE;
-	cub->walls[0].tex->img_ptr = mlx_xpm_file_to_image(cub->mlx, cub->walls[0].path, &(cub->walls[0].tex->width), &(cub->walls[0].tex->height));
-
-	cub->walls[1].tex = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
-	cub->walls[1].tex->width = ASSET_SIZE;
-	cub->walls[1].tex->height = ASSET_SIZE;
-	cub->walls[1].tex->img_ptr = mlx_xpm_file_to_image(cub->mlx, cub->walls[1].path, &(cub->walls[1].tex->width), &(cub->walls[1].tex->height));
-	
-	cub->walls[2].tex = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
-	cub->walls[2].tex->width = ASSET_SIZE;
-	cub->walls[2].tex->height = ASSET_SIZE;
-	cub->walls[2].tex->img_ptr = mlx_xpm_file_to_image(cub->mlx, cub->walls[2].path, &(cub->walls[2].tex->width), &(cub->walls[2].tex->height));
-
-	cub->walls[3].tex = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
-	cub->walls[3].tex->width = ASSET_SIZE;
-	cub->walls[3].tex->height = ASSET_SIZE;
-	cub->walls[3].tex->img_ptr = mlx_xpm_file_to_image(cub->mlx, cub->walls[3].path, &(cub->walls[3].tex->width), &(cub->walls[3].tex->height));
+  int i;
+  
+  i = 0;
+  while (i < 4)
+  {
+	  cub->walls[i].tex = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
+	  cub->walls[i].tex->width = ASSET_SIZE;
+	  cub->walls[i].tex->height = ASSET_SIZE;
+	  cub->walls[i].tex->img_ptr = mlx_xpm_file_to_image(cub->mlx, cub->walls[i].path, &(cub->walls[i].tex->width), &(cub->walls[i].tex->height));
+    i++;
+  }
 }

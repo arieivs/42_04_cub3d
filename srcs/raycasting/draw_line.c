@@ -47,10 +47,10 @@ unsigned int	set_pixels(t_cub *cub)
 	unsigned int	color;
 
 	cub->line_height = (int)(((double)HEIGHT) / cub->perp_wall_dist);
-	cub->draw_start = -cub->line_height / 2 + HEIGHT / 2;
+	cub->draw_start = (- cub->line_height + HEIGHT) / 2;
 	if (cub->draw_start < 0)
 		cub->draw_start = 0;
-	cub->draw_end = cub->line_height / 2 + HEIGHT / 2;
+	cub->draw_end = (cub->line_height + HEIGHT) / 2;
 	if (cub->draw_end >= HEIGHT)
 		cub->draw_end = HEIGHT - 1;
 	color = set_pixel_color(cub);

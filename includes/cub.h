@@ -12,8 +12,8 @@
 # include "mlx.h"
 # include "libft.h"
 
-# define WIDTH 960
-# define HEIGHT 720
+# define WIDTH 1220 //1920
+# define HEIGHT 720 //1080
 # define ASSET_SIZE 512
 
 /* OS CHECK */
@@ -58,17 +58,6 @@ typedef struct s_img {
 	int			line_length;
 	int			endian;
 }	t_img;
-
-// typedef struct s_walls {
-// 	char	*no_path;
-// 	t_img	*no_tex;
-// 	char	*so_path;
-// 	t_img	*so_tex;
-// 	char	*we_path;
-// 	t_img	*we_tex;
-// 	char	*ea_path;
-// 	t_img	*ea_tex;
-// }	t_walls;
 
 typedef struct s_wall {
 	char	*path;
@@ -127,7 +116,8 @@ typedef struct s_cub {
 	int				line_height;
 	int				draw_start;
 	int				draw_end;
-	/*  */
+	/* drawing navigator */
+	int				pixel_per_square;
 }				t_cub;
 
 typedef struct s_parse_info {
@@ -168,9 +158,12 @@ typedef enum e_error_code {
 int		check_args(int ac, char **av);
 
 /* INITIALIZERS */
+t_pair_d		*init_pair_double(t_cub *cub);
+t_pair_i		*init_pair_int(t_cub *cub);
 t_cub			init_cub(void);
 t_parse_info	init_parse_info(void);
-void			init_mlx(t_cub *cub);
+void			init_mlx_and_raycast(t_cub *cub);
+void	    init_textures(t_cub *cub);
 
 /* PARSER */
 void	validate_map(int map_fd, char *map_name, t_cub	*cub);
@@ -208,6 +201,9 @@ void			draw_verline(t_cub *cub, int x, unsigned int color);
 int				set_pixel_color(t_cub *cub);
 unsigned int	set_pixels(t_cub *cub);
 
+/* DRAW NAVIGATOR */
+void	draw_navigator(t_cub *cub);
+
 /* FPS */
 unsigned long long	get_time_micros(void);
 int					display_fps(t_cub *cub);
@@ -227,9 +223,6 @@ void	move_left(t_cub *cub, double edge, double move_speed);
 /* ROTATE */
 void	rotate_left(t_cub *cub, double rot_speed);
 void	rotate_right(t_cub *cub, double rot_speed);
-
-/* TEXTURES */
-void	init_textures(t_cub *cub);
 
 /* FREE MEMORY */
 void	free_cub(t_cub *cub);
