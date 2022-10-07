@@ -1,12 +1,5 @@
 #include "cub.h"
 
-int	exit_game(int keycode, t_cub *cub)
-{
-	if (keycode == ESC_KEY)
-		graceful_exit(cub);
-	return (0);
-}
-
 int	key_up(int keycode, t_cub *cub)
 {
 	if (keycode == W_KEY)
@@ -46,6 +39,8 @@ int	key_down(int keycode, t_cub *cub)
 		cub->keys.left = 1;
 	if (keycode == RIGHT_KEY)
 		cub->keys.right = 1;
+	if (keycode == ESC_KEY)
+		graceful_exit(cub);
 	return (0);
 }
 
