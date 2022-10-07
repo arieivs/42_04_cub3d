@@ -41,7 +41,7 @@ void	initialize_raycasting(t_cub *cub, int x)
 
 /*
 	CALCULATE_STEP
-	
+
 	-	This function calculates for a given position, what the distance
 		is to the next gridsquare
 	-	This distance to the first grid square (side_dist) is basically

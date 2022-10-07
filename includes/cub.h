@@ -145,6 +145,13 @@ typedef enum e_map_code {
 	PLAYER
 }			t_map_code;
 
+typedef enum e_dir_code {
+	NO = 0,
+	SO,
+	WE,
+	EA
+}	t_dir_code;
+
 typedef enum e_error_code {
 	ERRNO = 1,
 	WRONG_ARGC,
