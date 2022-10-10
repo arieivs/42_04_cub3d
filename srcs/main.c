@@ -17,8 +17,6 @@ int	main(int ac, char **av)
 	mlx_hook(cub.window, 3, 1L << 1, key_up, &cub);
 	mlx_hook(cub.window, 2, 1L << 0, key_down, &cub);
 	mlx_loop_hook(cub.mlx, update_display, &cub);
-	// int pos = (10 * cub.line_length + 10 * (cub.bits_per_pixel / 8));
-	// printf("pos value is %d\n", pos);
 	mlx_loop(cub.mlx);
 	return (0);
 }

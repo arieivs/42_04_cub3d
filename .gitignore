@@ -6,3 +6,4 @@ objs/
 libft.a
 cub3D
 *.dSYM/
+.DS_Store

@@ -36,6 +36,8 @@ void	free_cub(t_cub *cub)
 		free(cub->delta_dist);
 	if (cub->step)
 		free(cub->step);
+	if (cub->texel)
+		free(cub->texel);
 }
 
 void	free_split(char **split)

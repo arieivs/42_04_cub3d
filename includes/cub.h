@@ -104,6 +104,11 @@ typedef struct s_cub {
 	t_pair_i		*step;
 	int				hit;
 	int				side;
+	/* textures */
+	double			wall_x;
+	t_pair_i		*texel;
+	double			texel_step;
+	double			texel_pos;
 	/* movement */
 	t_keys			keys;
 	/* fps */
@@ -191,6 +196,7 @@ int		get_t(int trgb);
 int		get_r(int trgb);
 int		get_g(int trgb);
 int		get_b(int trgb);
+unsigned int	get_texture_color(t_img *texture, int pixel_x, int pixel_y);
 
 /* DEBUG */
 void	print_cub(t_cub *cub);
@@ -200,6 +206,7 @@ void	initialize_raycasting(t_cub *cub, int x);
 void	calculate_step(t_cub *cub);
 void	perform_dda(t_cub *cub);
 void	calculate_dist(t_cub *cub);
+void	apply_textures(t_cub *cub, int x);
 void	raycast(t_cub *cub);
 
 /* DRAWING LINES TO THE SCREEN */
