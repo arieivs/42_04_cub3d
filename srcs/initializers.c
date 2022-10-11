@@ -101,8 +101,6 @@ t_parse_info	init_parse_info(void)
 
 void	init_mlx_and_raycast(t_cub *cub)
 {
-	// cub->time = 0;
-	// cub->old_time = 0;
 	cub->pixel_per_square = 12;
 	cub->mlx = mlx_init();
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");

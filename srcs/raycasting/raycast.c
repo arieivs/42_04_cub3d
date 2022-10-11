@@ -129,6 +129,5 @@ void	raycast(t_cub *cub)
 		x++;
 	}
 	draw_navigator(cub);
-	display_fps(cub); // TO BE REMOVED
 	mlx_put_image_to_window(cub->mlx, cub->window, cub->img->img_ptr, 0, 0);
 }

@@ -1,5 +1,19 @@
 #include "cub.h"
 
+static void	put_fps_string(double fps, t_cub *cub)
+{
+	char	*str1;
+	char	*str2;
+
+	str1 = ft_itoa((int)fps);
+	if (!str1)
+		return ;
+	str2 = ft_strjoin("FPS: ", str1);
+	free(str1);
+	mlx_string_put(cub->mlx, cub->window, 25, 25, 0x00FFF000, str2);
+	free(str2);
+}
+
 void	display_fps(t_cub *cub)
 {
 	unsigned long long			time;
@@ -22,20 +36,6 @@ void	display_fps(t_cub *cub)
 	}
 	old_time = time;
 	prev_fps = curr_fps;
-}
-
-void	*put_fps_string(double fps, t_cub *cub)
-{
-	char	*str1
-	char	*str2;
-
-	str1 = ft_itoa((int)fps);
-	if (!str1)
-		return ;
-	str2 = ft_strjoin("FPS: ", str1);
-	free(str1);
-	mlx_string_put(cub->mlx, cub->window, 25, 25, 0x00000000, str2);
-	free(str2);
 }
 
 unsigned long long	get_time_micros(void)

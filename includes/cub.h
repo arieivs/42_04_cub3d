@@ -141,12 +141,6 @@ typedef struct s_cub {
 	double			texel_pos;
 	/* movement */
 	t_keys			keys;
-	/* fps */
-	// unsigned long long	time;
-	// unsigned long long	old_time;
-	// double				curr_fps;
-	// double				prev_fps;
-	// int					fps_counter;
 	/* drawing pixels */
 	int				line_height;
 	int				draw_start;
@@ -259,7 +253,6 @@ int		get_b(int trgb);
 void	print_cub(t_cub *cub);
 /* FPS */
 unsigned long long	get_time_micros(void);
-int					display_fps(t_cub *cub);
-char				*set_fps_string(char *str1, t_cub *cub, int mode);
+void				display_fps(t_cub *cub);
 
 #endif
