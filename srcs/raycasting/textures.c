@@ -82,7 +82,6 @@ void	draw_texture(int x, int i, t_cub *cub)
 		cub->texel->y = (int)cub->texel_pos;
 		if (cub->texel->y < 0)
 			cub->texel->y = 0;
-		if (cub->texel_pos < 0)
 		cub->texel_pos += cub->texel_step;
 		wall_dir = get_wall_dir(cub);
 		color = get_texture_color(cub->walls[wall_dir].tex,
