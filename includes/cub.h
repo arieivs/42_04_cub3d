@@ -180,6 +180,7 @@ t_parse_info	init_parse_info(void);
 void			init_mlx_and_raycast(t_cub *cub);
 void			init_textures(t_cub *cub);
 
+/* *** PARSER *** */
 /* PARSER */
 void	validate_map(int map_fd, char *map_name, t_cub	*cub);
 void	validate_map_info(int map_fd, t_cub *cub, t_parse_info* parse_info);
@@ -193,50 +194,31 @@ void	validate_map_grid(int map_fd, t_cub *cub, t_parse_info* parse_info);
 int		line_is_empty(char *line);
 char	*replace_tab_with_spaces(char *line, t_cub *cub);
 
-/* COLOR */
-int		get_trgb(int t, int r, int g, int b);
-int		get_t(int trgb);
-int		get_r(int trgb);
-int		get_g(int trgb);
-int		get_b(int trgb);
-unsigned int	get_texture_color(t_img *texture, int pixel_x, int pixel_y);
-
-/* DEBUG */
-void	print_cub(t_cub *cub);
-
-/* RAYCASTING */
+/* *** RAYCASTING *** */
+/* PIXEL */
+void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
+/* RAYCAST */
 void	initialize_raycasting(t_cub *cub, int x);
 void	calculate_step(t_cub *cub);
 void	perform_dda(t_cub *cub);
-void	calculate_dist(t_cub *cub);
-void	apply_textures(t_cub *cub, int x);
+void	calculate_drawline(t_cub *cub);
 void	raycast(t_cub *cub);
-
-/* DRAWING LINES TO THE SCREEN */
-void			my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
-void			draw_verline(t_cub *cub, int x, unsigned int color);
-int				set_pixel_color(t_cub *cub);
-unsigned int	set_pixels(t_cub *cub);
-
-/* DRAW NAVIGATOR */
+/* TEXTURES */
+void			apply_textures(t_cub *cub, int x);
+unsigned int	get_texture_color(t_img *texture, int pixel_x, int pixel_y);
+/* NAVIGATOR */
 void	draw_navigator(t_cub *cub);
 
-/* FPS */
-unsigned long long	get_time_micros(void);
-int					display_fps(t_cub *cub);
-char				*set_fps_string(char *str1, t_cub *cub, int mode);
-
-/* HOOKING */
-int update_display(t_cub *cub);
+/* *** HOOKS *** */
+/* HOOKS */
+int	update_display(t_cub *cub);
 int	key_up(int keycode, t_cub *cub);
 int	key_down(int keycode, t_cub *cub);
-
 /* MOVEMENT */
 void	move_forward(t_cub *cub, double edge, double move_speed);
 void	move_backward(t_cub *cub, double edge, double move_speed);
 void	move_right(t_cub *cub, double edge, double move_speed);
 void	move_left(t_cub *cub, double edge, double move_speed);
-
 /* ROTATE */
 void	rotate_left(t_cub *cub, double rot_speed);
 void	rotate_right(t_cub *cub, double rot_speed);
@@ -260,5 +242,19 @@ int		has_right_file_ext(char *file_name, char *extension);
 int		count_appearances(char *str, char c);
 int		ft_split_len(char **split);
 int		is_number(char *str);
+
+/* Only for DEVelopment */
+/* COLOR */
+int		get_trgb(int t, int r, int g, int b);
+int		get_t(int trgb);
+int		get_r(int trgb);
+int		get_g(int trgb);
+int		get_b(int trgb);
+/* DEBUG */
+void	print_cub(t_cub *cub);
+/* FPS */
+unsigned long long	get_time_micros(void);
+int					display_fps(t_cub *cub);
+char				*set_fps_string(char *str1, t_cub *cub, int mode);
 
 #endif
