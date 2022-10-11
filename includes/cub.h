@@ -115,7 +115,7 @@ typedef struct s_cub {
 	int				line_length;
 	int				endian;
 	/* parsing map */
-	t_wall			walls[4]; // NO SO WE EA
+	t_wall			walls[4];
 	int				f_color;
 	int				c_color;
 	int				**map;
