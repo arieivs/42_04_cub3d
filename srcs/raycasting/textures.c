@@ -2,18 +2,18 @@
 
 t_dir_code	get_wall_dir(t_cub *cub)
 {
-	if (cub->side == 1 && cub->map_pos->y < cub->pos->y)
+	if (cub->side == SIDE_Y && cub->map_pos->y < cub->pos->y)
 		return (NO);
-	if (cub->side == 1 && cub->map_pos->y > cub->pos->y)
+	if (cub->side == SIDE_Y && cub->map_pos->y > cub->pos->y)
 		return (SO);
-	if (cub->side == 0 && cub->map_pos->x < cub->pos->x)
+	if (cub->side == SIDE_X && cub->map_pos->x < cub->pos->x)
 		return (WE);
 	return (EA);
 }
 
 void	calculate_wall_x(t_cub *cub)
 {
-	if (cub->side == 0)
+	if (cub->side == SIDE_X)
 		cub->wall_x = cub->pos->y + cub->perp_wall_dist * cub->ray_dir->y;
 	else
 		cub->wall_x = cub->pos->x + cub->perp_wall_dist * cub->ray_dir->x;
@@ -23,9 +23,9 @@ void	calculate_wall_x(t_cub *cub)
 void	calculate_tex_x(t_cub *cub)
 {
 	cub->texel->x = (int)(cub->wall_x * ((double)ASSET_SIZE));
-	if (cub->side == 0 && cub->ray_dir->x > 0)
+	if (cub->side == SIDE_X && cub->ray_dir->x > 0)
 		cub->texel->x = ASSET_SIZE - cub->texel->x - 1;
-	if (cub->side == 1 && cub->ray_dir->y < 0)
+	if (cub->side == SIDE_Y && cub->ray_dir->y < 0)
 		cub->texel->x = ASSET_SIZE - cub->texel->x - 1;
 }
 

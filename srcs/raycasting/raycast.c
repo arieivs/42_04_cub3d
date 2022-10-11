@@ -86,18 +86,18 @@ void	perform_dda(t_cub *cub)
 		{
 			cub->side_dist->x += cub->delta_dist->x;
 			cub->map_pos->x += cub->step->x;
-			cub->side = 0;
+			cub->side = SIDE_X;
 		}
 		else
 		{
 			cub->side_dist->y += cub->delta_dist->y;
 			cub->map_pos->y += cub->step->y;
-			cub->side = 1;
+			cub->side = SIDE_Y;
 		}
 		if (cub->map[cub->map_pos->y][cub->map_pos->x] == 1)
 			cub->hit = 1;
 	}
-	if (cub->side == 0)
+	if (cub->side == SIDE_X)
 		cub->perp_wall_dist = cub->side_dist->x - cub->delta_dist->x;
 	else
 		cub->perp_wall_dist = cub->side_dist->y - cub->delta_dist->y;

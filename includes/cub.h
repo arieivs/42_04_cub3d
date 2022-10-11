@@ -39,6 +39,36 @@
 #  define D_KEY 100
 # endif
 
+/* ENUMS */
+typedef enum e_map_code {
+	IN = 0,
+	WALL,
+	OUT,
+	PLAYER
+}			t_map_code;
+
+typedef enum e_dir_code {
+	NO = 0,
+	SO,
+	WE,
+	EA
+}	t_dir_code;
+
+typedef enum e_side_code {
+	SIDE_X = 0,
+	SIDE_Y
+}	t_side_code;
+
+typedef enum e_error_code {
+	ERRNO = 1,
+	WRONG_ARGC,
+	WRONG_FILE_EXT,
+	FILE_INEXISTENT,
+	MAP_INCORRECT,
+	MLX_FAILURE
+}			t_error_code;
+
+/* STRUCTS */
 typedef struct s_pair_d {
 	double	x;
 	double	y;
@@ -103,7 +133,7 @@ typedef struct s_cub {
 	double			perp_wall_dist;
 	t_pair_i		*step;
 	int				hit;
-	int				side;
+	t_side_code		side;
 	/* textures */
 	double			wall_x;
 	t_pair_i		*texel;
@@ -142,29 +172,6 @@ typedef struct s_parse_info {
 	size_t	max_map_width;
 	int		is_player_set;
 }				t_parse_info;
-
-typedef enum e_map_code {
-	IN = 0,
-	WALL,
-	OUT,
-	PLAYER
-}			t_map_code;
-
-typedef enum e_dir_code {
-	NO = 0,
-	SO,
-	WE,
-	EA
-}	t_dir_code;
-
-typedef enum e_error_code {
-	ERRNO = 1,
-	WRONG_ARGC,
-	WRONG_FILE_EXT,
-	FILE_INEXISTENT,
-	MAP_INCORRECT,
-	MLX_FAILURE
-}			t_error_code;
 
 /* DEAL with user INPUT */
 int		check_args(int ac, char **av);
