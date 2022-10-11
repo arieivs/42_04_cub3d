@@ -27,6 +27,8 @@
 #  define A_KEY 0
 #  define S_KEY 1
 #  define D_KEY 2
+#  define MOVE_SPEED 0.07
+#  define ROT_SPEED 0.03
 # else
 #  define ESC_KEY 65307
 #  define UP_KEY 65362
@@ -37,6 +39,8 @@
 #  define A_KEY 97
 #  define S_KEY 115
 #  define D_KEY 100
+#  define MOVE_SPEED 0.025
+#  define ROT_SPEED 0.005
 # endif
 
 /* ENUMS */
