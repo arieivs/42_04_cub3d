@@ -86,8 +86,8 @@ typedef struct s_cub {
 	int				endian;
 	/* parsing map */
 	t_wall			walls[4]; // NO SO WE EA
-	int				floor_color;
-	int				ceil_color;
+	int				f_color;
+	int				c_color;
 	int				**map;
 	int				map_height;
 	int				map_width;

@@ -18,9 +18,9 @@ void	draw_verline(t_cub *cub, int x, unsigned int color)
 		if (i >= cub->draw_start && i <= cub->draw_end)
 			my_mlx_pixel_put(cub, x, i, color);
 		else if (i <= cub->draw_start)
-			my_mlx_pixel_put(cub, x, i, cub->ceil_color);
+			my_mlx_pixel_put(cub, x, i, cub->c_color);
 		else if (i >= cub->draw_end)
-			my_mlx_pixel_put(cub, x, i, cub->floor_color);
+			my_mlx_pixel_put(cub, x, i, cub->f_color);
 		i++;
 	}
 }
@@ -47,7 +47,7 @@ unsigned int	set_pixels(t_cub *cub)
 	unsigned int	color;
 
 	cub->line_height = (int)(((double)HEIGHT) / cub->perp_wall_dist);
-	cub->draw_start = (- cub->line_height + HEIGHT) / 2;
+	cub->draw_start = (-cub->line_height + HEIGHT) / 2;
 	if (cub->draw_start < 0)
 		cub->draw_start = 0;
 	cub->draw_end = (cub->line_height + HEIGHT) / 2;

@@ -2,7 +2,7 @@
 
 static void	draw_square(t_cub *cub, int x, int y, int color)
 {
-	int i;
+	int	i;
 	int	j;
 
 	i = 0;
@@ -11,8 +11,8 @@ static void	draw_square(t_cub *cub, int x, int y, int color)
 		j = 0;
 		while (j < cub->pixel_per_square)
 		{
-			if (i == 0 || i == cub->pixel_per_square - 1 ||
-				j == 0 || j == cub->pixel_per_square - 1)
+			if (i == 0 || i == cub->pixel_per_square - 1
+				|| j == 0 || j == cub->pixel_per_square - 1)
 				my_mlx_pixel_put(cub, x + i, y + j, 0x00000000);
 			else
 				my_mlx_pixel_put(cub, x + i, y + j, color);
@@ -36,7 +36,8 @@ static void	set_navigation_x_borders(t_pair_i *start, t_pair_i *end, t_cub *cub)
 	end->x = cub->map_width;
 	if (nav_width > WIDTH / 3)
 	{
-		start->x = (int)(cub->pos->x - (double)WIDTH / (6.0 * (double)cub->pixel_per_square));
+		start->x = (int)(cub->pos->x - (double)WIDTH
+				/ (6.0 * (double)cub->pixel_per_square));
 		if (start->x < 0)
 			start->x = 0;
 		end->x = start->x + WIDTH / (3 * cub->pixel_per_square);
@@ -57,7 +58,8 @@ static void	set_navigation_y_borders(t_pair_i *start, t_pair_i *end, t_cub *cub)
 	end->y = cub->map_height;
 	if (nav_height > HEIGHT / 3)
 	{
-		start->y = (int)(cub->pos->y - (double)HEIGHT / (6.0 * (double)cub->pixel_per_square));
+		start->y = (int)(cub->pos->y - (double)HEIGHT
+				/ (6.0 * (double)cub->pixel_per_square));
 		if (start->y < 0)
 			start->y = 0;
 		end->y = start->y + HEIGHT / (3 * cub->pixel_per_square);

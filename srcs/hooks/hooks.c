@@ -56,15 +56,18 @@ int	key_down(int keycode, t_cub *cub)
 
 	-	Above values were set by experimentation. We can also change the
 		static int frame value in the if statement
+
+	-	Frametime: need to establish some values here that make the project
+		run smoothly accross both Macs and Linux. Currently in milliseconds
 */
-int update_display(t_cub *cub)
+int	update_display(t_cub *cub)
 {
-	static int frames = 0;
-	double frame_time;
+	static int	frames = 0;
+	double		frame_time;
 
 	cub->old_time = cub->time;
 	cub->time = get_time_micros();
-	frame_time = (double)(cub->time - cub->old_time) / 1000; // in milliseconds
+	frame_time = (double)(cub->time - cub->old_time) / 1000;
 	if (frames++ == 15)
 	{
 		if (cub->keys.w || cub->keys.up)
@@ -80,7 +83,8 @@ int update_display(t_cub *cub)
 		else if (cub->keys.d)
 			move_right(cub, 1.1, 0.5 * frame_time);
 		if (cub->keys.w || cub->keys.a || cub->keys.s || cub->keys.d
-			|| cub->keys.up || cub->keys.down || cub->keys.left || cub->keys.right)
+			|| cub->keys.up || cub->keys.down || cub->keys.left
+			|| cub->keys.right)
 			raycast(cub);
 		frames = 0;
 	}

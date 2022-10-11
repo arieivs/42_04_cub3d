@@ -47,12 +47,12 @@ int	color_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "F", 1) == 0)
 	{
-		cub->floor_color = get_trgb(0, parse_info->colors_rgb[0],
+		cub->f_color = get_trgb(0, parse_info->colors_rgb[0],
 			parse_info->colors_rgb[1], parse_info->colors_rgb[2]);
 		parse_info->is_floor_color_set = 1;
 		return (1);
 	}
-	cub->ceil_color = get_trgb(0, parse_info->colors_rgb[0],
+	cub->c_color = get_trgb(0, parse_info->colors_rgb[0],
 		parse_info->colors_rgb[1], parse_info->colors_rgb[2]);
 	parse_info->is_ceil_color_set = 1;
 	return (1);

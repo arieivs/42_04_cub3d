@@ -1,6 +1,6 @@
-# include "cub.h"
+#include "cub.h"
 
-int has_right_file_ext(char *file_name, char *extension)
+int	has_right_file_ext(char *file_name, char *extension)
 {
 	size_t	file_len;
 	size_t	ext_len;
@@ -24,7 +24,7 @@ int has_right_file_ext(char *file_name, char *extension)
 
 int	count_appearances(char *str, char c)
 {
-	int i;
+	int	i;
 	int	count;
 
 	i = 0;

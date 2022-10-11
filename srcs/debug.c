@@ -6,14 +6,12 @@ void	print_cub(t_cub *cub)
 	int	j;
 
 	printf("\n***	🎨 CUB 🍻	***\n\n");
-	// printf("NO fd: %d, SO fd: %d, WE fd: %d, EA fd: %d\n",
-	// 	cub->walls.no_fd, cub->walls.so_fd, cub->walls.we_fd, cub->walls.ea_fd);
 	printf("Floor color: #%X%X%X or rgb(%d, %d, %d)\n",
-		get_r(cub->floor_color), get_g(cub->floor_color), get_b(cub->floor_color),
-		get_r(cub->floor_color), get_g(cub->floor_color), get_b(cub->floor_color));
+		get_r(cub->f_color), get_g(cub->f_color), get_b(cub->f_color),
+		get_r(cub->f_color), get_g(cub->f_color), get_b(cub->f_color));
 	printf("Ceiling color: #%X%X%X or rgb(%d, %d, %d)\n",
-		get_r(cub->ceil_color), get_g(cub->ceil_color), get_b(cub->ceil_color),
-		get_r(cub->ceil_color), get_g(cub->ceil_color), get_b(cub->ceil_color));
+		get_r(cub->c_color), get_g(cub->c_color), get_b(cub->c_color),
+		get_r(cub->c_color), get_g(cub->c_color), get_b(cub->c_color));
 	printf("\n🗺  Map height %d x width %d\n", cub->map_height, cub->map_width);
 	i = 0;
 	while (i < cub->map_height)
