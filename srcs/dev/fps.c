@@ -1,46 +1,41 @@
 #include "cub.h"
 
-int	display_fps(t_cub *cub)
+void	display_fps(t_cub *cub)
 {
-	char				*time_str;
-	char				*prev_str;
-	long double			frame_time;
+	unsigned long long			time;
+	static unsigned long long	old_time;
+	double						curr_fps;
+	static double				prev_fps;
+	long double					frame_time;
 
-	time_str = NULL;
-	prev_str = NULL;
-	cub->old_time = cub->time;
-	cub->time = get_time_micros();
-	frame_time = ((long double)(cub->time - cub->old_time)) / 1000000;
-	cub->prev_fps = cub->curr_fps;
-	cub->curr_fps = 1.0 / frame_time;
-	if (fabs(cub->curr_fps - cub->prev_fps) > 1)
+	if (!old_time)
+		old_time = 0;
+	time = get_time_micros();
+	frame_time = ((long double)(time - old_time)) / 1000000;
+	if (!prev_fps)
+		prev_fps = 0.0;
+	curr_fps = 1.0 / frame_time;
+	if (fabs(curr_fps - prev_fps) > 1)
 	{
-		time_str = set_fps_string(time_str, cub, 0);
-		prev_str = set_fps_string(prev_str, cub, 1);
-		mlx_string_put(cub->mlx, cub->window, 25, 25, 0x00000000, prev_str);
-		mlx_string_put(cub->mlx, cub->window, 25, 25, 0x00FFFFFF, time_str);
-		free(time_str);
-		free(prev_str);
+		put_fps_string(curr_fps, cub);
+		put_fps_string(prev_fps, cub);
 	}
-	return (0);
+	old_time = time;
+	prev_fps = curr_fps;
 }
 
-char	*set_fps_string(char *str1, t_cub *cub, int mode)
+void	*put_fps_string(double fps, t_cub *cub)
 {
-	char	*new;
+	char	*str1
+	char	*str2;
 
-	if (mode == 0)
-		str1 = ft_itoa((int)cub->curr_fps);
-	else if (mode == 1)
-		str1 = ft_itoa((int)cub->prev_fps);
-	if (str1)
-	{
-		new = ft_strjoin("FPS: ", str1);
-		free(str1);
-	}
-	else
-		return (NULL);
-	return (new);
+	str1 = ft_itoa((int)fps);
+	if (!str1)
+		return ;
+	str2 = ft_strjoin("FPS: ", str1);
+	free(str1);
+	mlx_string_put(cub->mlx, cub->window, 25, 25, 0x00000000, str2);
+	free(str2);
 }
 
 unsigned long long	get_time_micros(void)

@@ -138,15 +138,16 @@ typedef struct s_cub {
 	/* movement */
 	t_keys			keys;
 	/* fps */
-	unsigned long long	time;
-	unsigned long long	old_time;
-	double				curr_fps;
-	double				prev_fps;
-	int					fps_counter;
+	// unsigned long long	time;
+	// unsigned long long	old_time;
+	// double				curr_fps;
+	// double				prev_fps;
+	// int					fps_counter;
+	/* drawing pixels */
 	int				line_height;
 	int				draw_start;
 	int				draw_end;
-	/* render navigator */
+	/* draw navigator */
 	int				pixel_per_square;
 	t_img			nav_img;
 }				t_cub;

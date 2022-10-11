@@ -65,7 +65,6 @@ t_cub	init_cub(void)
 	cub.mlx = NULL;
 	cub.window = NULL;
 	cub.img = NULL;
-	//cub.addr = NULL;
 	cub.f_color = 0;
 	cub.c_color = 0;
 	cub.map = NULL;
@@ -102,8 +101,8 @@ t_parse_info	init_parse_info(void)
 
 void	init_mlx_and_raycast(t_cub *cub)
 {
-	cub->time = 0;
-	cub->old_time = 0;
+	// cub->time = 0;
+	// cub->old_time = 0;
 	cub->pixel_per_square = 12;
 	cub->mlx = mlx_init();
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
