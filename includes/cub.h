@@ -27,8 +27,8 @@
 #  define A_KEY 0
 #  define S_KEY 1
 #  define D_KEY 2
-#  define MOVE_SPEED 0.01
-#  define ROT_SPEED 0.002
+#  define MOVE_SPEED 0.05
+#  define ROT_SPEED 0.02
 # else
 #  define ESC_KEY 65307
 #  define UP_KEY 65362
