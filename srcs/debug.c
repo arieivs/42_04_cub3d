@@ -6,10 +6,10 @@ void	print_cub(t_cub *cub)
 	int	j;
 
 	printf("\n***	🎨 CUB 🍻	***\n\n");
-	printf("Floor color: #%X%X%X or rgb(%d, %d, %d)\n",
+	printf("Floor color: #%X%X%X%X or rgb(%d, %d, %d)\n", get_t(cub->f_color),
 		get_r(cub->f_color), get_g(cub->f_color), get_b(cub->f_color),
 		get_r(cub->f_color), get_g(cub->f_color), get_b(cub->f_color));
-	printf("Ceiling color: #%X%X%X or rgb(%d, %d, %d)\n",
+	printf("Ceiling color: #%X%X%X%X or rgb(%d, %d, %d)\n", get_t(cub->c_color),
 		get_r(cub->c_color), get_g(cub->c_color), get_b(cub->c_color),
 		get_r(cub->c_color), get_g(cub->c_color), get_b(cub->c_color));
 	printf("\n🗺  Map height %d x width %d\n", cub->map_height, cub->map_width);
