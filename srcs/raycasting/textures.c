@@ -41,6 +41,8 @@ void	calculate_wall_x(t_cub *cub)
 
 /*
 	CALCULATE_TEX_X
+	-	A texel is a pixel of a texture. Texels need to be scaled to pixels
+		on the game screen.
 	-	texel->x is the integer texel column we have to use of the texture
 	-	We can calculate it by multiplying wall_x with the asset size
 	-	Opposite walls must be mirrored, which is achieved by subtracting
