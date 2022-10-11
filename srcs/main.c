@@ -10,9 +10,8 @@ int	main(int ac, char **av)
 		return (1);
 	cub = init_cub();
 	validate_map(map_fd, av[1], &cub);
-	print_cub(&cub);
+	print_cub(&cub); // TO BE REMOVED
 	init_mlx_and_raycast(&cub);
-	init_textures(&cub);
 	raycast(&cub);
 	mlx_hook(cub.window, 3, 1L << 1, key_up, &cub);
 	mlx_hook(cub.window, 2, 1L << 0, key_down, &cub);

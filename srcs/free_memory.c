@@ -16,7 +16,7 @@ static void	free_map_and_walls(t_cub *cub)
 	while (i < 4)
 	{
 		if (cub->walls[i].path)
-			free(cub->walls[i++].path);
+			free(cub->walls[i++].path); // don't we need to free the img as well?
 	}
 
 }
@@ -25,6 +25,8 @@ void	free_cub(t_cub *cub)
 {
 	if (cub->mlx)
 		mlx_destroy_window(cub->mlx, cub->window);
+	if (cub->img)
+		free(cub->img);
 	free_map_and_walls(cub);
 	if (cub->pos)
 		free(cub->pos);

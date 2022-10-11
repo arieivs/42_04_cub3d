@@ -109,11 +109,7 @@ typedef struct s_cub {
 	/* minilibx */
 	void			*mlx;
 	void			*window;
-	void			*img;
-	char			*addr;
-	int				bits_per_pixel;
-	int				line_length;
-	int				endian;
+	t_img			*img;
 	/* parsing map */
 	t_wall			walls[4];
 	int				f_color;
@@ -147,12 +143,12 @@ typedef struct s_cub {
 	double				curr_fps;
 	double				prev_fps;
 	int					fps_counter;
-	/* drawing pixels */
 	int				line_height;
 	int				draw_start;
 	int				draw_end;
-	/* drawing navigator */
+	/* render navigator */
 	int				pixel_per_square;
+	t_img			nav_img;
 }				t_cub;
 
 typedef struct s_parse_info {
@@ -182,7 +178,7 @@ t_pair_i		*init_pair_int(t_cub *cub);
 t_cub			init_cub(void);
 t_parse_info	init_parse_info(void);
 void			init_mlx_and_raycast(t_cub *cub);
-void	    init_textures(t_cub *cub);
+void			init_textures(t_cub *cub);
 
 /* PARSER */
 void	validate_map(int map_fd, char *map_name, t_cub	*cub);

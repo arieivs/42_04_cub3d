@@ -65,7 +65,7 @@ t_cub	init_cub(void)
 	cub.mlx = NULL;
 	cub.window = NULL;
 	cub.img = NULL;
-	cub.addr = NULL;
+	//cub.addr = NULL;
 	cub.f_color = 0;
 	cub.c_color = 0;
 	cub.map = NULL;
@@ -107,9 +107,12 @@ void	init_mlx_and_raycast(t_cub *cub)
 	cub->pixel_per_square = 12;
 	cub->mlx = mlx_init();
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
-	cub->img = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
-	cub->addr = mlx_get_data_addr(cub->img, &cub->bits_per_pixel,
-			&cub->line_length, &cub->endian);
+	cub->img = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
+	cub->img->img_ptr = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
+	cub->img->addr = mlx_get_data_addr(cub->img->img_ptr,
+			&cub->img->bits_per_pixel, &cub->img->line_length,
+			&cub->img->endian);
+	init_textures(cub);
 }
 
 void	init_textures(t_cub *cub)
