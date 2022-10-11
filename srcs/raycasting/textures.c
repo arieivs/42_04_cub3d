@@ -6,10 +6,9 @@ t_dir_code	get_wall_dir(t_cub *cub)
 		return (NO);
 	if (cub->side == 1 && cub->map_pos->y > cub->pos->y)
 		return (SO);
-	else if (cub->side == 0 && cub->map_pos->x < cub->pos->x)
+	if (cub->side == 0 && cub->map_pos->x < cub->pos->x)
 		return (WE);
-	else
-		return (EA);
+	return (EA);
 }
 
 void	calculate_wall_x(t_cub *cub)
