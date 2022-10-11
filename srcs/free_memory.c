@@ -1,14 +1,12 @@
 #include "cub.h"
 
-void	free_cub(t_cub *cub)
+static void	free_map_and_walls(t_cub *cub)
 {
 	int	i;
 
-	if (cub->mlx)
-		mlx_destroy_window(cub->mlx, cub->window);
+	i = 0;
 	if (cub->map)
 	{
-		i = 0;
 		while (i < cub->map_height)
 			free(cub->map[i++]);
 		free(cub->map);
@@ -17,9 +15,17 @@ void	free_cub(t_cub *cub)
 	i = 0;
 	while (i < 4)
 	{
-	if (cub->walls[i].path)
-		free(cub->walls[i++].path);
+		if (cub->walls[i].path)
+			free(cub->walls[i++].path);
 	}
+
+}
+
+void	free_cub(t_cub *cub)
+{
+	if (cub->mlx)
+		mlx_destroy_window(cub->mlx, cub->window);
+	free_map_and_walls(cub);
 	if (cub->pos)
 		free(cub->pos);
 	if (cub->dir)
@@ -36,6 +42,8 @@ void	free_cub(t_cub *cub)
 		free(cub->delta_dist);
 	if (cub->step)
 		free(cub->step);
+	if (cub->texel)
+		free(cub->texel);
 }
 
 void	free_split(char **split)

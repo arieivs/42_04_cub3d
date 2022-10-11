@@ -2,8 +2,8 @@
 
 int	textures_colors_not_set(t_cub *cub, t_parse_info *parse_info)
 {
-	return (cub->walls[0].path == NULL || cub->walls[1].path == NULL || cub->walls[2].path == NULL ||
-		cub->walls[3].path == NULL || parse_info->is_floor_color_set == 0 ||
+	return (cub->walls[NO].path == NULL || cub->walls[SO].path == NULL || cub->walls[WE].path == NULL ||
+		cub->walls[EA].path == NULL || parse_info->is_floor_color_set == 0 ||
 		parse_info->is_ceil_color_set == 0);
 }
 
@@ -47,12 +47,12 @@ int	color_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "F", 1) == 0)
 	{
-		cub->floor_color = get_trgb(0, parse_info->colors_rgb[0],
+		cub->f_color = get_trgb(0, parse_info->colors_rgb[0],
 			parse_info->colors_rgb[1], parse_info->colors_rgb[2]);
 		parse_info->is_floor_color_set = 1;
 		return (1);
 	}
-	cub->ceil_color = get_trgb(0, parse_info->colors_rgb[0],
+	cub->c_color = get_trgb(0, parse_info->colors_rgb[0],
 		parse_info->colors_rgb[1], parse_info->colors_rgb[2]);
 	parse_info->is_ceil_color_set = 1;
 	return (1);
@@ -73,20 +73,20 @@ int	texture_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 		return (0);
 	if ((fd = open(parse_info->file_name, O_RDONLY)) == -1)
 		return (error_and_return(FILE_INEXISTENT, 0));
-	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 && cub->walls[0].path) ||
-		(ft_strncmp(parse_info->prefix, "SO", 2) == 0 && cub->walls[1].path) ||
-		(ft_strncmp(parse_info->prefix, "WE", 2) == 0 && cub->walls[2].path) ||
-		(ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->walls[3].path))
+	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 && cub->walls[NO].path) ||
+		(ft_strncmp(parse_info->prefix, "SO", 2) == 0 && cub->walls[SO].path) ||
+		(ft_strncmp(parse_info->prefix, "WE", 2) == 0 && cub->walls[WE].path) ||
+		(ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->walls[EA].path))
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "NO", 2) == 0)
-		cub->walls[0].path = ft_strdup(parse_info->file_name); // FREE THESE LATER
+		cub->walls[NO].path = ft_strdup(parse_info->file_name); // FREE THESE LATER
 	else if (ft_strncmp(parse_info->prefix, "SO", 2) == 0)
-		cub->walls[1].path = ft_strdup(parse_info->file_name);
+		cub->walls[SO].path = ft_strdup(parse_info->file_name);
 	else if (ft_strncmp(parse_info->prefix, "WE", 2) == 0)
-		cub->walls[2].path = ft_strdup(parse_info->file_name);
+		cub->walls[WE].path = ft_strdup(parse_info->file_name);
 	else
-		cub->walls[3].path = ft_strdup(parse_info->file_name);
-	close(fd);	
+		cub->walls[EA].path = ft_strdup(parse_info->file_name);
+	close(fd);
 	return (1);
 }
 

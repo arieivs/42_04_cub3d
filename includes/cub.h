@@ -39,6 +39,36 @@
 #  define D_KEY 100
 # endif
 
+/* ENUMS */
+typedef enum e_map_code {
+	IN = 0,
+	WALL,
+	OUT,
+	PLAYER
+}			t_map_code;
+
+typedef enum e_dir_code {
+	NO = 0,
+	SO,
+	WE,
+	EA
+}	t_dir_code;
+
+typedef enum e_side_code {
+	SIDE_X = 0,
+	SIDE_Y
+}	t_side_code;
+
+typedef enum e_error_code {
+	ERRNO = 1,
+	WRONG_ARGC,
+	WRONG_FILE_EXT,
+	FILE_INEXISTENT,
+	MAP_INCORRECT,
+	MLX_FAILURE
+}			t_error_code;
+
+/* STRUCTS */
 typedef struct s_pair_d {
 	double	x;
 	double	y;
@@ -85,9 +115,9 @@ typedef struct s_cub {
 	int				line_length;
 	int				endian;
 	/* parsing map */
-	t_wall			walls[4]; // NO SO WE EA
-	int				floor_color;
-	int				ceil_color;
+	t_wall			walls[4];
+	int				f_color;
+	int				c_color;
 	int				**map;
 	int				map_height;
 	int				map_width;
@@ -103,7 +133,12 @@ typedef struct s_cub {
 	double			perp_wall_dist;
 	t_pair_i		*step;
 	int				hit;
-	int				side;
+	t_side_code		side;
+	/* textures */
+	double			wall_x;
+	t_pair_i		*texel;
+	double			texel_step;
+	double			texel_pos;
 	/* movement */
 	t_keys			keys;
 	/* fps */
@@ -138,22 +173,6 @@ typedef struct s_parse_info {
 	int		is_player_set;
 }				t_parse_info;
 
-typedef enum e_map_code {
-	IN = 0,
-	WALL,
-	OUT,
-	PLAYER
-}			t_map_code;
-
-typedef enum e_error_code {
-	ERRNO = 1,
-	WRONG_ARGC,
-	WRONG_FILE_EXT,
-	FILE_INEXISTENT,
-	MAP_INCORRECT,
-	MLX_FAILURE
-}			t_error_code;
-
 /* DEAL with user INPUT */
 int		check_args(int ac, char **av);
 
@@ -184,6 +203,7 @@ int		get_t(int trgb);
 int		get_r(int trgb);
 int		get_g(int trgb);
 int		get_b(int trgb);
+unsigned int	get_texture_color(t_img *texture, int pixel_x, int pixel_y);
 
 /* DEBUG */
 void	print_cub(t_cub *cub);
@@ -193,6 +213,7 @@ void	initialize_raycasting(t_cub *cub, int x);
 void	calculate_step(t_cub *cub);
 void	perform_dda(t_cub *cub);
 void	calculate_dist(t_cub *cub);
+void	apply_textures(t_cub *cub, int x);
 void	raycast(t_cub *cub);
 
 /* DRAWING LINES TO THE SCREEN */
