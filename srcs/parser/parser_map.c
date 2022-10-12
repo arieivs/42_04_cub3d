@@ -4,28 +4,28 @@
  * so later the appropriate memory can be allocated.
  * need to go until the end of the file, else it won't restart properly
  */
-void	evaluate_map_size(int map_fd, t_cub *cub, t_parse_info* parse_info)
+void	evaluate_map_size(t_cub *cub, t_parse_info* parse_info)
 {
 	parse_info->line_nb_map_start = parse_info->line_nb;
 	while (parse_info->ret > 0 && !line_is_empty(parse_info->buff))
 	{
-		parse_info->buff = replace_tab_with_spaces(parse_info->buff, cub);
+		parse_info->buff = replace_tab_with_spaces(parse_info->buff);
 		if (ft_strlen(parse_info->buff) > parse_info->max_map_width)
 			parse_info->max_map_width = ft_strlen(parse_info->buff);
 		free(parse_info->buff);
-		parse_info->ret = get_next_line(map_fd, &parse_info->buff);
+		parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff);
 		parse_info->line_nb++;
 	}
 	if (parse_info->ret == -1)
-		error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
+		error_and_exit(MAP_INCORRECT);
 	if (!line_is_empty(parse_info->buff))
 	{
-		parse_info->buff = replace_tab_with_spaces(parse_info->buff, cub);
+		parse_info->buff = replace_tab_with_spaces(parse_info->buff);
 		if (ft_strlen(parse_info->buff) > parse_info->max_map_width)
 			parse_info->max_map_width = ft_strlen(parse_info->buff);
 		parse_info->line_nb++;
 	}
-	while ((parse_info->ret = get_next_line(map_fd, &parse_info->buff)) > 0)
+	while ((parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff)) > 0)
 		free(parse_info->buff);
 	free(parse_info->buff);
 	cub->map_height = parse_info->line_nb - parse_info->line_nb_map_start;
@@ -67,12 +67,12 @@ void	set_player(t_cub *cub, char player, int x, int y)
  * - checks for multiplayers
  * - stores information for that map line and position/direction of player
  */
-int	map_line_is_valid(t_cub *cub, t_parse_info *parse_info, int y)
+static int	map_line_is_valid(t_cub *cub, t_parse_info *parse_info, int y)
 {
 	int	i;
 
 	i = 0;
-	parse_info->buff = replace_tab_with_spaces(parse_info->buff, cub);
+	parse_info->buff = replace_tab_with_spaces(parse_info->buff);
 	if (line_is_empty(parse_info->buff))
 		return (0);
 	while ((size_t)i < ft_strlen(parse_info->buff))
@@ -104,7 +104,7 @@ int	map_line_is_valid(t_cub *cub, t_parse_info *parse_info, int y)
  * - checks if map is closed: interior/player cannot be at the border,
  *   nor in contact with the outside
  */
-int	map_is_valid(t_cub *cub, t_parse_info *parse_info)
+static int	map_is_valid(t_cub *cub, t_parse_info *parse_info)
 {
 	int	x;
 	int	y;
@@ -134,7 +134,7 @@ int	map_is_valid(t_cub *cub, t_parse_info *parse_info)
 
 /* Goes through the map a second time, stores the information
  * and validates it */
-void	validate_map_grid(int map_fd, t_cub *cub, t_parse_info* parse_info)
+void	validate_map_grid(t_cub *cub, t_parse_info* parse_info)
 {
 	int	i;
 
@@ -142,23 +142,23 @@ void	validate_map_grid(int map_fd, t_cub *cub, t_parse_info* parse_info)
 	i = 0;
 	while (i < cub->map_height)
 	{
-		parse_info->ret = get_next_line(map_fd, &parse_info->buff);
+		parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff);
 		if (parse_info->ret == -1)
-			error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
+			error_and_exit(MAP_INCORRECT);
 		cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
 		if (!map_line_is_valid(cub, parse_info, i))
-			error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
+			error_and_exit(MAP_INCORRECT);
 		i++;
 		free(parse_info->buff);
 	}
 	while (parse_info->ret > 0)
 	{
-		parse_info->ret = get_next_line(map_fd, &parse_info->buff);
+		parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff);
 		if (parse_info->ret == -1 || !line_is_empty(parse_info->buff))
-			error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
+			error_and_exit(MAP_INCORRECT);
 		free(parse_info->buff);
 	}
 	parse_info->buff = NULL;
 	if (!map_is_valid(cub, parse_info))
-		error_and_exit_from_parsing(MAP_INCORRECT, cub, parse_info, map_fd);
+		error_and_exit(MAP_INCORRECT);
 }

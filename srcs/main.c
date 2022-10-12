@@ -8,8 +8,8 @@ int	main(int ac, char **av)
 	map_fd = check_args(ac, av);
 	if (map_fd == -1)
 		return (1);
-	cub = init_cub();
-	validate_map(map_fd, av[1], &cub);
+	cub = init_cub(map_fd);
+	validate_map(av[1], &cub);
 	print_cub(&cub); // TO BE REMOVED
 	init_mlx(&cub);
 	render(&cub);

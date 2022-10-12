@@ -30,6 +30,11 @@ static void	free_map_and_walls(t_cub *cub)
 	}
 }
 
+/* Free cub
+ * Not protecting close because we're already leaving,
+ * this function is only called when exiting the programme.
+ * If the map_fd was already closed, its value is 0.
+ */
 void	free_cub(t_cub *cub)
 {
 	if (cub->window)
@@ -37,6 +42,8 @@ void	free_cub(t_cub *cub)
 	free_img(cub->img, cub);
 	free_img(cub->nav_img, cub);
 	free_map_and_walls(cub);
+	if (cub->map_fd != 0)
+		close(cub->map_fd);
 	if (cub->pos)
 		free(cub->pos);
 	if (cub->dir)

@@ -30,29 +30,17 @@ int	error_and_return(t_error_code error_code, int return_value)
 	return (return_value);
 }
 
-void	error_and_exit(t_error_code error_code, t_cub *cub)
+void	error_and_exit(t_error_code error_code)
 {
+	t_cub			*cub;
+	t_parse_info	*parse_info;
+
+	cub = get_cub(NULL);
+	parse_info = get_parse_info(NULL);
 	if (cub)
 		free_cub(cub);
-	error_message(error_code);
-	exit(EXIT_FAILURE);
-}
-
-void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
-			t_parse_info *parse_info, int map_fd)
-{
 	if (parse_info)
 		free_parse_info(parse_info);
-	close(map_fd);
-	error_and_exit(error_code, cub);
-}
-
-void	*calloc_or_exit(size_t size, int count, t_cub *cub)
-{
-	void	*result;
-
-	result = ft_calloc(size, count);
-	if (!result)
-		error_and_exit(ERRNO, cub);
-	return (result);
+	error_message(error_code);
+	exit(EXIT_FAILURE);
 }

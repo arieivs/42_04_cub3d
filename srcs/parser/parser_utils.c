@@ -20,7 +20,7 @@ int	line_is_empty(char *line)
 }
 
 /* Replaces 1 tab for 4 spaces */
-char	*replace_tab_with_spaces(char *line, t_cub *cub)
+char	*replace_tab_with_spaces(char *line)
 {
 	int		tab_nb;
 	char	*repl;
@@ -30,7 +30,7 @@ char	*replace_tab_with_spaces(char *line, t_cub *cub)
 	tab_nb = count_appearances(line, '\t');
 	if (!tab_nb)
 		return (line);
-	repl = calloc_or_exit(sizeof(char), ft_strlen(line) + tab_nb * 3 + 1, cub);
+	repl = calloc_or_exit(sizeof(char), ft_strlen(line) + tab_nb * 3 + 1);
 	i = 0;
 	j = 0;
 	while (line[i])

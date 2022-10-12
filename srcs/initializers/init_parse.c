@@ -4,6 +4,7 @@ t_parse_info	init_parse_info(void)
 {
 	t_parse_info	parse_info;
 
+	get_parse_info(&parse_info);
 	parse_info.buff = NULL;
 	parse_info.ret = 0;
 	parse_info.line_nb = 1;

@@ -1,20 +1,20 @@
 #include "cub.h"
 
-t_pair_d	*init_pair_double(t_cub *cub)
+t_pair_d	*init_pair_double(void)
 {
 	t_pair_d	*pair;
 
-	pair = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1, cub);
+	pair = (t_pair_d *)calloc_or_exit(sizeof(t_pair_d), 1);
 	pair->x = 0.0;
 	pair->y = 0.0;
 	return (pair);
 }
 
-t_pair_i	*init_pair_int(t_cub *cub)
+t_pair_i	*init_pair_int(void)
 {
 	t_pair_i	*pair;
 
-	pair = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1, cub);
+	pair = (t_pair_i *)calloc_or_exit(sizeof(t_pair_i), 1);
 	pair->x = 0;
 	pair->y = 0;
 	return (pair);
@@ -22,18 +22,18 @@ t_pair_i	*init_pair_int(t_cub *cub)
 
 static void	init_raycast_vars(t_cub *cub)
 {
-	cub->pos = init_pair_double(cub);
-	cub->dir = init_pair_double(cub);
-	cub->proj_plane = init_pair_double(cub);
+	cub->pos = init_pair_double();
+	cub->dir = init_pair_double();
+	cub->proj_plane = init_pair_double();
 	cub->camera_x = 0.0;
-	cub->ray_dir = init_pair_double(cub);
-	cub->map_pos = init_pair_int(cub);
-	cub->side_dist = init_pair_double(cub);
-	cub->delta_dist = init_pair_double(cub);
+	cub->ray_dir = init_pair_double();
+	cub->map_pos = init_pair_int();
+	cub->side_dist = init_pair_double();
+	cub->delta_dist = init_pair_double();
 	cub->perp_wall_dist = 0.0;
-	cub->step = init_pair_int(cub);
+	cub->step = init_pair_int();
 	cub->hit = 0;
-	cub->texel = init_pair_int(cub);
+	cub->texel = init_pair_int();
 	cub->wall_x = 0.0;
 	cub->texel_step = 0.0;
 	cub->texel_pos = 0.0;
@@ -54,14 +54,16 @@ static void	init_keys(t_cub *cub)
 	cub->keys.right = 0;
 }
 
-t_cub	init_cub(void)
+t_cub	init_cub(int map_fd)
 {
 	t_cub	cub;
 	int		i;
 
+	get_cub(&cub);
 	cub.mlx = NULL;
 	cub.window = NULL;
 	cub.img = NULL;
+	cub.map_fd = map_fd;
 	i = 0;
 	while (i < 4)
 	{
