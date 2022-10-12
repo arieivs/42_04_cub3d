@@ -36,7 +36,7 @@ void	error_and_exit(t_error_code error_code)
 	t_parse_info	*parse_info;
 
 	cub = get_cub(NULL);
-	parse_info = get_parse_info(NULL);
+	parse_info = get_parse_info(NULL, 0);
 	if (cub)
 		free_cub(cub);
 	if (parse_info)

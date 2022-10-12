@@ -51,19 +51,24 @@ static void	skimm_through_until_map_grid(int map_fd, t_parse_info* parse_info)
 	}
 }
 
+/* Last call to get_parse_info with parameter clear=1
+ * allows us to clear the static pointer as well, to avoid double frees;
+ * this is only done at the end
+ */
 void	validate_map(char *map_name, t_cub	*cub)
 {
-	t_parse_info	parse_info;
+	t_parse_info	*parse_info;
 
 	parse_info = init_parse_info();
-	validate_map_info(cub, &parse_info);
-	if (parse_info.ret <= 0)
+	validate_map_info(cub, parse_info);
+	if (parse_info->ret <= 0)
 		error_and_exit(MAP_INCORRECT);
-	evaluate_map_size(cub, &parse_info);
+	evaluate_map_size(cub, parse_info);
 	cub->map_fd = close_or_exit(cub->map_fd);
 	cub->map_fd = open_or_exit(map_name, O_RDONLY);
-	skimm_through_until_map_grid(cub->map_fd, &parse_info);
-	validate_map_grid(cub, &parse_info);
-	free_parse_info(&parse_info);
+	skimm_through_until_map_grid(cub->map_fd, parse_info);
+	validate_map_grid(cub, parse_info);
+	free_parse_info(parse_info);
+	parse_info = get_parse_info(NULL, 1);
 	cub->map_fd = close_or_exit(cub->map_fd);
 }

@@ -54,29 +54,30 @@ static void	init_keys(t_cub *cub)
 	cub->keys.right = 0;
 }
 
-t_cub	init_cub(int map_fd)
+t_cub	*init_cub(int map_fd)
 {
-	t_cub	cub;
+	t_cub	*cub;
 	int		i;
 
-	get_cub(&cub);
-	cub.mlx = NULL;
-	cub.window = NULL;
-	cub.img = NULL;
-	cub.map_fd = map_fd;
+	cub = (t_cub *)calloc_or_exit(sizeof(t_cub), 1);
+	get_cub(cub);
+	cub->mlx = NULL;
+	cub->window = NULL;
+	cub->img = NULL;
+	cub->map_fd = map_fd;
 	i = 0;
 	while (i < 4)
 	{
-		cub.walls[i].path = NULL;
-		cub.walls[i++].tex = NULL;
+		cub->walls[i].path = NULL;
+		cub->walls[i++].tex = NULL;
 	}
-	cub.f_color = 0;
-	cub.c_color = 0;
-	cub.map = NULL;
-	cub.map_height = 0;
-	cub.map_width = 0;
-	init_raycast_vars(&cub);
-	init_keys(&cub);
-	cub.nav_img = NULL;
+	cub->f_color = 0;
+	cub->c_color = 0;
+	cub->map = NULL;
+	cub->map_height = 0;
+	cub->map_width = 0;
+	init_raycast_vars(cub);
+	init_keys(cub);
+	cub->nav_img = NULL;
 	return (cub);
 }

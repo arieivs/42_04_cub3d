@@ -188,12 +188,12 @@ int		check_args(int ac, char **av);
 /* INIT CUB */
 t_pair_d		*init_pair_double(void);
 t_pair_i		*init_pair_int(void);
-t_cub			init_cub(int map_fd);
+t_cub			*init_cub(int map_fd);
 /* INIT PARSE */
-t_parse_info	init_parse_info(void);
+t_parse_info	*init_parse_info(void);
 /* SINGLETONS */
 t_cub			*get_cub(t_cub *cub);
-t_parse_info	*get_parse_info(t_parse_info *parse_info);
+t_parse_info	*get_parse_info(t_parse_info *parse_info, int clear);
 /* INIT MLX and everything that needs it */
 void			init_mlx(t_cub *cub);
 

@@ -2,21 +2,21 @@
 
 int	main(int ac, char **av)
 {
-	t_cub	cub;
+	t_cub	*cub;
 	int		map_fd;
 
 	map_fd = check_args(ac, av);
 	if (map_fd == -1)
 		return (1);
 	cub = init_cub(map_fd);
-	validate_map(av[1], &cub);
-	print_cub(&cub); // TO BE REMOVED
-	init_mlx(&cub);
-	render(&cub);
-	mlx_hook(cub.window, 3, 1L << 1, key_up, &cub);
-	mlx_hook(cub.window, 2, 1L << 0, key_down, &cub);
-	mlx_hook(cub.window, 17, 0, graceful_exit, &cub);
-	mlx_loop_hook(cub.mlx, update_display, &cub);
-	mlx_loop(cub.mlx);
+	validate_map(av[1], cub);
+	print_cub(cub); // TO BE REMOVED
+	init_mlx(cub);
+	render(cub);
+	mlx_hook(cub->window, 3, 1L << 1, key_up, cub);
+	mlx_hook(cub->window, 2, 1L << 0, key_down, cub);
+	mlx_hook(cub->window, 17, 0, graceful_exit, cub);
+	mlx_loop_hook(cub->mlx, update_display, cub);
+	mlx_loop(cub->mlx);
 	return (0);
 }
