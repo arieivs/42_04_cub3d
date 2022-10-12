@@ -1,6 +1,6 @@
 #include "cub.h"
 
-void	graceful_exit(t_cub *cub)
+int	graceful_exit(t_cub *cub)
 {
 	if (cub)
 		free_cub(cub);
