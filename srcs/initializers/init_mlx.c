@@ -28,6 +28,8 @@ static void	init_textures(t_cub *cub)
 void	init_mlx(t_cub *cub)
 {
 	cub->mlx = mlx_init();
+	if (!cub->mlx)
+		error_and_exit(MLX_FAILURE);
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
 	cub->img = (t_img *)calloc_or_exit(sizeof(t_img), 1);
 	cub->img->width = WIDTH;
