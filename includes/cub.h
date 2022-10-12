@@ -250,7 +250,7 @@ void	error_and_exit(t_error_code error_code, t_cub *cub);
 void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
 			t_parse_info *parse_info, int map_fd);
 void	*calloc_or_exit(size_t size, int count, t_cub *cub);
-/* WINNER EXIT*/
+/* GRACEFUL EXIT*/
 int	graceful_exit(t_cub *cub);
 
 /* UTILS */
