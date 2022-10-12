@@ -24,6 +24,10 @@
 # define NAV_FRACT 3
 /* pixeis per square of the map/navigator */
 # define PIXEL_PER_SQUARE 12
+/* for a Field Of View 66 deg (recommended for first person shooter games),
+ * the length from the proj_plane vector is 0.66
+ */
+# define PROJ_PLANE_LEN 0.66
 
 /* OS CHECK */
 # ifdef APPLE
