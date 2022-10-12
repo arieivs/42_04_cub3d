@@ -17,7 +17,7 @@ void	evaluate_map_size(t_cub *cub, t_parse_info* parse_info)
 		parse_info->line_nb++;
 	}
 	if (parse_info->ret == -1)
-		error_and_exit(MAP_INCORRECT);
+		error_and_exit(READ_FAIL);
 	if (!line_is_empty(parse_info->buff))
 	{
 		parse_info->buff = replace_tab_with_spaces(parse_info->buff);
@@ -144,7 +144,7 @@ void	validate_map_grid(t_cub *cub, t_parse_info* parse_info)
 	{
 		parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff);
 		if (parse_info->ret == -1)
-			error_and_exit(MAP_INCORRECT);
+			error_and_exit(READ_FAIL);
 		cub->map[i] = (int *)ft_calloc(sizeof(int), cub->map_width);
 		if (!map_line_is_valid(cub, parse_info, i))
 			error_and_exit(MAP_INCORRECT);

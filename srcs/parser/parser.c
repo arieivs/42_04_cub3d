@@ -16,7 +16,7 @@ void	validate_map_info(t_cub *cub, t_parse_info* parse_info)
 	{
 		parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff);
 		if (parse_info->ret <= 0)
-			error_and_exit(MAP_INCORRECT);
+			error_and_exit(MAP_INCOMPLETE);
 		if (line_is_empty(parse_info->buff))
 		{
 			parse_info->line_nb++;
@@ -26,7 +26,7 @@ void	validate_map_info(t_cub *cub, t_parse_info* parse_info)
 		parse_info->line_trimmed = ft_strtrim(parse_info->buff, "\t\v\f\r ");
 		parse_info->line_content = ft_split(parse_info->line_trimmed, ' ');
 		if (!texture_or_color_is_valid(cub, parse_info))
-			error_and_exit(MAP_INCORRECT);
+			error_and_exit(MAP_TEXT_COLOR_INCORRECT);
 		parse_info->line_nb++;
 		free_parse_info(parse_info);
 	}
@@ -62,7 +62,7 @@ void	validate_map(char *map_name, t_cub	*cub)
 	parse_info = init_parse_info();
 	validate_map_info(cub, parse_info);
 	if (parse_info->ret <= 0)
-		error_and_exit(MAP_INCORRECT);
+		error_and_exit(MAP_INCOMPLETE);
 	evaluate_map_size(cub, parse_info);
 	cub->map_fd = close_or_exit(cub->map_fd);
 	cub->map_fd = open_or_exit(map_name, O_RDONLY);
