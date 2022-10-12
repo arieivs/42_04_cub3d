@@ -76,6 +76,8 @@ endif
 
 all:	$(NAME)
 
+bonus:	$(NAME)
+
 clean:
 			@printf "\n	$(WHITE)[$(BLUE)"
 			@printf "Cleaning $(NAME) objects$(END)]\n"
@@ -111,4 +113,4 @@ re:			fclean all
 debug:		CFLAGS += $(DFLAGS)
 debug:		all
 
-.PHONY:		all clean deep_clean fclean deep_fclean re
+.PHONY:		all bonus clean deep_clean fclean deep_fclean re

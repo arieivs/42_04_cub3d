@@ -43,7 +43,7 @@ void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
 {
 	if (parse_info)
 		free_parse_info(parse_info);
-	close(map_fd); // protect close?
+	close(map_fd);
 	error_and_exit(error_code, cub);
 }
 
@@ -56,13 +56,3 @@ void	*calloc_or_exit(size_t size, int count, t_cub *cub)
 		error_and_exit(ERRNO, cub);
 	return (result);
 }
-
-/*int	open_or_exit(char *file_path, mode_t mode)
-{
-	int	fd;
-
-	fd = open(file_path, mode, 00755);
-	if (fd == -1)
-		error_and_exit(OPEN_FAIL);
-	return (fd);
-}*/

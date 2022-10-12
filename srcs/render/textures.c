@@ -89,7 +89,7 @@ void	draw_texture(int x, int i, t_cub *cub)
 	}
 	else
 		color = cub->f_color;
-	my_mlx_pixel_put(cub, x, i, color);
+	my_mlx_pixel_put(cub->img, x, i, color);
 }
 
 /*

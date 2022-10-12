@@ -79,7 +79,7 @@ int	texture_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 		(ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->walls[EA].path))
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "NO", 2) == 0)
-		cub->walls[NO].path = ft_strdup(parse_info->file_name); // FREE THESE LATER
+		cub->walls[NO].path = ft_strdup(parse_info->file_name);
 	else if (ft_strncmp(parse_info->prefix, "SO", 2) == 0)
 		cub->walls[SO].path = ft_strdup(parse_info->file_name);
 	else if (ft_strncmp(parse_info->prefix, "WE", 2) == 0)
