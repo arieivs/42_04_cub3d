@@ -42,18 +42,6 @@ static void	init_raycast_vars(t_cub *cub)
 	cub->draw_end = 0;
 }
 
-static void	init_keys(t_cub *cub)
-{
-	cub->keys.w = 0;
-	cub->keys.a = 0;
-	cub->keys.s = 0;
-	cub->keys.d = 0;
-	cub->keys.up = 0;
-	cub->keys.down = 0;
-	cub->keys.left = 0;
-	cub->keys.right = 0;
-}
-
 t_cub	init_cub(void)
 {
 	t_cub	cub;
@@ -75,6 +63,7 @@ t_cub	init_cub(void)
 	cub.map_width = 0;
 	init_raycast_vars(&cub);
 	init_keys(&cub);
+	init_mouse(&cub);
 	cub.nav_img = NULL;
 	return (cub);
 }
