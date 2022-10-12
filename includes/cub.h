@@ -57,6 +57,17 @@
 # endif
 
 /* ENUMS */
+
+typedef enum e_hook_code {
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+}			t_hook_code;
+
 typedef enum e_map_code {
 	IN = 0,
 	WALL,

@@ -13,9 +13,9 @@ int	main(int ac, char **av)
 	print_cub(cub); // TO BE REMOVED
 	init_mlx(cub);
 	render(cub);
-	mlx_hook(cub->window, 3, 1L << 1, key_up, cub);
-	mlx_hook(cub->window, 2, 1L << 0, key_down, cub);
-	mlx_hook(cub->window, 17, 0, graceful_exit, cub);
+	mlx_hook(cub->window, ON_KEYUP, 1L << 1, key_up, cub);
+	mlx_hook(cub->window, ON_KEYDOWN, 1L << 0, key_down, cub);
+	mlx_hook(cub->window, ON_DESTROY, 0, graceful_exit, cub);
 	mlx_loop_hook(cub->mlx, update_display, cub);
 	mlx_loop(cub->mlx);
 	return (0);
