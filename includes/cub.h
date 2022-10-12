@@ -12,13 +12,18 @@
 # include "mlx.h"
 # include "libft.h"
 
-/* window width and height */
-# define WIDTH 1220 //1920
-# define HEIGHT 720 //1080
+/* window width and height
+ * smaller screen: 1220x720
+ * bigger screen: 1920x1080 (just some values we like)
+ */
+# define WIDTH 1220
+# define HEIGHT 720
 /* asset/texture size */
 # define ASSET_SIZE 512
-/* map/navigator window fraction */
+/* maximum map/navigator window fraction: 1/3 */
 # define NAV_FRACT 3
+/* pixeis per square of the map/navigator */
+# define PIXEL_PER_SQUARE 12
 
 /* OS CHECK */
 # ifdef APPLE
@@ -115,43 +120,42 @@ typedef struct s_keys {
 
 typedef struct s_cub {
 	/* minilibx */
-	void			*mlx;
-	void			*window;
-	t_img			*img;
+	void		*mlx;
+	void		*window;
+	t_img		*img;
 	/* parsing map */
-	t_wall			walls[4];
-	int				f_color;
-	int				c_color;
-	int				**map;
-	int				map_height;
-	int				map_width;
-	t_pair_d		*pos;
-	t_pair_d		*dir;
-	t_pair_d		*proj_plane;
+	t_wall		walls[4];
+	int			f_color;
+	int			c_color;
+	int			**map;
+	int			map_height;
+	int			map_width;
+	t_pair_d	*pos;
+	t_pair_d	*dir;
+	t_pair_d	*proj_plane;
 	/* raycasting */
-	double			camera_x;
-	t_pair_d		*ray_dir;
-	t_pair_i		*map_pos;
-	t_pair_d		*side_dist;
-	t_pair_d		*delta_dist;
-	double			perp_wall_dist;
-	t_pair_i		*step;
-	int				hit;
-	t_side_code		side;
+	double		camera_x;
+	t_pair_d	*ray_dir;
+	t_pair_i	*map_pos;
+	t_pair_d	*side_dist;
+	t_pair_d	*delta_dist;
+	double		perp_wall_dist;
+	t_pair_i	*step;
+	int			hit;
+	t_side_code	side;
 	/* textures */
-	double			wall_x;
-	t_pair_i		*texel;
-	double			texel_step;
-	double			texel_pos;
-	/* movement */
-	t_keys			keys;
+	double		wall_x;
+	t_pair_i	*texel;
+	double		texel_step;
+	double		texel_pos;
 	/* drawing pixels */
-	int				line_height;
-	int				draw_start;
-	int				draw_end;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	/* movement */
+	t_keys		keys;
 	/* draw navigator */
-	int				pixel_per_square;
-	t_img			*nav_img;
+	t_img		*nav_img;
 }				t_cub;
 
 typedef struct s_parse_info {
@@ -175,13 +179,15 @@ typedef struct s_parse_info {
 /* DEAL with user INPUT */
 int		check_args(int ac, char **av);
 
-/* INITIALIZERS */
+/* *** INITIALIZERS *** */
+/* INIT CUB */
 t_pair_d		*init_pair_double(t_cub *cub);
 t_pair_i		*init_pair_int(t_cub *cub);
 t_cub			init_cub(void);
+/* INIT PARSE */
 t_parse_info	init_parse_info(void);
-void			init_mlx_and_raycast(t_cub *cub);
-void			init_textures(t_cub *cub);
+/* INIT MLX and everything that needs it */
+void			init_mlx(t_cub *cub);
 
 /* *** PARSER *** */
 /* PARSER */
