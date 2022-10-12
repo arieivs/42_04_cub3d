@@ -64,7 +64,10 @@ t_cub	init_cub(void)
 	cub.img = NULL;
 	i = 0;
 	while (i < 4)
-		cub.walls[i++].path = NULL;
+	{
+		cub.walls[i].path = NULL;
+		cub.walls[i++].tex = NULL;
+	}
 	cub.f_color = 0;
 	cub.c_color = 0;
 	cub.map = NULL;

@@ -232,12 +232,11 @@ void	move_left(t_cub *cub, double edge, double move_speed);
 void	rotate_left(t_cub *cub, double rot_speed);
 void	rotate_right(t_cub *cub, double rot_speed);
 
+/* *** TERMINATE *** */
 /* FREE MEMORY */
 void	free_cub(t_cub *cub);
 void	free_split(char **split);
 void	free_parse_info(t_parse_info *parse_info);
-void	graceful_exit(t_cub *cub);
-
 /* GAMEOVER - Error management */
 void	error_message(t_error_code error_code);
 int		error_and_return(t_error_code error_code, int return_value);
@@ -245,6 +244,8 @@ void	error_and_exit(t_error_code error_code, t_cub *cub);
 void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
 			t_parse_info *parse_info, int map_fd);
 void	*calloc_or_exit(size_t size, int count, t_cub *cub);
+/* WINNER EXIT*/
+void	graceful_exit(t_cub *cub);
 
 /* UTILS */
 int		has_right_file_ext(char *file_name, char *extension);
