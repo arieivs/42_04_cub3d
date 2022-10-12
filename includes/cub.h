@@ -28,6 +28,9 @@
  * the length from the proj_plane vector is 0.66
  */
 # define PROJ_PLANE_LEN 0.66
+/* mouse bounds of camera movement */
+# define MS_L_RANGE 0.375
+# define MS_R_RANGE 0.625
 
 /* OS CHECK */
 # ifdef APPLE
@@ -135,6 +138,11 @@ typedef struct s_keys {
 	int right;
 }	t_keys;
 
+typedef struct s_mouse {
+	double left;
+	double right;
+}			t_mouse;
+
 typedef struct s_cub {
 	/* minilibx */
 	void		*mlx;
@@ -172,6 +180,7 @@ typedef struct s_cub {
 	int			draw_end;
 	/* movement */
 	t_keys		keys;
+	t_mouse		mouse;
 	/* draw navigator */
 	t_img		*nav_img;
 }				t_cub;
@@ -247,6 +256,7 @@ int		update_display(t_cub *cub);
 /* KEY HOOKS */
 int	key_up(int keycode, t_cub *cub);
 int	key_down(int keycode, t_cub *cub);
+int	mouse_hook(int x, int y, t_cub *cub);
 /* MOVEMENT */
 void	move_forward(t_cub *cub, double edge, double move_speed);
 void	move_backward(t_cub *cub, double edge, double move_speed);

@@ -43,3 +43,24 @@ int	key_down(int keycode, t_cub *cub)
 		graceful_exit(cub);
 	return (0);
 }
+
+int	mouse_hook(int x, int y, t_cub *cub)
+{
+	(void)y;
+	if (x > MS_L_RANGE * WIDTH && x < MS_R_RANGE * WIDTH)
+	{
+		cub->mouse.left = 0;
+		cub->mouse.right = 0;
+	}
+	else if (x < MS_L_RANGE * WIDTH)
+	{
+		cub->mouse.left = fabs(MS_L_RANGE * WIDTH - x);
+		cub->mouse.right = 0;
+	}
+	else if (x > MS_R_RANGE * WIDTH)
+	{
+		cub->mouse.left = 0;
+		cub->mouse.right = fabs(MS_R_RANGE * WIDTH - x);
+	}
+	return (0);
+}

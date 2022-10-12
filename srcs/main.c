@@ -15,6 +15,7 @@ int	main(int ac, char **av)
 	render(cub);
 	mlx_hook(cub->window, ON_KEYUP, 1L << 1, key_up, cub);
 	mlx_hook(cub->window, ON_KEYDOWN, 1L << 0, key_down, cub);
+	mlx_hook(cub->window, ON_MOUSEMOVE, 1L << 6, mouse_hook, cub);
 	mlx_hook(cub->window, ON_DESTROY, 0, graceful_exit, cub);
 	mlx_loop_hook(cub->mlx, update_display, cub);
 	mlx_loop(cub->mlx);
