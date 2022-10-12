@@ -57,7 +57,6 @@
 # endif
 
 /* ENUMS */
-
 typedef enum e_hook_code {
 	ON_KEYDOWN = 2,
 	ON_KEYUP = 3,
@@ -278,10 +277,10 @@ int		has_right_file_ext(char *file_name, char *extension);
 int		count_appearances(char *str, char c);
 int		ft_split_len(char **split);
 int		is_number(char *str);
+int		get_trgb(int t, int r, int g, int b);
 
 /* Only for DEVelopment */
 /* COLOR */
-int		get_trgb(int t, int r, int g, int b);
 int		get_t(int trgb);
 int		get_r(int trgb);
 int		get_g(int trgb);
