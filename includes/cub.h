@@ -203,8 +203,8 @@ void	validate_map_grid(int map_fd, t_cub *cub, t_parse_info* parse_info);
 int		line_is_empty(char *line);
 char	*replace_tab_with_spaces(char *line, t_cub *cub);
 
-/* *** RAYCASTING *** */
-/* PIXEL */
+/* *** RENDER *** */
+/* PIXEL PUT */
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 /* RAYCAST */
 void	initialize_raycasting(t_cub *cub, int x);
@@ -217,10 +217,12 @@ void			apply_textures(t_cub *cub, int x);
 unsigned int	get_texture_color(t_img *texture, int pixel_x, int pixel_y);
 /* NAVIGATOR */
 void	draw_navigator(t_cub *cub);
+/* RENDER */
+void	render(t_cub *cub);
+int		update_display(t_cub *cub);
 
 /* *** HOOKS *** */
-/* HOOKS */
-int	update_display(t_cub *cub);
+/* KEY HOOKS */
 int	key_up(int keycode, t_cub *cub);
 int	key_down(int keycode, t_cub *cub);
 /* MOVEMENT */

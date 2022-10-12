@@ -12,7 +12,7 @@ int	main(int ac, char **av)
 	validate_map(map_fd, av[1], &cub);
 	print_cub(&cub); // TO BE REMOVED
 	init_mlx(&cub);
-	raycast(&cub);
+	render(&cub);
 	mlx_hook(cub.window, 3, 1L << 1, key_up, &cub);
 	mlx_hook(cub.window, 2, 1L << 0, key_down, &cub);
 	mlx_loop_hook(cub.mlx, update_display, &cub);
