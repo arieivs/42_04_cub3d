@@ -75,6 +75,7 @@ t_cub	init_cub(void)
 	i = 0;
 	while (i < 4)
 		cub.walls[i++].path = NULL;
+	cub.nav_img = NULL;
 	return (cub);
 }
 
@@ -99,9 +100,12 @@ t_parse_info	init_parse_info(void)
 	return (parse_info);
 }
 
+/* +2 when sizing navigator: accomodating for borders */
 void	init_mlx_and_raycast(t_cub *cub)
 {
-	cub->pixel_per_square = 12;
+	int	nav_width;
+	int	nav_height;
+
 	cub->mlx = mlx_init();
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
 	cub->img = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
@@ -110,6 +114,18 @@ void	init_mlx_and_raycast(t_cub *cub)
 			&cub->img->bits_per_pixel, &cub->img->line_length,
 			&cub->img->endian);
 	init_textures(cub);
+	cub->pixel_per_square = 12;
+	cub->nav_img = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
+	nav_width = cub->pixel_per_square * (cub->map_width + 2);
+	if (nav_width > WIDTH / NAV_FRACT + 2 * cub->pixel_per_square)
+		nav_width = WIDTH / NAV_FRACT + 2 * cub->pixel_per_square;
+	nav_height = cub->pixel_per_square * (cub->map_height + 2);
+	if (nav_height > HEIGHT / NAV_FRACT + 2 * cub->pixel_per_square)
+		nav_height = HEIGHT / NAV_FRACT + 2 * cub->pixel_per_square;
+	cub->nav_img->img_ptr = mlx_new_image(cub->mlx, nav_width, nav_height);
+	cub->nav_img->addr = mlx_get_data_addr(cub->nav_img->img_ptr,
+			&cub->nav_img->bits_per_pixel, &cub->nav_img->line_length,
+			&cub->nav_img->endian);
 }
 
 void	init_textures(t_cub *cub)

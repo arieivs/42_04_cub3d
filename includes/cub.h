@@ -12,9 +12,13 @@
 # include "mlx.h"
 # include "libft.h"
 
+/* window width and height */
 # define WIDTH 1220 //1920
 # define HEIGHT 720 //1080
+/* asset/texture size */
 # define ASSET_SIZE 512
+/* map/navigator window fraction */
+# define NAV_FRACT 3
 
 /* OS CHECK */
 # ifdef APPLE
@@ -147,7 +151,7 @@ typedef struct s_cub {
 	int				draw_end;
 	/* draw navigator */
 	int				pixel_per_square;
-	t_img			nav_img;
+	t_img			*nav_img;
 }				t_cub;
 
 typedef struct s_parse_info {
@@ -195,7 +199,7 @@ char	*replace_tab_with_spaces(char *line, t_cub *cub);
 
 /* *** RAYCASTING *** */
 /* PIXEL */
-void	my_mlx_pixel_put(t_cub *cub, int x, int y, int color);
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 /* RAYCAST */
 void	initialize_raycasting(t_cub *cub, int x);
 void	calculate_step(t_cub *cub);

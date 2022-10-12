@@ -46,6 +46,8 @@ void	free_cub(t_cub *cub)
 		free(cub->step);
 	if (cub->texel)
 		free(cub->texel);
+	if (cub->nav_img)
+		free(cub->nav_img);
 }
 
 void	free_split(char **split)

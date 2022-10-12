@@ -13,9 +13,9 @@ static void	draw_square(t_cub *cub, int x, int y, int color)
 		{
 			if (i == 0 || i == cub->pixel_per_square - 1
 				|| j == 0 || j == cub->pixel_per_square - 1)
-				my_mlx_pixel_put(cub, x + i, y + j, 0x00000000);
+				my_mlx_pixel_put(cub->nav_img, x + i, y + j, 0x00000000);
 			else
-				my_mlx_pixel_put(cub, x + i, y + j, color);
+				my_mlx_pixel_put(cub->nav_img, x + i, y + j, color);
 			j++;
 		}
 		i++;
@@ -25,7 +25,7 @@ static void	draw_square(t_cub *cub, int x, int y, int color)
 /* Borders (start/end x and y) are respective to the map grid,
  * not to the pixels on the screen.
  * Decided navigator cannot take more than a 1/3 of screen width/height,
- * this value was arbitrary.
+ * this value was arbitrary (NAV_FRACT).
  */
 static void	set_navigation_x_borders(t_pair_i *start, t_pair_i *end, t_cub *cub)
 {
@@ -34,17 +34,17 @@ static void	set_navigation_x_borders(t_pair_i *start, t_pair_i *end, t_cub *cub)
 	nav_width = cub->pixel_per_square * cub->map_width;
 	start->x = 0;
 	end->x = cub->map_width;
-	if (nav_width > WIDTH / 3)
+	if (nav_width > WIDTH / NAV_FRACT)
 	{
 		start->x = (int)(cub->pos->x - (double)WIDTH
-				/ (6.0 * (double)cub->pixel_per_square));
+				/ ((double)NAV_FRACT * 2.0 * (double)cub->pixel_per_square));
 		if (start->x < 0)
 			start->x = 0;
-		end->x = start->x + WIDTH / (3 * cub->pixel_per_square);
+		end->x = start->x + WIDTH / (NAV_FRACT * cub->pixel_per_square);
 		if (end->x > cub->map_width)
 		{
 			end->x = cub->map_width;
-			start->x = end->x - WIDTH / (3 * cub->pixel_per_square);
+			start->x = end->x - WIDTH / (NAV_FRACT * cub->pixel_per_square);
 		}
 	}
 }
@@ -56,17 +56,17 @@ static void	set_navigation_y_borders(t_pair_i *start, t_pair_i *end, t_cub *cub)
 	nav_height = cub->pixel_per_square * cub->map_height;
 	start->y = 0;
 	end->y = cub->map_height;
-	if (nav_height > HEIGHT / 3)
+	if (nav_height > HEIGHT / NAV_FRACT)
 	{
 		start->y = (int)(cub->pos->y - (double)HEIGHT
-				/ (6.0 * (double)cub->pixel_per_square));
+				/ ((double)NAV_FRACT * 2.0 * (double)cub->pixel_per_square));
 		if (start->y < 0)
 			start->y = 0;
-		end->y = start->y + HEIGHT / (3 * cub->pixel_per_square);
+		end->y = start->y + HEIGHT / (NAV_FRACT * cub->pixel_per_square);
 		if (end->y > cub->map_height)
 		{
 			end->y = cub->map_height;
-			start->y = end->y - HEIGHT / (3 * cub->pixel_per_square);
+			start->y = end->y - HEIGHT / (NAV_FRACT * cub->pixel_per_square);
 		}
 	}
 }
@@ -122,4 +122,5 @@ void	draw_navigator(t_cub *cub)
 	actual_draw_navigator(cub, start, end);
 	draw_square(cub, ((int)cub->pos->x - start.x + 1) * cub->pixel_per_square,
 		((int)cub->pos->y - start.y + 1) * cub->pixel_per_square, 0x00FF0000);
+	mlx_put_image_to_window(cub->mlx, cub->window, cub->nav_img->img_ptr, 0, 0);
 }
