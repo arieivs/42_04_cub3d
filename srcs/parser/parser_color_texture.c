@@ -7,7 +7,7 @@ int	textures_colors_not_set(t_cub *cub, t_parse_info *parse_info)
 		parse_info->is_ceil_color_set == 0);
 }
 
-int	color_values_are_valid(t_parse_info *parse_info)
+static int	color_values_are_valid(t_parse_info *parse_info)
 {
 	int	i;
 
@@ -32,18 +32,20 @@ int	color_values_are_valid(t_parse_info *parse_info)
  * - not ok: spaces in the middle (since we're splitting over spaces first)
  * - ok: 255,+160,1
  */
-int	color_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
+static int	color_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 {
 	if (count_appearances(content, ',') != 2)
 		return (0);
 	parse_info->colors = ft_split(content, ',');
 	if (ft_split_len(parse_info->colors) != 3)
 		return (0);
-	parse_info->colors_rgb = (int *)calloc_or_exit(sizeof(int), 3, cub);
+	parse_info->colors_rgb = (int *)calloc_or_exit(sizeof(int), 3);
 	if (!color_values_are_valid(parse_info))
 		return (0);
-	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 && parse_info->is_floor_color_set) ||
-		(ft_strncmp(parse_info->prefix, "C", 1) == 0 && parse_info->is_ceil_color_set))
+	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 &&
+		parse_info->is_floor_color_set) ||
+		(ft_strncmp(parse_info->prefix, "C", 1) == 0 &&
+		parse_info->is_ceil_color_set))
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "F", 1) == 0)
 	{
@@ -64,7 +66,8 @@ int	color_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
  * - checks the files exists/can be opened
  * - makes sure this texture hadn't been defined already
  */
-int	texture_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
+static int	texture_is_valid(t_cub *cub, t_parse_info *parse_info,
+				char *content)
 {
 	int		fd;
 
@@ -86,7 +89,7 @@ int	texture_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 		cub->walls[WE].path = ft_strdup(parse_info->file_name);
 	else
 		cub->walls[EA].path = ft_strdup(parse_info->file_name);
-	close(fd);
+	close_or_exit(fd);
 	return (1);
 }
 
@@ -114,12 +117,14 @@ int	texture_or_color_is_valid(t_cub *cub, t_parse_info	*parse_info)
 	parse_info->prefix = ft_strtrim(parse_info->line_content[0], "\t\v\f\r ");
 	parse_info->prefix_len = ft_strlen(parse_info->prefix);
 	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 ||
-			ft_strncmp(parse_info->prefix, "C", 1) == 0) && parse_info->prefix_len == 1)
+			ft_strncmp(parse_info->prefix, "C", 1) == 0) &&
+			parse_info->prefix_len == 1)
 		is_valid = color_is_valid(cub, parse_info, parse_info->line_content[i]);
 	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 ||
 			ft_strncmp(parse_info->prefix, "SO", 2) == 0 ||
 			ft_strncmp(parse_info->prefix, "WE", 2) == 0 ||
-			ft_strncmp(parse_info->prefix, "EA", 2) == 0) && parse_info->prefix_len == 2)
+			ft_strncmp(parse_info->prefix, "EA", 2) == 0) &&
+			parse_info->prefix_len == 2)
 		is_valid = texture_is_valid(cub, parse_info, parse_info->line_content[i]);
 	if (i + 1 != ft_split_len(parse_info->line_content))
 		return (0);

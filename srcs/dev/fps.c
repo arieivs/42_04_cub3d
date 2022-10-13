@@ -17,17 +17,13 @@ static void	put_fps_string(double fps, t_cub *cub)
 void	display_fps(t_cub *cub)
 {
 	unsigned long long			time;
-	static unsigned long long	old_time;
+	static unsigned long long	old_time = 0;
 	double						curr_fps;
-	static double				prev_fps;
+	static double				prev_fps = 0.0;
 	long double					frame_time;
 
-	if (!old_time)
-		old_time = 0;
 	time = get_time_micros();
 	frame_time = ((long double)(time - old_time)) / 1000000;
-	if (!prev_fps)
-		prev_fps = 0.0;
 	curr_fps = 1.0 / frame_time;
 	if (fabs(curr_fps - prev_fps) > 1)
 	{

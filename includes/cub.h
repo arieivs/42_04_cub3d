@@ -32,7 +32,6 @@
 # define MS_L_RANGE 0.375
 # define MS_R_RANGE 0.625
 
-
 /* OS CHECK */
 # ifdef APPLE
 #  define ESC_KEY 53
@@ -61,6 +60,16 @@
 # endif
 
 /* ENUMS */
+typedef enum e_hook_code {
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+}			t_hook_code;
+
 typedef enum e_map_code {
 	IN = 0,
 	WALL,
@@ -85,6 +94,9 @@ typedef enum e_error_code {
 	WRONG_ARGC,
 	WRONG_FILE_EXT,
 	FILE_INEXISTENT,
+	READ_FAIL,
+	MAP_INCOMPLETE,
+	MAP_TEXT_COLOR_INCORRECT,
 	MAP_INCORRECT,
 	MLX_FAILURE
 }			t_error_code;
@@ -126,12 +138,10 @@ typedef struct s_keys {
 	int right;
 }	t_keys;
 
-typedef struct s_mouse
-	{
+typedef struct s_mouse {
 	double left;
 	double right;
-}	t_mouse;;
-
+}			t_mouse;
 
 typedef struct s_cub {
 	/* minilibx */
@@ -139,6 +149,7 @@ typedef struct s_cub {
 	void		*window;
 	t_img		*img;
 	/* parsing map */
+	int			map_fd;
 	t_wall		walls[4];
 	int			f_color;
 	int			c_color;
@@ -197,30 +208,31 @@ int		check_args(int ac, char **av);
 
 /* *** INITIALIZERS *** */
 /* INIT CUB */
-t_pair_d		*init_pair_double(t_cub *cub);
-t_pair_i		*init_pair_int(t_cub *cub);
-t_cub			init_cub(void);
-/* INIT HOOKS */
-void	init_keys(t_cub *cub);
-void	init_mouse(t_cub *cub);
+t_pair_d		*init_pair_double(void);
+t_pair_i		*init_pair_int(void);
+t_cub			*init_cub(int map_fd);
 /* INIT PARSE */
-t_parse_info	init_parse_info(void);
+t_parse_info	*init_parse_info(void);
+/* SINGLETONS */
+t_cub			*get_cub(t_cub *cub);
+t_parse_info	*get_parse_info(t_parse_info *parse_info, int clear);
 /* INIT MLX and everything that needs it */
 void			init_mlx(t_cub *cub);
 
 /* *** PARSER *** */
 /* PARSER */
-void	validate_map(int map_fd, char *map_name, t_cub	*cub);
-void	validate_map_info(int map_fd, t_cub *cub, t_parse_info* parse_info);
+void	validate_map(char *map_name, t_cub	*cub);
+void	validate_map_info(t_cub *cub, t_parse_info* parse_info);
 /* PARSER COLOR and TEXTURE */
 int		textures_colors_not_set(t_cub *cub, t_parse_info *parse_info);
 int		texture_or_color_is_valid(t_cub *cub, t_parse_info	*parse_info);
 /* PARSER MAP */
-void	evaluate_map_size(int map_fd, t_cub *cub, t_parse_info* parse_info);
-void	validate_map_grid(int map_fd, t_cub *cub, t_parse_info* parse_info);
+void	evaluate_map_size(t_cub *cub, t_parse_info* parse_info);
+void	validate_map_grid(t_cub *cub, t_parse_info* parse_info);
+void	set_player(t_cub *cub, char player, int x, int y);
 /* PARSER UTILS */
 int		line_is_empty(char *line);
-char	*replace_tab_with_spaces(char *line, t_cub *cub);
+char	*replace_tab_with_spaces(char *line);
 
 /* *** RENDER *** */
 /* PIXEL PUT */
@@ -262,10 +274,11 @@ void	free_parse_info(t_parse_info *parse_info);
 /* GAMEOVER - Error management */
 void	error_message(t_error_code error_code);
 int		error_and_return(t_error_code error_code, int return_value);
-void	error_and_exit(t_error_code error_code, t_cub *cub);
-void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
-			t_parse_info *parse_info, int map_fd);
-void	*calloc_or_exit(size_t size, int count, t_cub *cub);
+void	error_and_exit(t_error_code error_code);
+/* GAMEOVER SYStem - Error management when system functions fail */
+void	*calloc_or_exit(size_t size, int count);
+int		open_or_exit(char *file_path, mode_t mode);
+int		close_or_exit(int fd);
 /* GRACEFUL EXIT*/
 int	graceful_exit(t_cub *cub);
 
@@ -274,10 +287,10 @@ int		has_right_file_ext(char *file_name, char *extension);
 int		count_appearances(char *str, char c);
 int		ft_split_len(char **split);
 int		is_number(char *str);
+int		get_trgb(int t, int r, int g, int b);
 
 /* Only for DEVelopment */
 /* COLOR */
-int		get_trgb(int t, int r, int g, int b);
 int		get_t(int trgb);
 int		get_r(int trgb);
 int		get_g(int trgb);

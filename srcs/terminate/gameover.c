@@ -1,5 +1,25 @@
 #include "cub.h"
 
+static void	error_message_parse(t_error_code error_code)
+{
+	if (error_code == READ_FAIL)
+		ft_putstr_fd("Something went wrong when reading the file.\n",
+			STDERR_FILENO);
+	else if (error_code == MAP_INCOMPLETE)
+		ft_putstr_fd("Incomplete Map. Please provide a valid .cub file\n",
+			STDERR_FILENO);
+	else if (error_code == MAP_TEXT_COLOR_INCORRECT)
+	{
+		ft_putstr_fd("Incorrect Map - the textures and/or colors values ",
+			STDERR_FILENO);
+		ft_putstr_fd("are incorrect. Please provide a valid .cub file\n",
+			STDERR_FILENO);
+	}
+	else if (error_code == MAP_INCORRECT)
+		ft_putstr_fd("Incorrect Map. Please provide a valid .cub file\n",
+			STDERR_FILENO);
+}
+
 void	error_message(t_error_code error_code)
 {
 	ft_putstr_fd("Error\n", STDERR_FILENO);
@@ -11,9 +31,9 @@ void	error_message(t_error_code error_code)
 			STDERR_FILENO);
 	else if (error_code == FILE_INEXISTENT)
 		ft_putstr_fd("Inexistent file.\n", STDERR_FILENO);
-	else if (error_code == MAP_INCORRECT)
-		ft_putstr_fd("Incorrect Map. Please provide a valid .cub file\n",
-			STDERR_FILENO);
+	else if (error_code == READ_FAIL || error_code == MAP_INCOMPLETE ||
+		error_code == MAP_TEXT_COLOR_INCORRECT || error_code == MAP_INCORRECT)
+		error_message_parse(error_code);
 	else if (error_code == MLX_FAILURE)
 		ft_putstr_fd("MiniLibx failure. Please check your configuration\n",
 			STDERR_FILENO);
@@ -30,29 +50,17 @@ int	error_and_return(t_error_code error_code, int return_value)
 	return (return_value);
 }
 
-void	error_and_exit(t_error_code error_code, t_cub *cub)
+void	error_and_exit(t_error_code error_code)
 {
+	t_cub			*cub;
+	t_parse_info	*parse_info;
+
+	cub = get_cub(NULL);
+	parse_info = get_parse_info(NULL, 0);
 	if (cub)
 		free_cub(cub);
-	error_message(error_code);
-	exit(EXIT_FAILURE);
-}
-
-void	error_and_exit_from_parsing(t_error_code error_code, t_cub *cub,
-			t_parse_info *parse_info, int map_fd)
-{
 	if (parse_info)
 		free_parse_info(parse_info);
-	close(map_fd);
-	error_and_exit(error_code, cub);
-}
-
-void	*calloc_or_exit(size_t size, int count, t_cub *cub)
-{
-	void	*result;
-
-	result = ft_calloc(size, count);
-	if (!result)
-		error_and_exit(ERRNO, cub);
-	return (result);
+	error_message(error_code);
+	exit(EXIT_FAILURE);
 }

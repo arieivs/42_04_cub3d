@@ -7,7 +7,7 @@ static void	init_textures(t_cub *cub)
 	i = 0;
 	while (i < 4)
 	{
-		cub->walls[i].tex = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
+		cub->walls[i].tex = (t_img *)calloc_or_exit(sizeof(t_img), 1);
 		cub->walls[i].tex->width = ASSET_SIZE;
 		cub->walls[i].tex->height = ASSET_SIZE;
 		cub->walls[i].tex->img_ptr = mlx_xpm_file_to_image(cub->mlx,
@@ -28,8 +28,10 @@ static void	init_textures(t_cub *cub)
 void	init_mlx(t_cub *cub)
 {
 	cub->mlx = mlx_init();
+	if (!cub->mlx)
+		error_and_exit(MLX_FAILURE);
 	cub->window = mlx_new_window(cub->mlx, WIDTH, HEIGHT, "Let's play!");
-	cub->img = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
+	cub->img = (t_img *)calloc_or_exit(sizeof(t_img), 1);
 	cub->img->width = WIDTH;
 	cub->img->height = HEIGHT;
 	cub->img->img_ptr = mlx_new_image(cub->mlx, WIDTH, HEIGHT);
@@ -37,7 +39,7 @@ void	init_mlx(t_cub *cub)
 			&cub->img->bits_per_pixel, &cub->img->line_length,
 			&cub->img->endian);
 	init_textures(cub);
-	cub->nav_img = (t_img *)calloc_or_exit(sizeof(t_img), 1, cub);
+	cub->nav_img = (t_img *)calloc_or_exit(sizeof(t_img), 1);
 	cub->nav_img->width = PIXEL_PER_SQUARE * (cub->map_width + 2);
 	if (cub->nav_img->width > WIDTH / NAV_FRACT + 2 * PIXEL_PER_SQUARE)
 		cub->nav_img->width = WIDTH / NAV_FRACT + 2 * PIXEL_PER_SQUARE;
