@@ -225,8 +225,9 @@ void	validate_map_info(t_cub *cub, t_parse_info* parse_info);
 /* PARSER COLOR and TEXTURE */
 int		textures_colors_not_set(t_cub *cub, t_parse_info *parse_info);
 int		texture_or_color_is_valid(t_cub *cub, t_parse_info	*parse_info);
-/* PARSER MAP */
+/* PARSER MAP 1*/
 void	evaluate_map_size(t_cub *cub, t_parse_info* parse_info);
+/* PARSER MAP 2*/
 void	validate_map_grid(t_cub *cub, t_parse_info* parse_info);
 void	set_player(t_cub *cub, char player, int x, int y);
 /* PARSER UTILS */
