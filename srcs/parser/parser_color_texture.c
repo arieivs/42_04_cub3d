@@ -50,9 +50,9 @@ static int	color_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 	if (!color_values_are_valid(parse_info))
 		return (0);
 	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 &&
-		parse_info->is_f_color_set) ||
+		parse_info->is_floor_color_set) ||
 		(ft_strncmp(parse_info->prefix, "C", 1) == 0 &&
-		parse_info->is_c_color_set))
+		parse_info->is_ceil_color_set))
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "F", 1) == 0)
 	{
