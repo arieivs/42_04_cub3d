@@ -82,22 +82,19 @@ void	free_parse_info(t_parse_info *parse_info)
 	if (parse_info->buff)
 		free(parse_info->buff);
 	parse_info->buff = NULL;
-	if (parse_info->line_trimmed)
-		free(parse_info->line_trimmed);
-	parse_info->line_trimmed = NULL;
-	if (parse_info->line_content)
-		free_split(parse_info->line_content);
-	parse_info->line_content = NULL;
+	if (parse_info->line)
+		free(parse_info->line);
+	parse_info->line = NULL;
 	if (parse_info->prefix)
 		free(parse_info->prefix);
 	parse_info->prefix = NULL;
+	if (parse_info->content)
+		free(parse_info->content);
+	parse_info->content = NULL;
 	if (parse_info->colors)
 		free_split(parse_info->colors);
 	parse_info->colors = NULL;
 	if (parse_info->colors_rgb)
 		free(parse_info->colors_rgb);
 	parse_info->colors_rgb = NULL;
-	if (parse_info->file_name)
-		free(parse_info->file_name);
-	parse_info->file_name = NULL;
 }

@@ -27,3 +27,16 @@ void	print_cub(t_cub *cub)
 	printf("Direction (x, y) = (%.2f, %.2f)\n", cub->dir->x, cub->dir->y);
 	printf("\n");
 }
+
+void	print_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		printf("%s ", split[i]);
+		i++;
+	}
+	printf("\n");
+}

@@ -23,6 +23,7 @@ void	evaluate_map_size(t_cub *cub, t_parse_info* parse_info)
 		parse_info->buff = replace_tab_with_spaces(parse_info->buff);
 		if (ft_strlen(parse_info->buff) > parse_info->max_map_width)
 			parse_info->max_map_width = ft_strlen(parse_info->buff);
+		free(parse_info->buff); // right? 26 lines :(
 		parse_info->line_nb++;
 	}
 	while ((parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff)) > 0)
