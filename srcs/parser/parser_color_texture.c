@@ -108,10 +108,8 @@ static int	texture_is_valid(t_cub *cub, t_parse_info *parse_info)
  */
 int	texture_or_color_is_valid(t_cub *cub, t_parse_info	*parse_info)
 {
-	int	i;
 	int	is_valid;
 
-	i = 1;
 	is_valid = 0;
 	if (parse_info->prefix_len == 0 || ft_strlen(parse_info->content) == 0)
 		return (0);
