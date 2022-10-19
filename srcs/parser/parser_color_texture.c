@@ -2,21 +2,28 @@
 
 int	textures_colors_not_set(t_cub *cub, t_parse_info *parse_info)
 {
-	return (cub->walls[NO].path == NULL || cub->walls[SO].path == NULL || cub->walls[WE].path == NULL ||
-		cub->walls[EA].path == NULL || parse_info->is_floor_color_set == 0 ||
+	return (cub->walls[NO].path == NULL || cub->walls[SO].path == NULL ||
+		cub->walls[WE].path == NULL || cub->walls[EA].path == NULL ||
+		parse_info->is_floor_color_set == 0 ||
 		parse_info->is_ceil_color_set == 0);
 }
 
 static int	color_values_are_valid(t_parse_info *parse_info)
 {
-	int	i;
+	int		i;
+	char	*color_trimmed;
 
 	i = 0;
 	while (i < 3)
 	{
-		if (!is_number(parse_info->colors[i]))
+		color_trimmed = ft_strtrim(parse_info->colors[i], "\t\v\f\r ");
+		if (!is_number(color_trimmed))
+		{
+			free(color_trimmed);
 			return (0);
-		parse_info->colors_rgb[i] = ft_atoi(parse_info->colors[i]);
+		}
+		parse_info->colors_rgb[i] = ft_atoi(color_trimmed);
+		free(color_trimmed);
 		if (parse_info->colors_rgb[i] < 0 || parse_info->colors_rgb[i] > 255)
 			return (0);
 		i++;
@@ -66,15 +73,13 @@ static int	color_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
  * - checks the files exists/can be opened
  * - makes sure this texture hadn't been defined already
  */
-static int	texture_is_valid(t_cub *cub, t_parse_info *parse_info,
-				char *content)
+static int	texture_is_valid(t_cub *cub, t_parse_info *parse_info)
 {
 	int		fd;
 
-	parse_info->file_name = ft_strtrim(content, "\t\n\v\f\r ");
-	if (!has_right_file_ext(parse_info->file_name, "xpm"))
+	if (!has_right_file_ext(parse_info->content, "xpm"))
 		return (0);
-	if ((fd = open(parse_info->file_name, O_RDONLY)) == -1)
+	if ((fd = open(parse_info->content, O_RDONLY)) == -1)
 		return (error_and_return(FILE_INEXISTENT, 0));
 	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 && cub->walls[NO].path) ||
 		(ft_strncmp(parse_info->prefix, "SO", 2) == 0 && cub->walls[SO].path) ||
@@ -82,21 +87,19 @@ static int	texture_is_valid(t_cub *cub, t_parse_info *parse_info,
 		(ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->walls[EA].path))
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "NO", 2) == 0)
-		cub->walls[NO].path = ft_strdup(parse_info->file_name);
+		cub->walls[NO].path = ft_strdup(parse_info->content);
 	else if (ft_strncmp(parse_info->prefix, "SO", 2) == 0)
-		cub->walls[SO].path = ft_strdup(parse_info->file_name);
+		cub->walls[SO].path = ft_strdup(parse_info->content);
 	else if (ft_strncmp(parse_info->prefix, "WE", 2) == 0)
-		cub->walls[WE].path = ft_strdup(parse_info->file_name);
+		cub->walls[WE].path = ft_strdup(parse_info->content);
 	else
-		cub->walls[EA].path = ft_strdup(parse_info->file_name);
+		cub->walls[EA].path = ft_strdup(parse_info->content);
 	close_or_exit(fd);
 	return (1);
 }
 
 /*
  * Checks if the texture or color information is valid and stores it
- * - after prefix there might be white spaces -> accomodates for that
- * - if after the prefix there is no more information, it's not valid
  * - checks if prefix is correct
  * - checks if it's a color and if it's valid
  * - checks it it's a texture and if it's valid
@@ -105,28 +108,20 @@ static int	texture_is_valid(t_cub *cub, t_parse_info *parse_info,
  */
 int	texture_or_color_is_valid(t_cub *cub, t_parse_info	*parse_info)
 {
-	int	i;
 	int	is_valid;
 
-	i = 1;
 	is_valid = 0;
-	while (line_is_empty(parse_info->line_content[i]))
-		i++;
-	if (!parse_info->line_content[i])
+	if (parse_info->prefix_len == 0 || ft_strlen(parse_info->content) == 0)
 		return (0);
-	parse_info->prefix = ft_strtrim(parse_info->line_content[0], "\t\v\f\r ");
-	parse_info->prefix_len = ft_strlen(parse_info->prefix);
 	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 ||
 			ft_strncmp(parse_info->prefix, "C", 1) == 0) &&
 			parse_info->prefix_len == 1)
-		is_valid = color_is_valid(cub, parse_info, parse_info->line_content[i]);
+		is_valid = color_is_valid(cub, parse_info, parse_info->content);
 	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 ||
 			ft_strncmp(parse_info->prefix, "SO", 2) == 0 ||
 			ft_strncmp(parse_info->prefix, "WE", 2) == 0 ||
 			ft_strncmp(parse_info->prefix, "EA", 2) == 0) &&
 			parse_info->prefix_len == 2)
-		is_valid = texture_is_valid(cub, parse_info, parse_info->line_content[i]);
-	if (i + 1 != ft_split_len(parse_info->line_content))
-		return (0);
+		is_valid = texture_is_valid(cub, parse_info);
 	return (is_valid);
 }

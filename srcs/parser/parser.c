@@ -23,8 +23,8 @@ void	validate_map_info(t_cub *cub, t_parse_info* parse_info)
 			free(parse_info->buff);
 			continue ;
 		}
-		parse_info->line_trimmed = ft_strtrim(parse_info->buff, "\t\v\f\r ");
-		parse_info->line_content = ft_split(parse_info->line_trimmed, ' ');
+		parse_info->line = ft_strreplace(parse_info->buff, "\t\v\f\r", ' ');
+		split_prefix_from_content(parse_info);
 		if (!texture_or_color_is_valid(cub, parse_info))
 			error_and_exit(MAP_TEXT_COLOR_INCORRECT);
 		parse_info->line_nb++;

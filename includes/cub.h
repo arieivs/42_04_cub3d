@@ -189,15 +189,14 @@ typedef struct s_parse_info {
 	char	*buff;
 	int		ret;
 	int		line_nb;
-	char	*line_trimmed;
-	char	**line_content;
+	char	*line;
 	char	*prefix;
 	int		prefix_len;
+	char	*content;
 	char	**colors;
 	int		*colors_rgb;
 	int		is_floor_color_set;
 	int		is_ceil_color_set;
-	char	*file_name;
 	int		line_nb_map_start;
 	size_t	max_map_width;
 	int		is_player_set;
@@ -226,13 +225,16 @@ void	validate_map_info(t_cub *cub, t_parse_info* parse_info);
 /* PARSER COLOR and TEXTURE */
 int		textures_colors_not_set(t_cub *cub, t_parse_info *parse_info);
 int		texture_or_color_is_valid(t_cub *cub, t_parse_info	*parse_info);
-/* PARSER MAP */
+/* PARSER MAP 1*/
 void	evaluate_map_size(t_cub *cub, t_parse_info* parse_info);
+/* PARSER MAP 2*/
 void	validate_map_grid(t_cub *cub, t_parse_info* parse_info);
 void	set_player(t_cub *cub, char player, int x, int y);
 /* PARSER UTILS */
 int		line_is_empty(char *line);
 char	*replace_tab_with_spaces(char *line);
+char	*ft_strreplace(char *org, char *old_set, char new_set);
+void	split_prefix_from_content(t_parse_info *parse_info);
 
 /* *** RENDER *** */
 /* PIXEL PUT */
@@ -297,6 +299,7 @@ int		get_g(int trgb);
 int		get_b(int trgb);
 /* DEBUG */
 void	print_cub(t_cub *cub);
+void	print_split(char **split);
 /* FPS */
 unsigned long long	get_time_micros(void);
 void				display_fps(t_cub *cub);
