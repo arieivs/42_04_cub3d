@@ -27,6 +27,9 @@ t_parse_info	*get_parse_info(t_parse_info *parse_info, int clear)
 	if (!parse_info_ptr && parse_info)
 		parse_info_ptr = parse_info;
 	if (clear)
+	{
+		free(parse_info_ptr);
 		parse_info_ptr = NULL;
+	}
 	return (parse_info_ptr);
 }
