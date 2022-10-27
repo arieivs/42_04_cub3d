@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_color_texture.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hvan-hov <hvan-hov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/27 14:15:56 by hvan-hov          #+#    #+#             */
+/*   Updated: 2022/10/27 14:27:36 by hvan-hov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub.h"
 
 int	textures_colors_not_set(t_cub *cub, t_parse_info *parse_info)
 {
-	return (cub->walls[NO].path == NULL || cub->walls[SO].path == NULL ||
-		cub->walls[WE].path == NULL || cub->walls[EA].path == NULL ||
-		parse_info->is_floor_color_set == 0 ||
-		parse_info->is_ceil_color_set == 0);
+	return (cub->walls[NO].path == NULL || cub->walls[SO].path == NULL
+		|| cub->walls[WE].path == NULL || cub->walls[EA].path == NULL
+		|| parse_info->is_floor_color_set == 0
+		|| parse_info->is_ceil_color_set == 0);
 }
 
 static int	color_values_are_valid(t_parse_info *parse_info)
@@ -49,20 +61,20 @@ static int	color_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
 	parse_info->colors_rgb = (int *)calloc_or_exit(sizeof(int), 3);
 	if (!color_values_are_valid(parse_info))
 		return (0);
-	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 &&
-		parse_info->is_floor_color_set) ||
-		(ft_strncmp(parse_info->prefix, "C", 1) == 0 &&
-		parse_info->is_ceil_color_set))
+	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0
+			&& parse_info->is_floor_color_set)
+		|| (ft_strncmp(parse_info->prefix, "C", 1) == 0
+			&& parse_info->is_ceil_color_set))
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "F", 1) == 0)
 	{
 		cub->f_color = get_trgb(0, parse_info->colors_rgb[0],
-			parse_info->colors_rgb[1], parse_info->colors_rgb[2]);
+				parse_info->colors_rgb[1], parse_info->colors_rgb[2]);
 		parse_info->is_floor_color_set = 1;
 		return (1);
 	}
 	cub->c_color = get_trgb(0, parse_info->colors_rgb[0],
-		parse_info->colors_rgb[1], parse_info->colors_rgb[2]);
+			parse_info->colors_rgb[1], parse_info->colors_rgb[2]);
 	parse_info->is_ceil_color_set = 1;
 	return (1);
 }
@@ -81,10 +93,10 @@ static int	texture_is_valid(t_cub *cub, t_parse_info *parse_info)
 		return (0);
 	if ((fd = open(parse_info->content, O_RDONLY)) == -1)
 		return (error_and_return(FILE_INEXISTENT, 0));
-	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 && cub->walls[NO].path) ||
-		(ft_strncmp(parse_info->prefix, "SO", 2) == 0 && cub->walls[SO].path) ||
-		(ft_strncmp(parse_info->prefix, "WE", 2) == 0 && cub->walls[WE].path) ||
-		(ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->walls[EA].path))
+	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 && cub->walls[NO].path)
+		|| (ft_strncmp(parse_info->prefix, "SO", 2) == 0 && cub->walls[SO].path)
+		|| (ft_strncmp(parse_info->prefix, "WE", 2) == 0 && cub->walls[WE].path)
+		|| (ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->walls[EA].path))
 		return (0);
 	if (ft_strncmp(parse_info->prefix, "NO", 2) == 0)
 		cub->walls[NO].path = ft_strdup(parse_info->content);
@@ -113,15 +125,15 @@ int	texture_or_color_is_valid(t_cub *cub, t_parse_info	*parse_info)
 	is_valid = 0;
 	if (parse_info->prefix_len == 0 || ft_strlen(parse_info->content) == 0)
 		return (0);
-	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0 ||
-			ft_strncmp(parse_info->prefix, "C", 1) == 0) &&
-			parse_info->prefix_len == 1)
+	if ((ft_strncmp(parse_info->prefix, "F", 1) == 0
+			|| ft_strncmp(parse_info->prefix, "C", 1) == 0)
+		&& parse_info->prefix_len == 1)
 		is_valid = color_is_valid(cub, parse_info, parse_info->content);
-	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 ||
-			ft_strncmp(parse_info->prefix, "SO", 2) == 0 ||
-			ft_strncmp(parse_info->prefix, "WE", 2) == 0 ||
-			ft_strncmp(parse_info->prefix, "EA", 2) == 0) &&
-			parse_info->prefix_len == 2)
-		is_valid = texture_is_valid(cub, parse_info);
+	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0
+			|| ft_strncmp(parse_info->prefix, "SO", 2) == 0
+			|| ft_strncmp(parse_info->prefix, "WE", 2) == 0
+			|| ft_strncmp(parse_info->prefix, "EA", 2) == 0)
+		&& parse_info->prefix_len == 2)
+			is_valid = texture_is_valid(cub, parse_info);
 	return (is_valid);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hvan-hov <hvan-hov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/27 14:31:49 by hvan-hov          #+#    #+#             */
+/*   Updated: 2022/10/27 14:44:21 by hvan-hov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB_H
 # define CUB_H
 
@@ -131,26 +143,24 @@ typedef struct s_wall {
 
 typedef struct s_keys {
 	int	w;
-	int a;
-	int s;
-	int d;
-	int up;
-	int left;
-	int down;
-	int right;
+	int	a;
+	int	s;
+	int	d;
+	int	up;
+	int	left;
+	int	down;
+	int	right;
 }	t_keys;
 
 typedef struct s_mouse {
-	double left;
-	double right;
+	double	left;
+	double	right;
 }			t_mouse;
 
 typedef struct s_cub {
-	/* minilibx */
 	void		*mlx;
 	void		*window;
 	t_img		*img;
-	/* parsing map */
 	int			map_fd;
 	t_wall		walls[4];
 	int			f_color;
@@ -161,7 +171,6 @@ typedef struct s_cub {
 	t_pair_d	*pos;
 	t_pair_d	*dir;
 	t_pair_d	*proj_plane;
-	/* raycasting */
 	double		camera_x;
 	t_pair_d	*ray_dir;
 	t_pair_i	*map_pos;
@@ -171,19 +180,15 @@ typedef struct s_cub {
 	t_pair_i	*step;
 	int			hit;
 	t_side_code	side;
-	/* textures */
 	double		wall_x;
 	t_pair_i	*texel;
 	double		texel_step;
 	double		texel_pos;
-	/* drawing pixels */
 	int			line_height;
 	int			draw_start;
 	int			draw_end;
-	/* movement */
 	t_keys		keys;
 	t_mouse		mouse;
-	/* draw navigator */
 	t_img		*nav_img;
 }				t_cub;
 
@@ -205,103 +210,103 @@ typedef struct s_parse_info {
 }				t_parse_info;
 
 /* DEAL with user INPUT */
-int		check_args(int ac, char **av);
+int					check_args(int ac, char **av);
 
 /* *** INITIALIZERS *** */
 /* INIT CUB */
-t_pair_d		*init_pair_double(void);
-t_pair_i		*init_pair_int(void);
-t_cub			*init_cub(int map_fd);
+t_pair_d			*init_pair_double(void);
+t_pair_i			*init_pair_int(void);
+t_cub				*init_cub(int map_fd);
 /* INIT PARSE */
-t_parse_info	*init_parse_info(void);
+t_parse_info		*init_parse_info(void);
 /* SINGLETONS */
-t_cub			*get_cub(t_cub *cub);
-t_parse_info	*get_parse_info(t_parse_info *parse_info, int clear);
+t_cub				*get_cub(t_cub *cub);
+t_parse_info		*get_parse_info(t_parse_info *parse_info, int clear);
 /* INIT MLX and everything that needs it */
-void			init_mlx(t_cub *cub);
+void				init_mlx(t_cub *cub);
 
 /* *** PARSER *** */
 /* PARSER */
-void	validate_map(char *map_name, t_cub	*cub);
-void	validate_map_info(t_cub *cub, t_parse_info* parse_info);
+void				validate_map(char *map_name, t_cub	*cub);
+void				validate_map_info(t_cub *cub, t_parse_info *parse_info);
 /* PARSER COLOR and TEXTURE */
-int		textures_colors_not_set(t_cub *cub, t_parse_info *parse_info);
-int		texture_or_color_is_valid(t_cub *cub, t_parse_info	*parse_info);
+int					textures_colors_not_set(t_cub *cub, t_parse_info *p_inf);
+int					texture_or_color_is_valid(t_cub *cub, t_parse_info	*p_inf);
 /* PARSER MAP 1*/
-void	evaluate_map_size(t_cub *cub, t_parse_info* parse_info);
+void				evaluate_map_size(t_cub *cub, t_parse_info *parse_info);
 /* PARSER MAP 2*/
-void	validate_map_grid(t_cub *cub, t_parse_info* parse_info);
-void	set_player(t_cub *cub, char player, int x, int y);
+void				validate_map_grid(t_cub *cub, t_parse_info *parse_info);
+void				set_player(t_cub *cub, char player, int x, int y);
 /* PARSER UTILS */
-int		line_is_empty(char *line);
-char	*replace_tab_with_spaces(char *line);
-char	*ft_strreplace(char *org, char *old_set, char new_set);
-void	split_prefix_from_content(t_parse_info *parse_info);
+int					line_is_empty(char *line);
+char				*replace_tab_with_spaces(char *line);
+char				*ft_strreplace(char *org, char *old_set, char new_set);
+void				split_prefix_from_content(t_parse_info *parse_info);
 
 /* *** RENDER *** */
 /* PIXEL PUT */
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void				my_mlx_pixel_put(t_img *img, int x, int y, int color);
 /* RAYCAST */
-void	initialize_raycasting(t_cub *cub, int x);
-void	calculate_step(t_cub *cub);
-void	perform_dda(t_cub *cub);
-void	calculate_drawline(t_cub *cub);
-void	raycast(t_cub *cub);
+void				initialize_raycasting(t_cub *cub, int x);
+void				calculate_step(t_cub *cub);
+void				perform_dda(t_cub *cub);
+void				calculate_drawline(t_cub *cub);
+void				raycast(t_cub *cub);
 /* TEXTURES */
-void			apply_textures(t_cub *cub, int x);
-unsigned int	get_texture_color(t_img *texture, int pixel_x, int pixel_y);
+void				apply_textures(t_cub *cub, int x);
+unsigned int		get_texture_color(t_img *texture, int pixel_x, int pixel_y);
 /* NAVIGATOR */
-void	draw_navigator(t_cub *cub);
+void				draw_navigator(t_cub *cub);
 /* RENDER */
-void	render(t_cub *cub);
-int		update_display(t_cub *cub);
+void				render(t_cub *cub);
+int					update_display(t_cub *cub);
 
 /* *** HOOKS *** */
 /* KEY HOOKS */
-int	key_up(int keycode, t_cub *cub);
-int	key_down(int keycode, t_cub *cub);
-int	mouse_hook(int x, int y, t_cub *cub);
+int					key_up(int keycode, t_cub *cub);
+int					key_down(int keycode, t_cub *cub);
+int					mouse_hook(int x, int y, t_cub *cub);
 /* MOVEMENT */
-void	move_forward(t_cub *cub, double edge, double move_speed);
-void	move_backward(t_cub *cub, double edge, double move_speed);
-void	move_right(t_cub *cub, double edge, double move_speed);
-void	move_left(t_cub *cub, double edge, double move_speed);
+void				move_forward(t_cub *cub, double edge, double move_speed);
+void				move_backward(t_cub *cub, double edge, double move_speed);
+void				move_right(t_cub *cub, double edge, double move_speed);
+void				move_left(t_cub *cub, double edge, double move_speed);
 /* ROTATE */
-void	rotate_left(t_cub *cub, double rot_speed);
-void	rotate_right(t_cub *cub, double rot_speed);
+void				rotate_left(t_cub *cub, double rot_speed);
+void				rotate_right(t_cub *cub, double rot_speed);
 
 /* *** TERMINATE *** */
 /* FREE MEMORY */
-void	free_cub(t_cub *cub);
-void	free_split(char **split);
-void	free_parse_info(t_parse_info *parse_info);
+void				free_cub(t_cub *cub);
+void				free_split(char **split);
+void				free_parse_info(t_parse_info *parse_info);
 /* GAMEOVER - Error management */
-void	error_message(t_error_code error_code);
-int		error_and_return(t_error_code error_code, int return_value);
-void	error_and_exit(t_error_code error_code);
+void				error_message(t_error_code error_code);
+int					error_and_return(t_error_code error_code, int return_value);
+void				error_and_exit(t_error_code error_code);
 /* GAMEOVER SYStem - Error management when system functions fail */
-void	*calloc_or_exit(size_t size, int count);
-int		open_or_exit(char *file_path, mode_t mode);
-int		close_or_exit(int fd);
+void				*calloc_or_exit(size_t size, int count);
+int					open_or_exit(char *file_path, mode_t mode);
+int					close_or_exit(int fd);
 /* GRACEFUL EXIT*/
-int	graceful_exit(t_cub *cub);
+int					graceful_exit(t_cub *cub);
 
 /* UTILS */
-int		has_right_file_ext(char *file_name, char *extension);
-int		count_appearances(char *str, char c);
-int		ft_split_len(char **split);
-int		is_number(char *str);
-int		get_trgb(int t, int r, int g, int b);
+int					has_right_file_ext(char *file_name, char *extension);
+int					count_appearances(char *str, char c);
+int					ft_split_len(char **split);
+int					is_number(char *str);
+int					get_trgb(int t, int r, int g, int b);
 
 /* Only for DEVelopment */
 /* COLOR */
-int		get_t(int trgb);
-int		get_r(int trgb);
-int		get_g(int trgb);
-int		get_b(int trgb);
+int					get_t(int trgb);
+int					get_r(int trgb);
+int					get_g(int trgb);
+int					get_b(int trgb);
 /* DEBUG */
-void	print_cub(t_cub *cub);
-void	print_split(char **split);
+void				print_cub(t_cub *cub);
+void				print_split(char **split);
 /* FPS */
 unsigned long long	get_time_micros(void);
 void				display_fps(t_cub *cub);
