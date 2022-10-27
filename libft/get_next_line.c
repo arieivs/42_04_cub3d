@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int			ft_memdel(void **ptr)
+int	ft_memdel(void **ptr)
 {
 	if (!*ptr)
 		return (0);
@@ -27,8 +27,9 @@ static int	gnl_core(int fd, char **line, char **cur_line, char *buf)
 	char	*temp;
 
 	rd = 1;
-	while (!ft_strchr(*cur_line, '\n') && (rd = read(fd, buf, BUFFER_SIZE)) > 0)
+	while (!ft_strchr(*cur_line, '\n') && (rd > 0))
 	{
+		rd = read(fd, buf, BUFFER_SIZE);
 		buf[rd] = 0;
 		temp = ft_strjoin(*cur_line, buf);
 		free(*cur_line);
@@ -49,7 +50,7 @@ static int	gnl_core(int fd, char **line, char **cur_line, char *buf)
 	return (1);
 }
 
-int			get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static char	*cur_line = NULL;
 	char		*buf;
@@ -59,11 +60,13 @@ int			get_next_line(int fd, char **line)
 		return (-1);
 	if (!cur_line)
 	{
-		if (!(cur_line = (char *)malloc(sizeof(char))))
+		cur_line = (char *)malloc(sizeof(char));
+		if (!cur_line)
 			return (-1);
 		cur_line[0] = 0;
 	}
-	if (!(buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1)))
+	buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buf)
 		return (-1);
 	rd = gnl_core(fd, line, &cur_line, buf);
 	free(buf);
