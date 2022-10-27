@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hvan-hov <hvan-hov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/27 14:12:42 by hvan-hov          #+#    #+#             */
+/*   Updated: 2022/10/27 14:13:26 by hvan-hov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub.h"
 
 int	main(int ac, char **av)
@@ -10,7 +22,6 @@ int	main(int ac, char **av)
 		return (1);
 	cub = init_cub(map_fd);
 	validate_map(av[1], cub);
-	print_cub(cub); // TO BE REMOVED
 	init_mlx(cub);
 	render(cub);
 	mlx_hook(cub->window, ON_KEYUP, 1L << 1, key_up, cub);
