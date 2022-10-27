@@ -6,7 +6,7 @@
 /*   By: hvan-hov <hvan-hov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:16:09 by hvan-hov          #+#    #+#             */
-/*   Updated: 2022/10/27 14:16:10 by hvan-hov         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:29:16 by hvan-hov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  * - if at any point there is an error, everything is freed and we exit
  */
 
-void	validate_map_info(t_cub *cub, t_parse_info* parse_info)
+void	validate_map_info(t_cub *cub, t_parse_info *parse_info)
 {
 	while (textures_colors_not_set(cub, parse_info))
 	{
@@ -50,13 +50,13 @@ void	validate_map_info(t_cub *cub, t_parse_info* parse_info)
 	}
 }
 
-static void	skimm_through_until_map_grid(int map_fd, t_parse_info* parse_info)
+static void	skimm_through_until_map_grid(int map_fd, t_parse_info *parse_info)
 {
 	int	i;
 
 	i = 1;
-	while (i < parse_info->line_nb_map_start &&
-		(parse_info->ret = get_next_line(map_fd, &parse_info->buff)) > 0)
+	while (i < parse_info->line_nb_map_start
+		&& (parse_info->ret = get_next_line(map_fd, &parse_info->buff)) > 0)
 	{
 		i++;
 		free(parse_info->buff);

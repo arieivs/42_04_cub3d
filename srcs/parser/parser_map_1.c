@@ -6,7 +6,7 @@
 /*   By: hvan-hov <hvan-hov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:15:59 by hvan-hov          #+#    #+#             */
-/*   Updated: 2022/10/27 14:16:00 by hvan-hov         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:30:31 by hvan-hov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	evaluate_map_line_size(t_parse_info *parse_info)
  * so later the appropriate memory can be allocated.
  * need to go until the end of the file, else it won't restart properly
  */
-void	evaluate_map_size(t_cub *cub, t_parse_info* parse_info)
+void	evaluate_map_size(t_cub *cub, t_parse_info *parse_info)
 {
 	parse_info->line_nb_map_start = parse_info->line_nb;
 	while (parse_info->ret > 0 && !line_is_empty(parse_info->buff))
@@ -40,7 +40,8 @@ void	evaluate_map_size(t_cub *cub, t_parse_info* parse_info)
 	free(parse_info->buff);
 	if (parse_info->ret > 0)
 	{
-		while ((parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff)) > 0)
+		while ((parse_info->ret = get_next_line(cub->map_fd,
+					&parse_info->buff)) > 0)
 			free(parse_info->buff);
 		free(parse_info->buff);
 	}

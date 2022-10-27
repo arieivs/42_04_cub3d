@@ -6,7 +6,7 @@
 /*   By: hvan-hov <hvan-hov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:16:34 by hvan-hov          #+#    #+#             */
-/*   Updated: 2022/10/27 14:16:35 by hvan-hov         ###   ########.fr       */
+/*   Updated: 2022/10/27 14:36:10 by hvan-hov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	draw_texture(int x, int i, t_cub *cub)
 
 	if (i < cub->draw_start)
 		color = cub->c_color;
-	else if (i > cub->draw_start && i < cub->draw_end)
+	else if (i >= cub->draw_start && i <= cub->draw_end)
 	{
 		cub->texel->y = (int)cub->texel_pos;
 		if (cub->texel->y < 0)
