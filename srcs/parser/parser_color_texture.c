@@ -85,27 +85,28 @@ static int	color_is_valid(t_cub *cub, t_parse_info *parse_info, char *content)
  * - checks the files exists/can be opened
  * - makes sure this texture hadn't been defined already
  */
-static int	texture_is_valid(t_cub *cub, t_parse_info *parse_info)
+static int	texture_is_valid(t_cub *cub, t_parse_info *p_info)
 {
 	int		fd;
 
-	if (!has_right_file_ext(parse_info->content, "xpm"))
+	if (!has_right_file_ext(p_info->content, "xpm"))
 		return (0);
-	if ((fd = open(parse_info->content, O_RDONLY)) == -1)
+	fd = open(p_info->content, O_RDONLY);
+	if (fd == -1)
 		return (error_and_return(FILE_INEXISTENT, 0));
-	if ((ft_strncmp(parse_info->prefix, "NO", 2) == 0 && cub->walls[NO].path)
-		|| (ft_strncmp(parse_info->prefix, "SO", 2) == 0 && cub->walls[SO].path)
-		|| (ft_strncmp(parse_info->prefix, "WE", 2) == 0 && cub->walls[WE].path)
-		|| (ft_strncmp(parse_info->prefix, "EA", 2) == 0 && cub->walls[EA].path))
+	if ((ft_strncmp(p_info->prefix, "NO", 2) == 0 && cub->walls[NO].path)
+		|| (ft_strncmp(p_info->prefix, "SO", 2) == 0 && cub->walls[SO].path)
+		|| (ft_strncmp(p_info->prefix, "WE", 2) == 0 && cub->walls[WE].path)
+		|| (ft_strncmp(p_info->prefix, "EA", 2) == 0 && cub->walls[EA].path))
 		return (0);
-	if (ft_strncmp(parse_info->prefix, "NO", 2) == 0)
-		cub->walls[NO].path = ft_strdup(parse_info->content);
-	else if (ft_strncmp(parse_info->prefix, "SO", 2) == 0)
-		cub->walls[SO].path = ft_strdup(parse_info->content);
-	else if (ft_strncmp(parse_info->prefix, "WE", 2) == 0)
-		cub->walls[WE].path = ft_strdup(parse_info->content);
+	if (ft_strncmp(p_info->prefix, "NO", 2) == 0)
+		cub->walls[NO].path = ft_strdup(p_info->content);
+	else if (ft_strncmp(p_info->prefix, "SO", 2) == 0)
+		cub->walls[SO].path = ft_strdup(p_info->content);
+	else if (ft_strncmp(p_info->prefix, "WE", 2) == 0)
+		cub->walls[WE].path = ft_strdup(p_info->content);
 	else
-		cub->walls[EA].path = ft_strdup(parse_info->content);
+		cub->walls[EA].path = ft_strdup(p_info->content);
 	close_or_exit(fd);
 	return (1);
 }

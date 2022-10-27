@@ -37,12 +37,11 @@ void	evaluate_map_size(t_cub *cub, t_parse_info *parse_info)
 		error_and_exit(READ_FAIL);
 	if (!line_is_empty(parse_info->buff))
 		evaluate_map_line_size(parse_info);
-	free(parse_info->buff);
 	if (parse_info->ret > 0)
+		free(parse_info->buff);
+	while (parse_info->ret > 0)
 	{
-		while ((parse_info->ret = get_next_line(cub->map_fd,
-					&parse_info->buff)) > 0)
-			free(parse_info->buff);
+		parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff);
 		free(parse_info->buff);
 	}
 	cub->map_height = parse_info->line_nb - parse_info->line_nb_map_start;

@@ -6,38 +6,39 @@
 /*   By: hvan-hov <hvan-hov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 14:16:02 by hvan-hov          #+#    #+#             */
-/*   Updated: 2022/10/27 14:28:39 by hvan-hov         ###   ########.fr       */
+/*   Updated: 2022/10/27 15:35:04 by svieira          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
 /* Sets player's initial position and direction */
-void	set_player(t_cub *cub, char player, int x, int y)
+void	set_player(t_cub *cub, t_parse_info *parse_info, int x, int y)
 {
 	cub->map[y][x] = PLAYER;
 	cub->pos->x = (double)x + 0.5;
 	cub->pos->y = (double)y + 0.5;
-	if (player == 'N')
+	if (parse_info->buff[x] == 'N')
 	{
 		cub->dir->y = -1.0;
 		cub->proj_plane->x = PROJ_PLANE_LEN;
 	}
-	else if (player == 'S')
+	else if (parse_info->buff[x] == 'S')
 	{
 		cub->dir->y = 1.0;
 		cub->proj_plane->x = -PROJ_PLANE_LEN;
 	}
-	else if (player == 'W')
+	else if (parse_info->buff[x] == 'W')
 	{
 		cub->dir->x = -1.0;
 		cub->proj_plane->y = -PROJ_PLANE_LEN;
 	}
-	else if (player == 'E')
+	else if (parse_info->buff[x] == 'E')
 	{
 		cub->dir->x = 1.0;
 		cub->proj_plane->y = PROJ_PLANE_LEN;
 	}
+	parse_info->is_player_set = 1;
 }
 
 /*
@@ -61,13 +62,11 @@ static int	map_line_is_valid(t_cub *cub, t_parse_info *parse_info, int y)
 			cub->map[y][i] = OUT;
 		else if (parse_info->buff[i] == '0' || parse_info->buff[i] == '1')
 			cub->map[y][i] = (int)(parse_info->buff[i] - '0');
-		else if (parse_info->buff[i] == 'N' || parse_info->buff[i] == 'S'
-			|| parse_info->buff[i] == 'W' || parse_info->buff[i] == 'E')
+		else if (ft_strchr("NSWE", parse_info->buff[i]))
 		{
 			if (parse_info->is_player_set)
 				return (0);
-			parse_info->is_player_set = 1;
-			set_player(cub, parse_info->buff[i], i, y);
+			set_player(cub, parse_info, i, y);
 		}
 		else
 			return (0);

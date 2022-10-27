@@ -42,11 +42,12 @@ void	validate_map_info(t_cub *cub, t_parse_info *parse_info)
 		parse_info->line_nb++;
 		free_parse_info(parse_info);
 	}
-	while ((parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff)) > 0
-		&& line_is_empty(parse_info->buff))
+	parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff);
+	while (parse_info->ret > 0 && line_is_empty(parse_info->buff))
 	{
 		parse_info->line_nb++;
 		free(parse_info->buff);
+		parse_info->ret = get_next_line(cub->map_fd, &parse_info->buff);
 	}
 }
 
@@ -55,9 +56,10 @@ static void	skimm_through_until_map_grid(int map_fd, t_parse_info *parse_info)
 	int	i;
 
 	i = 1;
-	while (i < parse_info->line_nb_map_start
-		&& (parse_info->ret = get_next_line(map_fd, &parse_info->buff)) > 0)
+	parse_info->ret = 1;
+	while (i < parse_info->line_nb_map_start && parse_info->ret > 0)
 	{
+		parse_info->ret = get_next_line(map_fd, &parse_info->buff);
 		i++;
 		free(parse_info->buff);
 	}

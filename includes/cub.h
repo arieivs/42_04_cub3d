@@ -236,7 +236,7 @@ int					texture_or_color_is_valid(t_cub *cub, t_parse_info	*p_inf);
 void				evaluate_map_size(t_cub *cub, t_parse_info *parse_info);
 /* PARSER MAP 2*/
 void				validate_map_grid(t_cub *cub, t_parse_info *parse_info);
-void				set_player(t_cub *cub, char player, int x, int y);
+void				set_player(t_cub *cub, t_parse_info *p_info, int x, int y);
 /* PARSER UTILS */
 int					line_is_empty(char *line);
 char				*replace_tab_with_spaces(char *line);
