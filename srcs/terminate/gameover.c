@@ -40,7 +40,7 @@ void	error_message(t_error_code error_code)
 	else
 	{
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		write(STDERR_FILENO, "\n", 1);
+		ft_putstr_fd("\n", STDERR_FILENO);
 	}
 }
 
