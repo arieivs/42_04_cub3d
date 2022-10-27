@@ -37,7 +37,7 @@ void	evaluate_map_size(t_cub *cub, t_parse_info *parse_info)
 		error_and_exit(READ_FAIL);
 	if (!line_is_empty(parse_info->buff))
 		evaluate_map_line_size(parse_info);
-	if (parse_info->ret > 0)
+	if (parse_info->ret >= 0)
 		free(parse_info->buff);
 	while (parse_info->ret > 0)
 	{
