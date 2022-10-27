@@ -1,6 +1,6 @@
 #include "cub.h"
 
-static void	draw_square(t_cub *cub, int x, int y, int color)
+static void	draw_square(t_img *img, int x, int y, int color)
 {
 	int	i;
 	int	j;
@@ -13,9 +13,9 @@ static void	draw_square(t_cub *cub, int x, int y, int color)
 		{
 			if (i == 0 || i == PIXEL_PER_SQUARE - 1
 				|| j == 0 || j == PIXEL_PER_SQUARE - 1)
-				my_mlx_pixel_put(cub->nav_img, x + i, y + j, 0x00000000);
+				my_mlx_pixel_put(img, x + i, y + j, 0x00000000);
 			else
-				my_mlx_pixel_put(cub->nav_img, x + i, y + j, color);
+				my_mlx_pixel_put(img, x + i, y + j, color);
 			j++;
 		}
 		i++;
@@ -75,7 +75,7 @@ static void	set_navigation_y_borders(t_pair_i *start, t_pair_i *end, t_cub *cub)
  * we are looking at. To convert it to the pixel screen,
  * one must remove the offset and * PIXEL_PER_SQUARE
 */
-static void	actual_draw_navigator(t_cub *cub, t_pair_i start, t_pair_i end)
+static void	actual_draw_navigator(t_cub *cub, t_img *img, t_pair_i start, t_pair_i end)
 {
 	int	i;
 	int	j;
@@ -87,16 +87,16 @@ static void	actual_draw_navigator(t_cub *cub, t_pair_i start, t_pair_i end)
 		while (j < end.x + 1)
 		{
 			if (i == start.y - 1 || i == end.y || j == start.x - 1 || j == end.x)
-				draw_square(cub, (j - start.x + 1) * PIXEL_PER_SQUARE,
+				draw_square(img, (j - start.x + 1) * PIXEL_PER_SQUARE,
 					(i - start.y + 1) * PIXEL_PER_SQUARE, 0x00000000);
 			else if (cub->map[i][j] == OUT)
-				draw_square(cub, (j - start.x + 1) * PIXEL_PER_SQUARE,
+				draw_square(img, (j - start.x + 1) * PIXEL_PER_SQUARE,
 					(i - start.y + 1) * PIXEL_PER_SQUARE, 0x00000000);
 			else if (cub->map[i][j] == IN || cub->map[i][j] == PLAYER)
-				draw_square(cub, (j - start.x + 1) * PIXEL_PER_SQUARE,
+				draw_square(img, (j - start.x + 1) * PIXEL_PER_SQUARE,
 					(i - start.y + 1) * PIXEL_PER_SQUARE, 0x00333333);
 			else if (cub->map[i][j] == WALL)
-				draw_square(cub, (j - start.x + 1) * PIXEL_PER_SQUARE,
+				draw_square(img, (j - start.x + 1) * PIXEL_PER_SQUARE,
 					(i - start.y + 1) * PIXEL_PER_SQUARE, 0x00FFFFFF);
 			j++;
 		}
@@ -111,6 +111,9 @@ static void	actual_draw_navigator(t_cub *cub, t_pair_i start, t_pair_i end)
  * - draws the player as a red square: tried to add a small line
  *   to show in which direction the player was looking, but didn't
  *   look very well...
+ * On MAC the navigator flickers if it's on the same image as the game,
+ * thus we put it on a separate image.
+ * On LINUX it flickers if it's on a separate image, thus we put it on the same one...
  */
 void	draw_navigator(t_cub *cub)
 {
@@ -119,8 +122,17 @@ void	draw_navigator(t_cub *cub)
 
 	set_navigation_x_borders(&start, &end, cub);
 	set_navigation_y_borders(&start, &end, cub);
-	actual_draw_navigator(cub, start, end);
-	draw_square(cub, ((int)cub->pos->x - start.x + 1) * PIXEL_PER_SQUARE,
-		((int)cub->pos->y - start.y + 1) * PIXEL_PER_SQUARE, 0x00FF0000);
-	mlx_put_image_to_window(cub->mlx, cub->window, cub->nav_img->img_ptr, 0, 0);
+	if (APPLE)
+	{
+		actual_draw_navigator(cub, cub->nav_img, start, end);
+		draw_square(cub->nav_img, ((int)cub->pos->x - start.x + 1) * PIXEL_PER_SQUARE,
+			((int)cub->pos->y - start.y + 1) * PIXEL_PER_SQUARE, 0x00FF0000);
+		mlx_put_image_to_window(cub->mlx, cub->window, cub->nav_img->img_ptr, 0, 0);
+	}
+	else
+	{
+		actual_draw_navigator(cub, cub->img, start, end);
+		draw_square(cub->img, ((int)cub->pos->x - start.x + 1) * PIXEL_PER_SQUARE,
+				((int)cub->pos->y - start.y + 1) * PIXEL_PER_SQUARE, 0x00FF0000);
+	}
 }

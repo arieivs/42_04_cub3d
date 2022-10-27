@@ -34,6 +34,7 @@
 
 /* OS CHECK */
 # ifdef APPLE
+#  define LINUX 0
 #  define ESC_KEY 53
 #  define UP_KEY 126
 #  define DOWN_KEY 125
@@ -46,6 +47,7 @@
 #  define MOVE_SPEED 0.07
 #  define ROT_SPEED 0.03
 # else
+#  define APPLE 0
 #  define ESC_KEY 65307
 #  define UP_KEY 65362
 #  define DOWN_KEY 65364
