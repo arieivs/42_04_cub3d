@@ -89,7 +89,7 @@ void	draw_texture(int x, int i, t_cub *cub)
 
 	if (i < cub->draw_start)
 		color = cub->c_color;
-	else if (i >= cub->draw_start && i <= cub->draw_end)
+	else if (i >= cub->draw_start && i < cub->draw_end)
 	{
 		cub->texel->y = (int)cub->texel_pos;
 		if (cub->texel->y < 0)
