@@ -56,6 +56,14 @@ int	key_down(int keycode, t_cub *cub)
 	return (0);
 }
 
+/*
+ * STOP THE MOUSE! 🐭
+ * Thought about adding ((x <= 0 || x >= WIDTH -1) to the first if,
+ * so that the mouse movement stops once it's outisde of the screen.
+ * However, since the mouse position is not registered when it is
+ * outside of the screen, if we leave to fast the position won't reach
+ * the extremes...
+ */
 int	mouse_hook(int x, int y, t_cub *cub)
 {
 	(void)y;
