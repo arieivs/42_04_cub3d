@@ -115,6 +115,15 @@ void	perform_dda(t_cub *cub)
 		cub->perp_wall_dist = cub->side_dist->y - cub->delta_dist->y;
 }
 
+/*
+ * Strange differences between APPLE and LINUX...
+ * in LINUX, we want to go until the window's height, else we get the last
+ *   line of the screen in the floor colour, even if the texture is occupying
+ *   the whole screen;
+ * in APPLE, we want to go until the window's height - 1, else we have a 
+ *   heap buffer overflow;
+ * making software for different OSs is fun 🙃
+ */
 void	calculate_drawline(t_cub *cub)
 {
 	cub->line_height = (int)(((double)HEIGHT) / cub->perp_wall_dist);
@@ -123,7 +132,12 @@ void	calculate_drawline(t_cub *cub)
 		cub->draw_start = 0;
 	cub->draw_end = (cub->line_height + HEIGHT) / 2;
 	if (cub->draw_end >= HEIGHT)
-		cub->draw_end = HEIGHT - 1;
+	{
+		if (APPLE)
+			cub->draw_end = HEIGHT - 1;
+		else
+			cub->draw_end = HEIGHT;
+	}
 }
 
 void	raycast(t_cub *cub)

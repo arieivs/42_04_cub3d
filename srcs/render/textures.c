@@ -16,12 +16,12 @@
 	GET_WALL_DIR:
 	-	Calculates which side of a wall is facing us. 
 	-	If the wall's y-coordinate is lower than ours,
-		we see the bottom side of the wall (SO)
+		we see the south side of the wall (SO)
 	-	If the wall's y-coordinate is higher than ours,
-		we see the north side of the wall
+		we see the north side of the wall (NO)
 	-	If the wall's x-coordinate is lower than ours,
-		we see the west side of the wall
-	-	Else, we see the east-side
+		we see the east side of the wall (EA)
+	-	Else, we see the west-side (WE)
 */
 t_dir_code	get_wall_dir(t_cub *cub)
 {
@@ -30,8 +30,8 @@ t_dir_code	get_wall_dir(t_cub *cub)
 	if (cub->side == SIDE_Y && cub->map_pos->y > cub->pos->y)
 		return (NO);
 	if (cub->side == SIDE_X && cub->map_pos->x < cub->pos->x)
-		return (WE);
-	return (EA);
+		return (EA);
+	return (WE);
 }
 
 /*
