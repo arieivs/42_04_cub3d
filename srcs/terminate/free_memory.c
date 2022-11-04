@@ -46,6 +46,11 @@ static void	free_map_and_walls(t_cub *cub)
  * Not protecting close because we're already leaving,
  * this function is only called when exiting the programme.
  * If the map_fd was already closed, its value is 0.
+ *
+ * mlx_destroy_display is only available on LINUX version of mlx... add:
+ * int	mlx_destroy_display(void *xvar);
+ * on mlx.h on MAC, to avoid compilation errors (no need to define it)
+ * (now I understand why everyone said mlx had leaks...)
  */
 void	free_cub(t_cub *cub)
 {
@@ -76,7 +81,8 @@ void	free_cub(t_cub *cub)
 		free(cub->texel);
 	if (cub->mlx)
 	{
-		mlx_destroy_display(cub->mlx);
+		if (LINUX)
+			mlx_destroy_display(cub->mlx);
 		free(cub->mlx);
 	}
 	if (cub)
