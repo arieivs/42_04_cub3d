@@ -7,3 +7,5 @@ libft.a
 cub3D
 *.dSYM/
 .DS_Store
+compile_commands.json
+.cache
