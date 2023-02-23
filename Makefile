@@ -20,9 +20,9 @@ UNAME = $(shell uname)
 # MAC
 ifeq ($(UNAME), Darwin)
 OS			= APPLE
-MLX_DIR		= ./minilibx_mms
+MLX_DIR		= minilibx_mms
 MLX_LIB		= -lmlx
-GRAPH_LIB	= 
+GRAPH_LIB	=
 
 #LINUX
 else
