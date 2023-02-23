@@ -81,8 +81,9 @@ void	free_cub(t_cub *cub)
 		free(cub->texel);
 	if (cub->mlx)
 	{
-		if (LINUX)
-			mlx_destroy_display(cub->mlx);
+		#if LINUX
+		mlx_destroy_display(cub->mlx);
+        #endif
 		free(cub->mlx);
 	}
 	if (cub)
