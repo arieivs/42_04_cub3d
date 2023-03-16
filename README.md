@@ -3,7 +3,7 @@ Create a simple videogame using Raycasting 🎮​
 
 ![Score](extras/score.png)
 
-![Example GIF](extras/libft.gif)
+![Example GIF](extras/cub3d.gif)
 
 <br/>
 
