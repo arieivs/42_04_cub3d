@@ -1,7 +1,7 @@
 # Cub3D
 Create a simple videogame using Raycasting 🎮​
 
-![Score](extras/score.png)
+<img src="extras/score.png" alt="Score" style="width:20%;">
 
 ![Example GIF](extras/cub3d.gif)
 
